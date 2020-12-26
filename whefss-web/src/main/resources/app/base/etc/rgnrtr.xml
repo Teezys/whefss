@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="gbk"?>
+<regionList>
+    <!-- 中间业务的公共服务 -->
+    <item name="bibspub_region" ip="127.0.0.1" port="59500"></item>
+</regionList>

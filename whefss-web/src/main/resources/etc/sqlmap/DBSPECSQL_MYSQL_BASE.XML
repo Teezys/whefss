@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="GB2312"?>
+<MYSQL>
+        <dynSentence name="QueryDBMultiPageSqlTotal">
+           <sentence>
+                <!-- MYSQL分页查询 -->
+                select count(1) TOTAL_NUM from(%s) tmp
+           </sentence>
+           <fields></fields>
+        </dynSentence>
+	<dynSentence name="QueryDBMultiPageSql">
+           <sentence>
+		<!-- MYSQL分页查询 -->
+		${sql} limit ${offset},${rows}
+		<!--${sql} limit ${begin},${end}-->
+           </sentence>
+           <fields></fields>
+	</dynSentence>
+	<dynSentence name="QueryDBSysDateSql">
+           <sentence>
+		<!-- 查询数据库系统日期 -->
+		select date_format(now(),'%Y%m%d%H%i%S') CURR_DT
+           </sentence>
+           <fields></fields>
+	</dynSentence>
+	<dynSentence name="QueryPUBBSPCTLDetailSql">
+           <sentence>
+		<!-- 获取BSP明细 -->
+		SELECT * FROM %s WHERE BAT_NO = ? AND (STATUS = 'U' OR STATUS = 'F') AND DO_FLG = 'Y' ORDER BY BAT_SEQ 
+           </sentence>
+           <fields></fields>
+	</dynSentence>
+	<dynSentence name="QueryPUBBSPCTLSql">
+           <sentence>
+		<!-- 获取BSP批次 -->
+		SELECT MIN(BAT_NO) BAT_NO FROM T_PUB_BSPCTL WHERE INST_ID = ? AND APP_TYP = ? AND SRV_ID=' ' AND STATUS = 'W' AND ((DUE_DT_CTRL = '0') OR (DUE_DT_CTRL = '1' AND DUE_DT = ?) OR (DUE_DT_CTRL = '2' AND DUE_DT &lt;= ?)) AND DUE_BGN_TM &lt;= ? AND DUE_END_TM >= ? AND (TOTAL_CNT >= ? AND TOTAL_CNT &lt; ?)
+           </sentence>
+           <fields></fields>
+	</dynSentence>
+	<dynSentence name="UpdatePUBBSPCTLSql">
+           <sentence>
+		<!-- 更新BSP批次 -->
+		UPDATE T_PUB_BSPCTL SET SRV_ID = ? WHERE BAT_NO = ? AND SRV_ID=' '
+           </sentence>
+           <fields></fields>
+	</dynSentence>
+</MYSQL>

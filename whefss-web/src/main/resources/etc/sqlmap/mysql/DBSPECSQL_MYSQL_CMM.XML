@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="GB2312"?>
+<MYSQL>
+	 <dynSentence name="QRY_CMMTOPLG">                            
+         <sentence>
+             SELECT SYS_DT,SYS_TM,CONVERT(JRN_NO,CHAR) JRN_NO,AC_DT,OPR_PROV,OPR_CITY,OPR_DEPT,OPR_ID,TX_CD,TXN_NM,IP_ADDR
+               FROM CMMTOPLG PLG
+          LEFT JOIN CMMTTXIF TXNIF ON TX_CD = TXN_COD
+              WHERE (TRIM('%s') IS NULL OR SYS_DT &gt;='%s')
+                AND (OPR_ID LIKE '%%s%' OR TRIM('%s') IS NULL)
+                AND (TRIM('%s') IS NULL OR SYS_DT &lt;='%s')
+                AND (JRN_NO LIKE '%%s%' OR TRIM('%s') IS NULL)
+           ORDER BY JRN_NO desc
+         </sentence>
+         <fields>SYS_DTS|SYS_DTS|OPR_ID|OPR_ID|SYS_DTE|SYS_DTE|JRN_NO|JRN_NO|</fields>
+      </dynSentence>
+
+      <dynSentence name="QRY_CMMTDEPT_DETAIL">
+         <sentence>
+	    SELECT CONCAT((PROV_LVL+1),PROV_CD,'000','0000') ORG_CD,PROV_LNM ORG_NM,CONCAT((PROV_LVL+1),' ') ORG_LVL,' ' UORG_NO,' ' ADR,' ' POST_NO,' ' LINK_NM,' ' TEL,VGOP_PROV ARE_CD
+            FROM CMMTPCOP 
+            UNION ALL
+            SELECT CONCAT('3',PROV_CD,CITY_CD,'0000') ORG_CD,CITY_LNM ORG_NM,'3' ORG_LVL,(SELECT CONCAT((CMMTPCOP.PROV_LVL+1),CMMTPCOP.PROV_CD,'000','0000') FROM CMMTPCOP WHERE CMMTPCOP.PROV_CD = A.PROV_CD) UORG_NO,' ' ADR,' ' POST_NO,' ' LINK_NM,' ' TEL,CITY_CD ARE_CD
+            FROM CMMTCCOP A
+         </sentence>
+         <fields>|</fields>
+      </dynSentence>
+</MYSQL>

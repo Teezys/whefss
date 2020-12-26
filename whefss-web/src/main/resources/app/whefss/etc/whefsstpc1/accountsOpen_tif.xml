@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root>
+    <format code="accountsOpen" desc="查询开户数据">
+        <request necessary="yes">
+            <xmlWrite name="Root">
+                <quote name="request"/>
+            </xmlWrite>
+        </request>
+        <response necessary="no">
+            <xmlRead name="Root">
+                <quote name="response"></quote>
+                <xmlRead name="data">
+                    <xmlRead name="notice_num" data_name="notice_num" desc="开户预审结果单编号" necessary="no"/>
+                    <xmlRead name="monitor_num" data_name="monitor_num" desc="监管编号" necessary="no"/>
+                    <xmlRead name="bank_name" data_name="bank_name" desc="总行名称" necessary="no"/>
+                    <xmlRead name="branch_name" data_name="branch_name" desc="签约支行名称" necessary="no"/>
+                    <xmlRead name="branch_num" data_name="branch_num" desc="签约支行行号" necessary="no"/>
+                    <xmlRead name="corp_name" data_name="corp_name" desc="企业名称" necessary="no"/>
+                    <xmlRead name="account_name" data_name="account_name" desc="拟开监管账户名称" necessary="no"/>
+                    <xmlRead name="project_name" data_name="project_name" desc="项目名称" necessary="no"/>
+                    <xmlRead name="monitor_range" data_name="monitor_range" desc="监管范围" necessary="no"/>
+                </xmlRead>
+            </xmlRead>
+        </response>
+    </format>
+</root>

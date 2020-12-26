@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- Created by xu_lw on 2020-12-14 14:49:46. -->
+<mapper namespace="com.murong.ecp.netpay.whefss.web.pub.dal.dao.WhefssChkDetailMapper">
+    <select id="selectByPrimaryKey" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkDetailDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_CHK_DETAIL where pk_id = #{pkId} 
+    </select>
+
+    <select id="selectPage" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkDetailDO">
+        select  chk_dt,account_num,
+            (case when chk_status in ('11','12','02') then '成功' else '本地预处理失败' end) chk_sts_dy,
+            (case when chk_status in ('11','12','02') then '' else msg end) chk_msg_dy,
+            (case when chk_status in ('00','01') then '未发送'  when chk_status in ('12','02') then '对账成功'  when chk_status = '11' then '明细提交房管返回失败' end) chk_sts_wh,
+            (case when chk_status in ('00','01') then ''  when chk_status in ('12','02','11') then msg end) chk_msg_wh
+        from WHEFSS_CHK_DETAIL
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="accountNum !=null and accountNum!='' ">
+                AND account_num = #{accountNum}
+            </if>
+            <if test="startDate !=null and startDate!='' ">
+                AND chk_dt &gt;= #{startDate}
+            </if>
+            <if test="endDate !=null and endDate!='' ">
+                AND chk_dt &lt;= #{endDate}
+            </if>
+        </trim>
+        order by chk_dt desc
+    </select>
+
+    <select id="selectChk" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkTotalDO">
+        select sum(suc_chk_num) suc_chk_num,count(1) chk_num from
+        (select (case when chk_status = '02'  then 1 else 0 end) suc_chk_num from WHEFSS_CHK_DETAIL where fk_id = #{pkId})
+
+    </select>
+
+    <select id="selectListByFkid" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkDetailDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_CHK_DETAIL where fk_id = #{fkId}
+    </select>
+    <!-- 游标后缀必须为Cursor -->
+    <select id="selectCursor" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkDetailDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_CHK_DETAIL
+    </select>
+
+    <!-- 查询id后缀必须为ResultHandler -->
+    <select id="selectResultHandler" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkDetailDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_CHK_DETAIL
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkDetailDO">
+        delete from  WHEFSS_CHK_DETAIL where pk_id = #{pkId} 
+    </delete>
+
+    <delete id="deleteByIds" parameterType="java.lang.String">
+        delete from  WHEFSS_CHK_DETAIL where id in (${ids})
+    </delete>
+
+    <update id="updateByPrimaryKey" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkDetailDO">
+        update  WHEFSS_CHK_DETAIL
+        <trim prefix="set" suffixOverrides = ",">
+                <if test="isNotNull(chkNum)">chk_num=#{chkNum},</if>
+                <if test="isNotNull(userId)">user_id=#{userId},</if>
+                <if test="isNotNull(chkTm)">chk_tm=#{chkTm},</if>
+                <if test="isNotNull(chkStatus)">chk_status=#{chkStatus},</if>
+                <if test="isNotNull(msg)">msg=#{msg},</if>
+                <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+                <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+                <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+                <if test="isNotNull(balanceBank)">balance_bank=#{balanceBank},</if>
+        </trim>
+        where pk_id = #{pkId} 
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkDetailDO">
+        update  WHEFSS_CHK_DETAIL
+        <trim prefix="set" suffixOverrides = ",">
+            <if test="isNotNull(pkId)">pk_id=#{pkId},</if>
+            <if test="isNotNull(fkId)">fk_id=#{fkId},</if>
+            <if test="isNotNull(chkDt)">chk_dt=#{chkDt},</if>
+            <if test="isNotNull(accountNum)">account_num=#{accountNum},</if>
+            <if test="isNotNull(chkAmt)">chk_amt=#{chkAmt},</if>
+            <if test="isNotNull(chkNum)">chk_num=#{chkNum},</if>
+            <if test="isNotNull(userId)">user_id=#{userId},</if>
+            <if test="isNotNull(chkTm)">chk_tm=#{chkTm},</if>
+            <if test="isNotNull(chkStatus)">chk_status=#{chkStatus},</if>
+            <if test="isNotNull(msg)">msg=#{msg},</if>
+            <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+            <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+            <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+            <if test="isNotNull(balanceBank)">balance_bank=#{balanceBank},</if>
+        </trim>
+        where pk_id = #{pkId} 
+    </update>
+
+    <insert id="insert" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkDetailDO">
+        insert  into WHEFSS_CHK_DETAIL(pk_id, fk_id, chk_dt, account_num, chk_amt, chk_num, user_id, chk_tm, chk_status, msg, reserve1, reserve2, reserve3, balance_bank)
+        values( #{pkId}, #{fkId}, #{chkDt}, #{accountNum}, #{chkAmt}, #{chkNum}, #{userId}, #{chkTm}, #{chkStatus}, #{msg}, #{reserve1}, #{reserve2}, #{reserve3}, #{balanceBank})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkDetailDO">
+        insert  into WHEFSS_CHK_DETAIL
+        <trim prefix="(" suffix=')' suffixOverrides=",">
+            <if test="isNotNull(pkId)">pk_id,</if>
+            <if test="isNotNull(fkId)">fk_id,</if>
+            <if test="isNotNull(chkDt)">chk_dt,</if>
+            <if test="isNotNull(accountNum)">account_num,</if>
+            <if test="isNotNull(chkAmt)">chk_amt,</if>
+            <if test="isNotNull(chkNum)">chk_num,</if>
+            <if test="isNotNull(userId)">user_id,</if>
+            <if test="isNotNull(chkTm)">chk_tm,</if>
+            <if test="isNotNull(chkStatus)">chk_status,</if>
+            <if test="isNotNull(msg)">msg,</if>
+            <if test="isNotNull(reserve1)">reserve1,</if>
+            <if test="isNotNull(reserve2)">reserve2,</if>
+            <if test="isNotNull(reserve3)">reserve3,</if>
+            <if test="isNotNull(balanceBank)">balance_bank,</if>
+        </trim>
+        <trim prefix="values(" suffix=')' suffixOverrides=",">
+            <if test="isNotNull(pkId)">#{pkId},</if>
+            <if test="isNotNull(fkId)">#{fkId},</if>
+            <if test="isNotNull(chkDt)">#{chkDt},</if>
+            <if test="isNotNull(accountNum)">#{accountNum},</if>
+            <if test="isNotNull(chkAmt)">#{chkAmt},</if>
+            <if test="isNotNull(chkNum)">#{chkNum},</if>
+            <if test="isNotNull(userId)">#{userId},</if>
+            <if test="isNotNull(chkTm)">#{chkTm},</if>
+            <if test="isNotNull(chkStatus)">#{chkStatus},</if>
+            <if test="isNotNull(msg)">#{msg},</if>
+            <if test="isNotNull(reserve1)">#{reserve1},</if>
+            <if test="isNotNull(reserve2)">#{reserve2},</if>
+            <if test="isNotNull(reserve3)">#{reserve3},</if>
+            <if test="isNotNull(balanceBank)">#{balanceBank},</if>
+        </trim>
+    </insert>
+
+    <sql id="base_column_list">
+    pk_id, fk_id, chk_dt, account_num, chk_amt, chk_num, user_id, chk_tm, chk_status, msg, reserve1, reserve2, reserve3, balance_bank
+    </sql>
+
+    <sql id="where_condition">
+        <trim prefix="where" prefixOverrides="and">
+            <if test="isNotNull(pkId)">pk_id=#{pkId},</if>
+            <if test="isNotNull(fkId)">fk_id=#{fkId},</if>
+            <if test="isNotNull(chkDt)">chk_dt=#{chkDt},</if>
+            <if test="isNotNull(accountNum)">account_num=#{accountNum},</if>
+            <if test="isNotNull(chkAmt)">chk_amt=#{chkAmt},</if>
+            <if test="isNotNull(chkNum)">chk_num=#{chkNum},</if>
+            <if test="isNotNull(userId)">user_id=#{userId},</if>
+            <if test="isNotNull(chkTm)">chk_tm=#{chkTm},</if>
+            <if test="isNotNull(chkStatus)">chk_status=#{chkStatus},</if>
+            <if test="isNotNull(msg)">msg=#{msg},</if>
+            <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+            <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+            <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+            <if test="isNotNull(balanceBank)">balance_bank=#{balanceBank},</if>
+        </trim>
+    </sql>
+</mapper>

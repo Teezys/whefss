@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root>
+    <format code="contractsLoanInfo" desc="按揭贷款信息采集接口">
+        <request necessary="yes">
+            <xmlWrite name="Root">
+                <quote name="request"/>
+            </xmlWrite>
+        </request>
+        <response necessary="no">
+            <xmlRead name="Root">
+                <quote name="response"/>
+                <xmlRead name="data">
+                    <xmlRead name="notice_num" data_name="notice_num" desc="缴款通知书编号" necessary="no"/>
+                    <xmlRead name="buyer" data_name="buyer" desc="购房人姓名" necessary="no"/>
+                    <xmlRead name="id_type" data_name="id_type" desc="购房人证件类型" necessary="no"/>
+                    <xmlRead name="id_num" data_name="id_num" desc="购房人身份证号" necessary="no"/>
+                    <xmlRead name="price_sum" data_name="price_sum" desc="总房款" necessary="no"/>
+                    <xmlRead name="first_money" data_name="first_money" desc="首付款" necessary="no"/>
+                    <xmlRead name="first_paied" data_name="first_paied" desc="首付是否缴齐（1缴齐，0未缴齐)" necessary="no"/>
+                    <xmlRead name="account_name" data_name="account_name" desc="监管户名" necessary="no"/>
+                    <xmlRead name="account_num" data_name="account_num" desc="监管账号" necessary="no"/>
+                    <xmlRead name="area" data_name="area" desc="面积" necessary="no"/>
+                </xmlRead>
+            </xmlRead>
+        </response>
+    </format>
+</root>

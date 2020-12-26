@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root>
+    <format code="fundsDetail" desc="查询指定日期范围进账数据">
+        <request necessary="yes">
+            <xmlWrite name="Root">
+                <quote name="request"/>
+                <xmlWrite name="body">
+                    <xmlWrite name="account_num" necessary="yes" data_name="account_num" desc="监管账户账号"/>
+                    <xmlWrite name="start_time" necessary="yes" data_name="start_time" desc="开始时间"/>
+                    <xmlWrite name="end_time" necessary="yes" data_name="end_time" desc="结束时间"/>
+                    <xmlWrite name="pageindex" necessary="yes" data_name="pageindex" desc="分页顺号（0开始）"/>
+                    <xmlWrite name="pagesize" necessary="yes" data_name="pagesize" desc="分页条数"/>
+                </xmlWrite>
+            </xmlWrite>
+        </request>
+        <response necessary="no">
+            <xmlRead name="Root">
+                <quote name="response"></quote>
+                <xmlRead name="total" data_name="total" desc="总记录数" necessary="no"/>
+                <xmlReadGroup name="data" data_name="qryData.detail" repeat_name="data_num">
+                    <xmlRead name="sn" data_name="sn" desc="流水号" necessary="no"/>
+                    <xmlRead name="notice_num" data_name="notice_num" desc="缴款通知书编号或账号" necessary="no"/>
+                    <xmlRead name="amount" data_name="amount" desc="交易发生额" necessary="no"/>
+                    <xmlRead name="time" data_name="time" desc="时间" necessary="no"/>
+                    <xmlRead name="type" data_name="type" desc="进账类型" necessary="no"/>
+                    <xmlRead name="state" data_name="state" desc="状态" necessary="no"/>
+                </xmlReadGroup>
+            </xmlRead>
+        </response>
+    </format>
+</root>

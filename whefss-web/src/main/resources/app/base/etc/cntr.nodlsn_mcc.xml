@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE container PUBLIC "-//YUANGOU//DTD//MSC" "">
+
+<container name="cntr.nodlsn" trace="INFO">
+    <bean name = "listener1" class = "com.yuangou.ecp.bp.channel.tcp.imp.YGTcpSynListener">
+        <property name = "msgType" value = "PLTIN0"/>
+        <property name = "localPort" value = "${_PORT}"/>
+        <property name = "minThreads" value = "25"/>
+        <property name = "maxThreads" value = "50"/>
+        <property name = "preLen" value = "8"/>
+    </bean>
+
+    <bean name = "lsnsvr" class = "com.yuangou.ecp.bp.comp.handler.YGLSNSVRHandler">
+
+    </bean>
+
+    <process name = "process1" msgtype = "PLTIN0">
+        <interceptor name = "lsnsvr" method="doRequest"/>
+        <systemInterceptor name = "callService"/>
+        <interceptor name = "lsnsvr" method="specProc"/>
+        <interceptor name = "lsnsvr" method="doResponse"/>
+    </process>
+</container>

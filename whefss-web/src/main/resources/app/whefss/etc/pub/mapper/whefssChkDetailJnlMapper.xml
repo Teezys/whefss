@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- Created by xu_lw on 2020-12-15 15:46:44. -->
+<mapper namespace="com.murong.ecp.netpay.whefss.web.pub.dal.dao.WhefssChkDetailJnlMapper">
+    <select id="selectByPrimaryKey" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkDetailJnlDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_CHK_DETAIL_JNL where pk_id = #{pkId} 
+    </select>
+
+    <select id="sumCheckDetail" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkDetailDO">
+        select sum(IN_AMT) RZ_AMT,sum(IN_NUM) RZ_NUM, sum(OUT_AMT) CZ_AMT,sum(OUT_NUM) CZ_NUM,count(1) CHK_NUM
+        from
+        (select
+        (case when DATA_TYPE in ('1','2','3','4','14')  then AMOUNT else 0 end) IN_AMT,
+        (case when DATA_TYPE in ('1','2','3','4','14') then 1 else 0 end) IN_NUM,
+        (case when DATA_TYPE in ('5','6','7','9','10') then AMOUNT else 0 end) OUT_AMT,
+        (case when DATA_TYPE in ('5','6','7','9','10') then AMOUNT else 0 end) OUT_NUM
+        from WHEFSS_CHK_DETAIL_JNL t
+        where t.fk_total_id = #{fkId} and t.fk_detail_id = #{pkId})
+    </select>
+
+    <select id="selectChk" resultType="com.murong.ecp.netpay.whefss.web.service.server.bo.FundsUploadDetail">
+        select <include refid="base_column_list"/>
+        from WHEFSS_CHK_DETAIL_JNL t
+        where t.fk_total_id = #{fkId} and t.fk_detail_id = #{pkId}
+    </select>
+
+    <!-- 分页查询id后缀必须为Page -->
+    <select id="selectPage" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkDetailJnlDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_CHK_DETAIL_JNL where pk_id like '%%${pkId}%%' or fk_total_id like '%%${fkTotalId}%%' or fk_detail_id like '%%${fkDetailId}%%' or chk_dt like '%%${chkDt}%%' or account_num like '%%${accountNum}%%' or data_type like '%%${dataType}%%' or notice_num like '%%${noticeNum}%%' or sn like '%%${sn}%%' or time like '%%${time}%%' or sender_name like '%%${senderName}%%' or sender_num like '%%${senderNum}%%' or node like '%%${node}%%' or unknown_type like '%%${unknownType}%%' or reserve1 like '%%${reserve1}%%' or reserve2 like '%%${reserve2}%%' or reserve3 like '%%${reserve3}%%'  order by pk_id
+    </select>
+
+    <!-- 游标后缀必须为Cursor -->
+    <select id="selectCursor" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkDetailJnlDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_CHK_DETAIL_JNL
+    </select>
+
+    <!-- 查询id后缀必须为ResultHandler -->
+    <select id="selectResultHandler" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkDetailJnlDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_CHK_DETAIL_JNL
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkDetailJnlDO">
+        delete from  WHEFSS_CHK_DETAIL_JNL where pk_id = #{pkId} 
+    </delete>
+
+    <delete id="deleteChk" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkDetailJnlDO">
+        delete from  WHEFSS_CHK_DETAIL_JNL where FK_TOTAL_ID = #{fkTotalId} and FK_DETAIL_ID = #{fkDetailId}
+    </delete>
+
+    <delete id="deleteByIds" parameterType="java.lang.String">
+        delete from  WHEFSS_CHK_DETAIL_JNL where id in (${ids})
+    </delete>
+
+    <update id="updateByPrimaryKey" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkDetailJnlDO">
+        update  WHEFSS_CHK_DETAIL_JNL
+        <trim prefix="set" suffixOverrides = ",">
+                <if test="isNotNull(pkId)">pk_id=#{pkId},</if>
+                <if test="isNotNull(fkTotalId)">fk_total_id=#{fkTotalId},</if>
+                <if test="isNotNull(fkDetailId)">fk_detail_id=#{fkDetailId},</if>
+                <if test="isNotNull(chkDt)">chk_dt=#{chkDt},</if>
+                <if test="isNotNull(accountNum)">account_num=#{accountNum},</if>
+                <if test="isNotNull(dataType)">data_type=#{dataType},</if>
+                <if test="isNotNull(amount)">amount=#{amount},</if>
+                <if test="isNotNull(commission)">commission=#{commission},</if>
+                <if test="isNotNull(noticeNum)">notice_num=#{noticeNum},</if>
+                <if test="isNotNull(sn)">sn=#{sn},</if>
+                <if test="isNotNull(time)">time=#{time},</if>
+                <if test="isNotNull(senderName)">sender_name=#{senderName},</if>
+                <if test="isNotNull(senderNum)">sender_num=#{senderNum},</if>
+                <if test="isNotNull(node)">node=#{node},</if>
+                <if test="isNotNull(unknownType)">unknown_type=#{unknownType},</if>
+                <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+                <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+                <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+        </trim>
+        where pk_id = #{pkId} 
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkDetailJnlDO">
+        update  WHEFSS_CHK_DETAIL_JNL
+        <trim prefix="set" suffixOverrides = ",">
+            <if test="isNotNull(pkId)">pk_id=#{pkId},</if>
+            <if test="isNotNull(fkTotalId)">fk_total_id=#{fkTotalId},</if>
+            <if test="isNotNull(fkDetailId)">fk_detail_id=#{fkDetailId},</if>
+            <if test="isNotNull(chkDt)">chk_dt=#{chkDt},</if>
+            <if test="isNotNull(accountNum)">account_num=#{accountNum},</if>
+            <if test="isNotNull(dataType)">data_type=#{dataType},</if>
+            <if test="isNotNull(amount)">amount=#{amount},</if>
+            <if test="isNotNull(commission)">commission=#{commission},</if>
+            <if test="isNotNull(noticeNum)">notice_num=#{noticeNum},</if>
+            <if test="isNotNull(sn)">sn=#{sn},</if>
+            <if test="isNotNull(time)">time=#{time},</if>
+            <if test="isNotNull(senderName)">sender_name=#{senderName},</if>
+            <if test="isNotNull(senderNum)">sender_num=#{senderNum},</if>
+            <if test="isNotNull(node)">node=#{node},</if>
+            <if test="isNotNull(unknownType)">unknown_type=#{unknownType},</if>
+            <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+            <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+            <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+        </trim>
+        where pk_id = #{pkId} 
+    </update>
+
+    <insert id="insert" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkDetailJnlDO">
+        insert  into WHEFSS_CHK_DETAIL_JNL(pk_id, fk_total_id, fk_detail_id, chk_dt, account_num, data_type, amount, commission, notice_num, sn, time, sender_name, sender_num, node, unknown_type, reserve1, reserve2, reserve3)
+        values( #{pkId}, #{fkTotalId}, #{fkDetailId}, #{chkDt}, #{accountNum}, #{dataType}, #{amount}, #{commission}, #{noticeNum}, #{sn}, #{time}, #{senderName}, #{senderNum}, #{node}, #{unknownType}, #{reserve1}, #{reserve2}, #{reserve3})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkDetailJnlDO">
+        insert  into WHEFSS_CHK_DETAIL_JNL
+        <trim prefix="(" suffix=')' suffixOverrides=",">
+            <if test="isNotNull(pkId)">pk_id,</if>
+            <if test="isNotNull(fkTotalId)">fk_total_id,</if>
+            <if test="isNotNull(fkDetailId)">fk_detail_id,</if>
+            <if test="isNotNull(chkDt)">chk_dt,</if>
+            <if test="isNotNull(accountNum)">account_num,</if>
+            <if test="isNotNull(dataType)">data_type,</if>
+            <if test="isNotNull(amount)">amount,</if>
+            <if test="isNotNull(commission)">commission,</if>
+            <if test="isNotNull(noticeNum)">notice_num,</if>
+            <if test="isNotNull(sn)">sn,</if>
+            <if test="isNotNull(time)">time,</if>
+            <if test="isNotNull(senderName)">sender_name,</if>
+            <if test="isNotNull(senderNum)">sender_num,</if>
+            <if test="isNotNull(node)">node,</if>
+            <if test="isNotNull(unknownType)">unknown_type,</if>
+            <if test="isNotNull(reserve1)">reserve1,</if>
+            <if test="isNotNull(reserve2)">reserve2,</if>
+            <if test="isNotNull(reserve3)">reserve3,</if>
+        </trim>
+        <trim prefix="values(" suffix=')' suffixOverrides=",">
+            <if test="isNotNull(pkId)">#{pkId},</if>
+            <if test="isNotNull(fkTotalId)">#{fkTotalId},</if>
+            <if test="isNotNull(fkDetailId)">#{fkDetailId},</if>
+            <if test="isNotNull(chkDt)">#{chkDt},</if>
+            <if test="isNotNull(accountNum)">#{accountNum},</if>
+            <if test="isNotNull(dataType)">#{dataType},</if>
+            <if test="isNotNull(amount)">#{amount},</if>
+            <if test="isNotNull(commission)">#{commission},</if>
+            <if test="isNotNull(noticeNum)">#{noticeNum},</if>
+            <if test="isNotNull(sn)">#{sn},</if>
+            <if test="isNotNull(time)">#{time},</if>
+            <if test="isNotNull(senderName)">#{senderName},</if>
+            <if test="isNotNull(senderNum)">#{senderNum},</if>
+            <if test="isNotNull(node)">#{node},</if>
+            <if test="isNotNull(unknownType)">#{unknownType},</if>
+            <if test="isNotNull(reserve1)">#{reserve1},</if>
+            <if test="isNotNull(reserve2)">#{reserve2},</if>
+            <if test="isNotNull(reserve3)">#{reserve3},</if>
+        </trim>
+    </insert>
+
+    <sql id="base_column_list">
+    pk_id, fk_total_id, fk_detail_id, chk_dt, account_num, data_type, amount, commission, notice_num, sn, time, sender_name, sender_num, node, unknown_type, reserve1, reserve2, reserve3
+    </sql>
+
+    <sql id="where_condition">
+        <trim prefix="where" prefixOverrides="and">
+            <if test="isNotNull(pkId)">pk_id=#{pkId},</if>
+            <if test="isNotNull(fkTotalId)">fk_total_id=#{fkTotalId},</if>
+            <if test="isNotNull(fkDetailId)">fk_detail_id=#{fkDetailId},</if>
+            <if test="isNotNull(chkDt)">chk_dt=#{chkDt},</if>
+            <if test="isNotNull(accountNum)">account_num=#{accountNum},</if>
+            <if test="isNotNull(dataType)">data_type=#{dataType},</if>
+            <if test="isNotNull(amount)">amount=#{amount},</if>
+            <if test="isNotNull(commission)">commission=#{commission},</if>
+            <if test="isNotNull(noticeNum)">notice_num=#{noticeNum},</if>
+            <if test="isNotNull(sn)">sn=#{sn},</if>
+            <if test="isNotNull(time)">time=#{time},</if>
+            <if test="isNotNull(senderName)">sender_name=#{senderName},</if>
+            <if test="isNotNull(senderNum)">sender_num=#{senderNum},</if>
+            <if test="isNotNull(node)">node=#{node},</if>
+            <if test="isNotNull(unknownType)">unknown_type=#{unknownType},</if>
+            <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+            <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+            <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+        </trim>
+    </sql>
+</mapper>

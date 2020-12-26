@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<application name="whefss">
+
+    <define>
+        <!-- 公共请求字段 -->
+        <macro name="request">
+            <xmlWrite name="head">
+                <xmlWrite name="method" necessary="yes" data_name="method" desc="method"/>
+                <xmlWrite name="url" necessary="yes" data_name="url" desc="URL"/>
+                <xmlWrite name="param" necessary="yes" data_name="param" desc="param"/>
+            </xmlWrite>
+        </macro>
+        <macro name="response">
+            <xmlRead name ="status" data_name="status" desc="状态码" necessary="no"/>
+            <xmlRead name ="error" data_name="error" desc="错误信息" necessary="no"/>
+        </macro>
+    </define>
+
+    <!-- 如下配置所有的接口列表 -->
+
+    <include  file="app/whefss/etc/whefsstpc1/accountsOpen_tif.xml" desc="查询开户数据"/>
+    <include  file="app/whefss/etc/whefsstpc1/accountsOpenNotify_tif.xml" desc="开户数据通知"/>
+    <include  file="app/whefss/etc/whefsstpc1/accountsRemove_tif.xml" desc="查询销户数据"/>
+    <include  file="app/whefss/etc/whefsstpc1/contractsIncome_tif.xml" desc="查询缴款通知书数据"/>
+    <include  file="app/whefss/etc/whefsstpc1/fundsAppropriate_tif.xml" desc="查询拨付数据"/>
+    <include  file="app/whefss/etc/whefsstpc1/fundsCorrect_tif.xml" desc="查询冲正数据"/>
+    <include  file="app/whefss/etc/whefsstpc1/fundsRefund_tif.xml" desc="查询退款数据"/>
+    <include  file="app/whefss/etc/whefsstpc1/contractsLoanInfo_tif.xml" desc="按揭贷款信息采集接口"/>
+    <include  file="app/whefss/etc/whefsstpc1/fundsBalance_tif.xml" desc="监管系统账户余额查询"/>
+    <include  file="app/whefss/etc/whefsstpc1/fundsDetail_tif.xml" desc="查询指定日期范围进账数据"/>
+    <include  file="app/whefss/etc/whefsstpc1/fundsUploadInfo_tif.xml" desc="查询指定日期范围进账数据"/>
+</application>

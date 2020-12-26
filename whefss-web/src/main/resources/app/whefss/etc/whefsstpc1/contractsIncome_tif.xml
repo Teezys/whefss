@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root>
+    <format code="contractsIncome" desc="查询缴款通知书数据">
+        <request necessary="yes">
+            <xmlWrite name="Root">
+                <quote name="request"/>
+            </xmlWrite>
+        </request>
+        <response necessary="no">
+            <xmlRead name="Root">
+                <quote name="response"></quote>
+                <xmlRead name="data">
+                    <xmlRead name="notice_num" data_name="notice_num" desc="缴款通知书编号" necessary="no"/>
+                    <xmlRead name="monitor_num" data_name="monitor_num" desc="监管编号" necessary="no"/>
+                    <xmlRead name="buyers" data_name="buyers" desc="买方" necessary="no"/>
+                    <xmlRead name="id_type" data_name="id_type" desc="证件类别" necessary="no"/>
+                    <xmlRead name="id_num" data_name="id_num" desc="证件号码(以逗号分隔)" necessary="no"/>
+                    <xmlRead name="bank_name" data_name="bank_name" desc="监管账户开户总行" necessary="no"/>
+                    <xmlRead name="account_name" data_name="account_name" desc="监管账户名称" necessary="no"/>
+                    <xmlRead name="account_num" data_name="account_num" desc="监管账户账号" necessary="no"/>
+                    <xmlRead name="total_price" data_name="total_price" desc="总房价款金额" necessary="no"/>
+                    <xmlRead name="first_price" data_name="first_price" desc="首付金额" necessary="no"/>
+                </xmlRead>
+            </xmlRead>
+        </response>
+    </format>
+</root>

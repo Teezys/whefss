@@ -1,0 +1,11 @@
+2020-12-18 14:06:40.394 [yg-pool-cntr.nodlsn-thread-2] ERROR cntr.nodlsn_whefss.trc - [] Socket[addr=/127.0.0.1,port=53327,localport=59900],211007:211007-Software caused connection abort: socket write error
+com.yuangou.ecp.bp.core.common.exception.YGException: 211007-Software caused connection abort: socket write error
+ Nested Exception: Software caused connection abort: socket write error
+	at com.yuangou.ecp.bp.core.common.exception.YGException.makeException(YGException.java:65)
+	at com.yuangou.ecp.bp.channel.tcp.imp.YGTcpSynListener.o00000(YGTcpSynListener.java:476)
+	at com.yuangou.ecp.bp.channel.tcp.imp.YGTcpSynListener.o00000(YGTcpSynListener.java:44)
+	at com.yuangou.ecp.bp.channel.tcp.imp.YGTcpSynListener$_Oo.o00000(YGTcpSynListener.java:465)
+	at com.yuangou.ecp.bp.channel.tcp.imp.YGTcpSynListener$_Oo.run(YGTcpSynListener.java:409)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cycles>
+    <include file="app/base/etc/timcon_pub.xml" desc="平台轮询触发" />
+</cycles>

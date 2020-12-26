@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- Created by xu_lw on 2020-10-29 17:56:07. -->
+<mapper namespace="com.murong.ecp.netpay.whefss.web.pub.dal.dao.WhefssAccHaveAcceptedLogMapper">
+    <select id="selectByPrimaryKey" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAccHaveAcceptedLogDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_ACC_HAVE_ACCEPTED_LOG where notice_num = #{noticeNum} 
+    </select>
+
+    <!-- 分页查询id后缀必须为Page -->
+    <select id="selectPage" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAccHaveAcceptedLogDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_ACC_HAVE_ACCEPTED_LOG
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="accountNum !=null and accountNum!='' ">
+                AND account_num=#{accountNum}
+            </if>
+            <if test="time !=null and time!='' ">
+                AND substr(time,0,8) = #{time}
+            </if>
+        </trim>
+    </select>
+
+    <!-- 游标后缀必须为Cursor -->
+    <select id="selectCursor" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAccHaveAcceptedLogDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_ACC_HAVE_ACCEPTED_LOG
+    </select>
+
+    <!-- 查询id后缀必须为ResultHandler -->
+    <select id="selectResultHandler" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAccHaveAcceptedLogDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_ACC_HAVE_ACCEPTED_LOG
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAccHaveAcceptedLogDO">
+        delete from  WHEFSS_ACC_HAVE_ACCEPTED_LOG where notice_num = #{noticeNum} 
+    </delete>
+
+    <delete id="deleteByIds" parameterType="java.lang.String">
+        delete from  WHEFSS_ACC_HAVE_ACCEPTED_LOG where id in (${ids})
+    </delete>
+
+    <update id="updateByPrimaryKey" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAccHaveAcceptedLogDO">
+        update  WHEFSS_ACC_HAVE_ACCEPTED_LOG
+        <trim prefix="set" suffixOverrides = ",">
+                <if test="isNotNull(noticeNum)">notice_num=#{noticeNum},</if>
+                <if test="isNotNull(sn)">sn=#{sn},</if>
+                <if test="isNotNull(accountNum)">account_num=#{accountNum},</if>
+                <if test="isNotNull(loadTime)">load_time=#{loadTime},</if>
+                <if test="isNotNull(amount)">amount=#{amount},</if>
+                <if test="isNotNull(time)">time=#{time},</if>
+                <if test="isNotNull(typeDescriptions)">type_descriptions=#{typeDescriptions},</if>
+                <if test="isNotNull(type)">type=#{type},</if>
+                <if test="isNotNull(state)">state=#{state},</if>
+                <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+                <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+                <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+        </trim>
+        where notice_num = #{noticeNum} 
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAccHaveAcceptedLogDO">
+        update  WHEFSS_ACC_HAVE_ACCEPTED_LOG
+        <trim prefix="set" suffixOverrides = ",">
+            <if test="isNotNull(noticeNum)">notice_num=#{noticeNum},</if>
+            <if test="isNotNull(sn)">sn=#{sn},</if>
+            <if test="isNotNull(accountNum)">account_num=#{accountNum},</if>
+            <if test="isNotNull(loadTime)">load_time=#{loadTime},</if>
+            <if test="isNotNull(amount)">amount=#{amount},</if>
+            <if test="isNotNull(time)">time=#{time},</if>
+            <if test="isNotNull(typeDescriptions)">type_descriptions=#{typeDescriptions},</if>
+            <if test="isNotNull(type)">type=#{type},</if>
+            <if test="isNotNull(state)">state=#{state},</if>
+            <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+            <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+            <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+        </trim>
+        where notice_num = #{noticeNum} 
+    </update>
+
+    <insert id="insert" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAccHaveAcceptedLogDO">
+        insert  into WHEFSS_ACC_HAVE_ACCEPTED_LOG(notice_num, sn, account_num, load_time, amount, time, type_descriptions, type, state, reserve1, reserve2, reserve3)
+        values( #{noticeNum}, #{sn}, #{accountNum}, #{loadTime}, #{amount}, #{time}, #{typeDescriptions}, #{type}, #{state}, #{reserve1}, #{reserve2}, #{reserve3})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAccHaveAcceptedLogDO">
+        insert  into WHEFSS_ACC_HAVE_ACCEPTED_LOG
+        <trim prefix="(" suffix=')' suffixOverrides=",">
+            <if test="isNotNull(noticeNum)">notice_num,</if>
+            <if test="isNotNull(sn)">sn,</if>
+            <if test="isNotNull(accountNum)">account_num,</if>
+            <if test="isNotNull(loadTime)">load_time,</if>
+            <if test="isNotNull(amount)">amount,</if>
+            <if test="isNotNull(time)">time,</if>
+            <if test="isNotNull(typeDescriptions)">type_descriptions,</if>
+            <if test="isNotNull(type)">type,</if>
+            <if test="isNotNull(state)">state,</if>
+            <if test="isNotNull(reserve1)">reserve1,</if>
+            <if test="isNotNull(reserve2)">reserve2,</if>
+            <if test="isNotNull(reserve3)">reserve3,</if>
+        </trim>
+        <trim prefix="values(" suffix=')' suffixOverrides=",">
+            <if test="isNotNull(noticeNum)">#{noticeNum},</if>
+            <if test="isNotNull(sn)">#{sn},</if>
+            <if test="isNotNull(accountNum)">#{accountNum},</if>
+            <if test="isNotNull(loadTime)">#{loadTime},</if>
+            <if test="isNotNull(amount)">#{amount},</if>
+            <if test="isNotNull(time)">#{time},</if>
+            <if test="isNotNull(typeDescriptions)">#{typeDescriptions},</if>
+            <if test="isNotNull(type)">#{type},</if>
+            <if test="isNotNull(state)">#{state},</if>
+            <if test="isNotNull(reserve1)">#{reserve1},</if>
+            <if test="isNotNull(reserve2)">#{reserve2},</if>
+            <if test="isNotNull(reserve3)">#{reserve3},</if>
+        </trim>
+    </insert>
+
+    <sql id="base_column_list">
+    notice_num, sn, account_num, load_time, amount, time, type_descriptions, type, state, reserve1, reserve2, reserve3
+    </sql>
+
+    <sql id="where_condition">
+        <trim prefix="where" prefixOverrides="and">
+            <if test="isNotNull(noticeNum)">notice_num=#{noticeNum},</if>
+            <if test="isNotNull(sn)">sn=#{sn},</if>
+            <if test="isNotNull(accountNum)">account_num=#{accountNum},</if>
+            <if test="isNotNull(loadTime)">load_time=#{loadTime},</if>
+            <if test="isNotNull(amount)">amount=#{amount},</if>
+            <if test="isNotNull(time)">time=#{time},</if>
+            <if test="isNotNull(typeDescriptions)">type_descriptions=#{typeDescriptions},</if>
+            <if test="isNotNull(type)">type=#{type},</if>
+            <if test="isNotNull(state)">state=#{state},</if>
+            <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+            <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+            <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+        </trim>
+    </sql>
+</mapper>

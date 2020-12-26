@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root>
+   <public>
+      <_DB_NAME desc="数据库名">ecp/db/ora1</_DB_NAME>
+      <_DB_ACT desc="数据库名">ecp/db/ora1</_DB_ACT>
+      <_QUEUE_FACTORY desc="队列工厂">ibs/Qys/QueueFactory</_QUEUE_FACTORY>
+      <_QUEUE desc="队列">ibs/Qys/Queue</_QUEUE>
+      <_APP_SERVER desc="服务器类型">JBS</_APP_SERVER>
+      <_APP_CTX_FACTORY desc="连接工厂类型">org.jnp.interfaces.NamingContextFactory</_APP_CTX_FACTORY>
+   </public>
+
+   <!-- 珠海房管系统接入监听端口 -->
+   <cntr.nodlsn>
+      <_PORT desc="系统监控接入服务端口">59900</_PORT>
+   </cntr.nodlsn>
+</root>

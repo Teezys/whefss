@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="GB2312"?>
+<MYSQL>
+    <dynSentence name="QRY_BFCTTRFJNL_RECODE">
+			<sentence>
+				SELECT A.* FROM
+				(SELECT BFC_JRN_NO, CRE_DT, CRE_TM, TXN_COD, TX_PAY_AMT, TX_STS
+				FROM
+				BFCTTRFJNL WHERE USR_NO = ?
+				ORDER BY CRE_DT DESC, CRE_TM DESC) TMP
+				limit 0,10
+			</sentence>
+			<fields>USR_NO|</fields>
+		</dynSentence>
+		
+		<dynSentence name="QRY_BFCFNDBNS">
+			<sentence>
+				SELECT * FROM
+				(SELECT SUE.FND_BON_AMT,SUE.DIVD_DT,
+				SUE.TX_AMT,SUE.FND_TX_DT,SUE.PRD_CD,
+				SUE.DEF_BON_TYP,SUE.BON_UNIT,SUE.BON_TYP
+				FROM ACMTCAPD APD,
+				BFCFNDBNS SUE
+				WHERE APD.CA_M_AC = SUE.CA_M_AC
+				AND APD.USR_NO = ?
+				ORDER BY SUE.FND_TX_DT DESC) TMP
+				limit 0,10
+			</sentence>
+			<fields>USR_NO|</fields>
+		</dynSentence>
+		
+		<dynSentence name="BFCFNDBNS_AMT">
+			<sentence>
+				SELECT * FROM
+				(SELECT SUE.TX_AMT
+				FROM ACMTCAPD APD, BFCFNDBNS
+				SUE
+				WHERE APD.CA_M_AC = SUE.CA_M_AC
+				AND APD.USR_NO = ?
+				ORDER BY
+				SUE.FND_TX_DT DESC) TMP
+				limit 0,1
+			</sentence>
+			<fields>USR_NO|</fields>
+		</dynSentence>
+		
+		<dynSentence name="SUM_BFCFNDBNS_AMT">
+			<sentence>
+				SELECT * FROM
+				(SELECT SUM(SUE.TX_AMT) TOTAL_AMT
+				FROM ACMTCAPD
+				APD, BFCFNDBNS SUE
+				WHERE APD.CA_M_AC = SUE.CA_M_AC
+				AND
+				APD.USR_NO = ?
+				ORDER BY SUE.FND_TX_DT DESC) TMP
+				limit 0,1
+			</sentence>
+			<fields>USR_NO|</fields>
+		</dynSentence>
+		
+		<dynSentence name="QRY_BFCFILCTL_LAST">
+			<sentence>
+				SELECT * FROM
+				(SELECT FIL_DT LAST_FIL_DT FROM BFCFILCTL
+				WHERE FIL_STS = '00'
+				ORDER BY FIL_DT DESC ) TMP 
+				limit 0,1
+			</sentence>
+		</dynSentence>
+		
+		<dynSentence name="QRY_BFCFNDBNS_LAST">
+			<sentence>
+				SELECT * FROM
+				( SELECT TX_DT LAST_TX_DT FROM BFCFNDBNS
+				ORDER BY TX_DT DESC ) TMP
+				limit 0,1
+			</sentence>
+		</dynSentence>
+</MYSQL>

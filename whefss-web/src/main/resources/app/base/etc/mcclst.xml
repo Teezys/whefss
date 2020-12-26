@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <group name="base" desc="基本服务">
+        <container name="cntr.par"      file="app/base/etc/cntr.par_mcc.xml"        desc="参数服务" />
+        <container name="cntr.nodlsn"   file="app/base/etc/cntr.nodlsn_mcc.xml"     desc="系统监控接入服务"/>
+        <container name="cntr.time"    file="app/base/etc/cntr.time_mcc.xml"        desc="定时任务服务"/>
+       <!-- <container name="cntr.async"   file="app/base/etc/cntr.async_mcc.xml"       desc="平台异步消息服务"/>-->
+        <container name="cntr.nodcon"     file="app/base/etc/cntr.nodcon_mcc.xml"     desc="系统监控接出服务" />
+    </group>
+</root>

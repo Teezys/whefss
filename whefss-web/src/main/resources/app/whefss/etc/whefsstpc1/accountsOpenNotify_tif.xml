@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root>
+    <format code="accountsOpenNotify" desc="返回开户数据">
+        <request necessary="yes">
+            <xmlWrite name="Root">
+                <quote name="request"/>
+                <xmlWrite name="body">
+                    <xmlWrite name="notice_num" necessary="yes" data_name="notice_num" desc="开户预审结果单编号"/>
+                    <xmlWrite name="monitor_num" necessary="yes" data_name="monitor_num" desc="监管编号"/>
+                    <xmlWrite name="account_name" necessary="yes" data_name="account_name" desc="监管账户名称"/>
+                    <xmlWrite name="account_num" necessary="yes" data_name="account_num" desc="监管账户账号"/>
+                    <xmlWrite name="sn" necessary="yes" data_name="sn" desc="银行内部流水号"/>
+                    <xmlWrite name="time" necessary="yes" data_name="time" desc="操作时间"/>
+                </xmlWrite>
+            </xmlWrite>
+        </request>
+        <response necessary="no">
+            <xmlRead name="Root">
+                <quote name="response"></quote>
+            </xmlRead>
+        </response>
+    </format>
+</root>

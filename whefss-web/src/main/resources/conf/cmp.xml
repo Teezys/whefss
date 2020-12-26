@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- 组件参数 -->
+<Root>
+   <!--全局公共参数-->
+   <Public>
+       <Component name="DefaultErrorProc">
+          <Param name="rollback" value="true"/>
+       </Component>
+   </Public>
+<!--
+   <Application name="EFS" >
+      <Public>
+       <Component name="TstComponent">
+          <Param name="para1" value="value1"/>
+          <Param name="para4" value="value4"/>
+          <Param name="para5" value="value5"/>
+       </Component>
+      </Public>
+      <Transaction code="TST990001">
+       <Component name="TstComponent">
+          <Param name="para5" value="value5"/>
+          <Param name="para6" value="value6"/>
+          <Param name="para2" value="value2"/>
+       </Component>
+      </Transaction>
+   </Application>
+-->
+</Root>

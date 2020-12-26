@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE container PUBLIC "-//YUANGOU//DTD//MSC" "">
+
+<container name="cntr.par" trace="INFO">
+    <bean name="paramInterceptor" class="com.yuangou.ecp.bp.bpservice.param.handler.YGParamHandler">
+        <property name="file" value="app/base/etc/bpltpar1_biz.xml"/>
+    </bean>
+
+    <process name="flow" msgtype="DEFAULT">
+    </process>
+</container>

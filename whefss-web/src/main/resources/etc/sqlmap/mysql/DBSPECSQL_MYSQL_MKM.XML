@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="GB2312"?>
+<MYSQL>
+    <dynSentence name="QRY_MKMTBON_INF">
+         <sentence>
+           SELECT A.* FROM (SELECT MKMTBON.*
+              FROM MKMTBON
+             WHERE PRD_ID = ?
+               AND MKT_ID = ?
+               AND (HEMPTY('%s') OR USR_MBL_NO='%s')
+               AND (HEMPTY('%s') OR USR_MAIL_ADDR='%s')
+               AND ISS_DT=?
+               AND BON_AMT=?
+               AND BON_STS!='E'
+               AND BON_STS!='H' ORDER BY CUR_AC_BAL DESC ) A LIMIT 0,1
+              
+         </sentence>
+         <fields>PRD_ID|MKT_ID|MBL_NO|MBL_NO|MAIL_ADDR|MAIL_ADDR|ISS_DT|BON_AMT</fields>
+      </dynSentence>
+</MYSQL>

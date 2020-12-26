@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="GB2312"?>
+<MYSQL>
+    <dynSentence name="QRYBYRSPCD">  <!--错误码匹配 -->
+            <sentence>
+                SELECT DST_RSP_CD ,DST_RSP_MSG ,DST_TXN_STS FROM CAPCSWRULE 
+                WHERE RUL_TYP=?
+                AND CAP_TYP=?
+                AND CORG_NO=? 
+                AND CSW_TYP='0' 
+                AND SRC_RSP_CD=?
+                LIMIT 0,1
+            </sentence>
+            <fields>RUL_TYP|CAP_TYP|CORG_NO|SRC_RSP_CD|</fields>
+        </dynSentence>
+        
+        <dynSentence name="QRYBYRSPMSG">  <!--错误信息完全匹配 -->
+            <sentence>
+                SELECT DST_RSP_CD ,DST_RSP_MSG ,DST_TXN_STS FROM CAPCSWRULE 
+                WHERE RUL_TYP=?
+                AND CAP_TYP=?
+                AND CORG_NO=?
+                AND CSW_TYP='1' 
+                AND SRC_RSP_MSG=? 
+                LIMIT 0,1
+            </sentence>
+            <fields>RUL_TYP|CAP_TYP|CORG_NO|SRC_RSP_MSG|</fields>
+        </dynSentence>
+        
+        <dynSentence name="QRYBYRSPMSGBLUR">  <!--错误信息模糊匹配 -->
+            <sentence>
+                SELECT DST_RSP_CD ,DST_RSP_MSG ,DST_TXN_STS FROM CAPCSWRULE 
+                WHERE RUL_TYP=?
+                AND CAP_TYP=?
+                AND CORG_NO=? 
+                AND CSW_TYP='2'
+                AND ? LIKE CONCAT(CONCAT(?,SRC_RSP_MSG),?)
+                LIMIT 0,1
+            </sentence>
+            <fields>RUL_TYP|CAP_TYP|CORG_NO|SRC_RSP_MSG|</fields>
+        </dynSentence>
+        
+        <dynSentence name="UpdRspCdByCd">  <!--以错误码匹配更新流水 -->
+            <sentence>
+                UPDATE CAPTXNJNL A
+                SET (RSP_CD,RSP_MSG)
+                    =(SELECT DST_RSP_CD,DST_RSP_MSG FROM CAPCSWRULE B 
+                     WHERE B.RUL_TYP=? AND B.CAP_TYP=? AND B.CORG_NO=A.CORG_NO AND CSW_TYP='0' AND B.SRC_RSP_CD=A.TRSP_CD LIMIT 0,1)
+                WHERE A.ORD_DT=?
+                AND A.CORG_NO=?
+                AND A.CORG_DSK_NO=?
+                AND A.DSK_NAM_STS='4'
+                AND NVL(LENGTH(TRIM(A.RSP_CD)),0) = 0 
+            </sentence>
+            <fields>RUL_TYP|CAP_TYP|ORD_DT|CORG_NO|CORG_DSK_NO|</fields>
+        </dynSentence>
+        
+        <dynSentence name="UpdRspCdByMsg">  <!--以错误信息匹配更新流水 -->
+            <sentence>
+                UPDATE CAPTXNJNL A
+                SET (RSP_CD,RSP_MSG)
+                    =(SELECT DST_RSP_CD,DST_RSP_MSG FROM CAPCSWRULE B 
+                     WHERE B.RUL_TYP=? AND B.CAP_TYP=? AND B.CORG_NO=A.CORG_NO AND CSW_TYP='1' AND B.SRC_RSP_MSG=A.TRSP_MSG LIMIT 0,1)
+                WHERE A.ORD_DT=?
+                AND A.CORG_NO=?
+                AND A.CORG_DSK_NO=?
+                AND A.DSK_NAM_STS='4'
+                AND NVL(LENGTH(TRIM(A.RSP_CD)),0) = 0 
+            </sentence>
+            <fields>RUL_TYP|CAP_TYP|ORD_DT|CORG_NO|CORG_DSK_NO|</fields>
+        </dynSentence>
+        
+    <dynSentence name="QRY_PWMTCKCT_LAST">
+			<sentence>
+				SELECT
+				CHK_FIL_STS LAST_CHK_FIL_STS
+				FROM PWMTCKCT
+				WHERE
+				RUT_CORG=? AND
+				COP_BUS_TYP=? AND
+				CHK_FIL_DT=? LIMIT 0,1
+			</sentence>
+			<fields>RUT_CORG|COP_BUS_TYP|LAST_CHK_FIL_DT|</fields>
+		</dynSentence>
+		
+		<dynSentence name="CHK_PWMTCKCT204040">
+            <sentence>
+                SELECT 'Y'
+                FROM PWMTCKCT
+                WHERE
+                RUT_CORG='EBPPP'
+                AND COP_BUS_TYP IN ('11','13'）
+                AND CHK_FIL_DT=? 
+                LIMIT 0,1
+            </sentence>
+            <fields>CHK_FIL_DT|</fields>
+        </dynSentence>
+        
+    <dynSentence name="CHK_PWMTCKCT204043">
+            <sentence>
+                SELECT 'Y'
+                FROM PWMTCKCT
+                WHERE
+                RUT_CORG='CCB'
+                AND COP_BUS_TYP IN ('11','12'）
+                AND CHK_FIL_DT=? 
+                LIMIT 0,1
+            </sentence>
+            <fields>CHK_FIL_DT|</fields>
+        </dynSentence>
+        
+    <dynSentence name="QRYBATINF">
+            <sentence>
+                SELECT * FROM CAPBATINF WHERE RES_FLG = '2' LIMIT 0,1 FOR UPDATE
+            </sentence>
+            <fields></fields>
+        </dynSentence>
+        
+    <dynSentence name="QRYTXNJNL"> 
+            <sentence>
+                SELECT * FROM CAPTXNJNL WHERE CORG_DSK_NO = ? AND CORG_NO = ? AND RES_FLG = '2' LIMIT 0,1
+            </sentence>
+            <fields>O_CORG_DSK_NO|CORG_NO|</fields>
+        </dynSentence>
+        
+    <dynSentence name="QryBatLst">         <!--查询该文件批次是否处理完成 -->
+         <sentence>
+            SELECT TXN_CNL,ORD_DT OORD_DT,CORG_MERC_ID
+            OCORG_MERC_ID,CORG_NO OCORG_NO,CORG_DSK_NO OCORG_DSK_NO
+            ,AC_DT
+            OAC_DT,SND_DT OSND_DT,SND_TM OSND_TM,BAT_STS OBAT_STS,BAT_ORN_AMT
+            OBAT_ORN_AMT,BAT_ORN_CNT OBAT_ORN_CNT,
+            BAT_TYP OBAT_TYP,CORG_FIL_NAM
+            OCORG_FIL_NAM,SND_DT,SND_TM,MERC_ID
+            OMERC_ID,TCORG_DSK_NO,'批量代收付' RMK
+            ,GET_TIME,RTR_COD,RTR_SVR,REQ_JRN 
+            FROM CAPBATINF
+            WHERE BAT_STS='3' AND ORD_DT
+            &gt; ? AND PRO_JRL = '0'
+            AND (GET_TIME &lt;? OR HEMPTY(?))
+            LIMIT 0,1 FOR UPDATE
+         </sentence>
+         <fields>TOD_DT|C_GET_TIME|C_GET_TIME|</fields>
+      </dynSentence>
+      
+    <dynSentence name="QryCapBatInf">
+         <sentence>
+            SELECT *
+            FROM CAPBATINF
+            WHERE BAT_STS = '1'
+            AND ORD_DT &gt; ?
+            AND PRO_JRL = '0'
+            AND (SND_TIME &lt;=? OR HEMPTY(?))
+            LIMIT 0,1 FOR UPDATE
+         </sentence>
+         <fields>TOD_DT|C_SND_TIME|C_SND_TIME|</fields>
+      </dynSentence>
+      
+    <dynSentence name="UpdDskInf">
+            <sentence>
+                UPDATE  CAPDSKINF
+                SET     SUC_CNT=CONV(IFNULL(TRIM(SUC_CNT),0),10,10) + CONV(IFNULL(TRIM(?),0),10,10),
+                        SUC_AMT=CONV(IFNULL(TRIM(SUC_AMT),0),10,10) + CONV(IFNULL(TRIM(?),0),10,10),
+                        FAL_CNT=CONV(IFNULL(TRIM(FAL_CNT),0),10,10) + CONV(IFNULL(TRIM(?),0),10,10),
+                        FAL_AMT=CONV(IFNULL(TRIM(FAL_AMT),0),10,10) + CONV(IFNULL(TRIM(?),0),10,10)
+                WHERE   DSK_NAM=?
+            </sentence>
+            <fields>BAT_SUC_CNT|BAT_SUC_AMT|BAT_FAL_CNT|BAT_FAL_AMT|ODSK_NAM</fields>
+        </dynSentence>
+        
+    <dynSentence name="QryBatCnt"><!--查询该批次有多少记录 -->
+            <sentence>
+                SELECT COUNT(*) BAT_CNT FROM CAPTXNJNL
+                WHERE DSK_NAM=? AND ORD_DT=?  AND CORG_NO=?  AND TXN_MOD=?  AND DSK_NAM_STS='0' AND TXN_STS='U' AND CORG_DSK_NO = '0' 
+                LIMIT 0,?
+            </sentence>
+            <fields>DSK_NAM|ORD_DT|CORG_NO|TXN_MOD|MAX_CNT</fields>
+        </dynSentence>
+        
+    <dynSentence name="UpdDskNo">
+            <sentence>
+                UPDATE CAPTXNJNL SET CORG_DSK_NO = ? 
+                WHERE DSK_NAM=? AND ORD_DT=? AND CORG_NO=? AND TXN_MOD=? AND DSK_NAM_STS='0' AND TXN_STS='U' AND CORG_DSK_NO = '0' 
+                LIMIT 0,?
+            </sentence>
+            <fields>CORG_DSK_NO|DSK_NAM|ORD_DT|CORG_NO|TXN_MOD|MAX_CNT</fields>
+        </dynSentence>
+        
+    <dynSentence name="QryBatCnt_CCB">               <!--查询该批次有多少记录 -->
+			<sentence>
+				SELECT COUNT(*) BAT_CNT,NVL(SUM(TXN_AMT),0) BAT_SUM FROM
+				CAPTXNJNL
+				WHERE CORG_NO=?
+				AND
+				DSK_NAM_STS='0' AND TTXN_ST='U'
+				AND
+				CORG_DSK_NO = '0' AND TXN_TYP=? AND JRN_NO IN
+				(
+				SELECT T.CAP_LOG_NO
+				FROM WDCTORDR T
+				WHERE T.WC_BAT_SND_STS=?
+				)
+				LIMIT 0,?
+			</sentence>
+			<fields>CORG_NO|TXN_TYP|WC_BAT_SND_STS|MAX_CNT</fields>
+		</dynSentence>
+		
+			<dynSentence name="InitTxnJnlA"> <!--初始化流水信息(第三方交易码，批次号)，本行代收，4位序号 -->
+			<sentence>
+				UPDATE CAPTXNJNL SET TXN_CD = '204025',TTXN_CD
+				=?,CORG_DSK_NO = ?,DSK_NAM_STS='1',
+				BAT_SEQ=LPAD(?,4,'0')
+				WHERE CORG_NO=? AND
+				DSK_NAM_STS='0' AND TTXN_ST='U'
+				AND CORG_DSK_NO = '0'
+				AND TXN_TYP=?
+				AND JRN_NO IN
+				(
+				SELECT T.CAP_LOG_NO FROM WDCTORDR T
+				WHERE
+				T.WC_BAT_SND_STS=?
+				)
+				LIMIT 0,?
+			</sentence>
+			<fields>TTXN_CD|CORG_DSK_NO|CCB_SEQ_NOA|CORG_NO|TXN_TYP|WC_BAT_SND_STS|MAX_CNT</fields>
+		</dynSentence>
+		
+			<dynSentence name="InitTxnJnlB"> <!--初始化流水信息(第三方交易码，批次号)，超网代付，3位序号 -->
+			<sentence>
+				UPDATE CAPTXNJNL SET TXN_CD = '204025',TTXN_CD
+				=?,CORG_DSK_NO = ?,DSK_NAM_STS='1',
+				BAT_SEQ=LPAD(?,3,'0')
+				WHERE
+				CORG_NO=? AND
+				DSK_NAM_STS='0' AND TTXN_ST='U'
+				AND CORG_DSK_NO = '0'
+				AND TXN_TYP=?
+				AND JRN_NO IN
+				(
+				SELECT T.CAP_LOG_NO FROM WDCTORDR T
+				WHERE
+				T.WC_BAT_SND_STS=?
+				)
+				LIMIT 0,?
+			</sentence>
+			<fields>TTXN_CD|CORG_DSK_NO|CCB_SEQ_NOB|CORG_NO|TXN_TYP|WC_BAT_SND_STS|MAX_CNT</fields>
+		</dynSentence>
+		
+		<dynSentence name="QryBatCnt_CMBC">               <!--查询该批次有多少记录 -->
+			<sentence>
+				SELECT COUNT(*) BAT_CNT,NVL(SUM(TXN_AMT),0) BAT_SUM FROM
+				CAPTXNJNL
+				WHERE CORG_NO=?
+				AND
+				DSK_NAM_STS='0' AND TTXN_ST='U'
+				AND
+				CORG_DSK_NO = '0' AND TXN_TYP=? AND UNIONFLAG=? 
+				LIMIT 0,?
+			</sentence>
+			<fields>CORG_NO|TXN_TYP|UNIONFLAG|MAX_CNT</fields>
+		</dynSentence>
+		
+		<dynSentence name="InitTxnJnl_CMBC"> <!--初始化流水信息(第三方交易码，批次号) -->
+			<sentence>
+				UPDATE CAPTXNJNL SET TXN_CD = '204025',TTXN_CD =
+				?,CORG_DSK_NO = ?,DSK_NAM_STS='1'
+				WHERE CORG_NO=? AND DSK_NAM_STS='0'
+				AND TTXN_ST='U'
+				AND CORG_DSK_NO = '0' AND TXN_TYP=? AND UNIONFLAG=?
+				LIMIT 0,?
+			</sentence>
+			<fields>TTXN_CD|CORG_DSK_NO|CORG_NO|TXN_TYP|UNIONFLAG|MAX_CNT
+			</fields>
+		</dynSentence>
+		
+		<dynSentence name="QryBatCnt_EBPP">       <!--查询该批次有多少记录 -->
+			<sentence>
+				SELECT COUNT(*) BAT_CNT,IFNULL(SUM(TXN_AMT),0) BAT_SUM FROM
+				CAPTXNJNL
+				WHERE DSK_NAM=? AND ORD_DT=? AND CORG_NO=? AND TXN_MOD=?
+				AND
+				DSK_NAM_STS='0' AND TXN_STS='U'
+				AND CORG_DSK_NO = '0' 
+				LIMIT 0,?
+			</sentence>
+			<fields>DSK_NAM|ORD_DT|CORG_NO|TXN_MOD|MAX_CNT</fields>
+		</dynSentence>
+		
+		<dynSentence name="InitTxnJnl_EBPP__map"> <!--初始化流水信息(第三方交易码，批次号) -->
+			<sentence>
+				UPDATE CAPTXNJNL SET TXN_CD = '204020',TTXN_CD =
+				?,CORG_DSK_NO = ?
+				WHERE DSK_NAM=? AND CORG_NO=? AND DSK_NAM_STS='0'
+				AND TXN_STS='U'
+				AND CORG_DSK_NO = '0' LIMIT 0,?
+			</sentence>
+			<fields>TTXN_CD|CORG_DSK_NO|DSK_NAM|CORG_NO|MAX_CNT</fields>
+		</dynSentence>
+		
+		<dynSentence name="QrySOFTR"> 
+            <sentence>
+                SELECT * FROM CAPSOFTROUTE order by TM_SMP WHERE LIMIT 0,1            
+            </sentence>
+            <fields>|</fields>
+        </dynSentence>
+</MYSQL>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- Created by xu_lw on 2020-10-29 18:00:31. -->
+<mapper namespace="com.murong.ecp.netpay.whefss.web.pub.dal.dao.WhefssYeInfoLogMapper">
+    <select id="selectByPrimaryKey" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssYeInfoLogDO">
+        select
+        <include refid="base_column_list"/>
+        from WHEFSS_YE_INFO_LOG where account_num = #{accountNum}
+    </select>
+
+    <!-- 分页查询id后缀必须为Page -->
+    <select id="selectPage" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssYeInfoLogDO">
+        select
+        <include refid="base_column_list"/>
+        from WHEFSS_YE_INFO_LOG where account_num like '%%${accountNum}%%' or monitor_num like '%%${monitorNum}%%' or
+        account_name like '%%${accountName}%%' or account_status like '%%${accountStatus}%%' or balance_time like
+        '%%${balanceTime}%%' or retcode like '%%${retcode}%%' or retmsg like '%%${retmsg}%%' or trandate like
+        '%%${trandate}%%' or reserve1 like '%%${reserve1}%%' or reserve2 like '%%${reserve2}%%' or reserve3 like
+        '%%${reserve3}%%' order by account_num
+    </select>
+
+    <!-- 游标后缀必须为Cursor -->
+    <select id="selectCursor" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssYeInfoLogDO">
+        select
+        <include refid="base_column_list"/>
+        from WHEFSS_YE_INFO_LOG
+    </select>
+
+    <!-- 查询id后缀必须为ResultHandler -->
+    <select id="selectResultHandler" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssYeInfoLogDO">
+        select
+        <include refid="base_column_list"/>
+        from WHEFSS_YE_INFO_LOG
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssYeInfoLogDO">
+        delete from WHEFSS_YE_INFO_LOG where account_num = #{accountNum}
+    </delete>
+
+    <delete id="deleteByIds" parameterType="java.lang.String">
+        delete from WHEFSS_YE_INFO_LOG where id in (${ids})
+    </delete>
+
+    <update id="updateByPrimaryKey" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssYeInfoLogDO">
+        update WHEFSS_YE_INFO_LOG
+        set account_status=#{accountStatus},
+            balance_bank=#{balanceBank},
+            balance_system=#{balanceSystem}
+            balance_time=#{balanceTime},
+            retcode=#{retcode},
+            retmsg=#{retmsg},
+            trandate=#{trandate},
+            user_id=#{userId},
+            user_name=#{userName},
+            reserve1=#{reserve1},
+            reserve2=#{reserve2},
+            reserve3=#{reserve3}
+        where account_num = #{accountNum}
+    </update>
+
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssYeInfoLogDO">
+        update WHEFSS_YE_INFO_LOG
+        <trim prefix="set" suffixOverrides=",">
+            <if test="isNotNull(accountNum)">account_num=#{accountNum},</if>
+            <if test="isNotNull(monitorNum)">monitor_num=#{monitorNum},</if>
+            <if test="isNotNull(accountName)">account_name=#{accountName},</if>
+            <if test="isNotNull(accountStatus)">account_status=#{accountStatus},</if>
+            <if test="isNotNull(balanceBank)">balance_bank=#{balanceBank},</if>
+            <if test="isNotNull(balanceSystem)">balance_system=#{balanceSystem},</if>
+            <if test="isNotNull(balanceTime)">balance_time=#{balanceTime},</if>
+            <if test="isNotNull(retcode)">retcode=#{retcode},</if>
+            <if test="isNotNull(retmsg)">retmsg=#{retmsg},</if>
+            <if test="isNotNull(trandate)">trandate=#{trandate},</if>
+            <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+            <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+            <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+        </trim>
+        where account_num = #{accountNum}
+    </update>
+
+    <insert id="insert" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssYeInfoLogDO">
+        insert into WHEFSS_YE_INFO_LOG(account_num, monitor_num, account_name, account_status, balance_bank,
+        balance_system, balance_time, retcode, retmsg, trandate, user_id, user_name, reserve1, reserve2, reserve3)
+        values( #{accountNum}, #{monitorNum}, #{accountName}, #{accountStatus}, #{balanceBank}, #{balanceSystem},
+        #{balanceTime}, #{retcode}, #{retmsg}, #{trandate}, #{userId}, #{userName}, #{reserve1}, #{reserve2},
+        #{reserve3})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssYeInfoLogDO">
+        insert into WHEFSS_YE_INFO_LOG
+        <trim prefix="(" suffix=')' suffixOverrides=",">
+            <if test="isNotNull(accountNum)">account_num,</if>
+            <if test="isNotNull(monitorNum)">monitor_num,</if>
+            <if test="isNotNull(accountName)">account_name,</if>
+            <if test="isNotNull(accountStatus)">account_status,</if>
+            <if test="isNotNull(balanceBank)">balance_bank,</if>
+            <if test="isNotNull(balanceSystem)">balance_system,</if>
+            <if test="isNotNull(balanceTime)">balance_time,</if>
+            <if test="isNotNull(retcode)">retcode,</if>
+            <if test="isNotNull(retmsg)">retmsg,</if>
+            <if test="isNotNull(trandate)">trandate,</if>
+            <if test="isNotNull(reserve1)">reserve1,</if>
+            <if test="isNotNull(reserve2)">reserve2,</if>
+            <if test="isNotNull(reserve3)">reserve3,</if>
+        </trim>
+        <trim prefix="values(" suffix=')' suffixOverrides=",">
+            <if test="isNotNull(accountNum)">#{accountNum},</if>
+            <if test="isNotNull(monitorNum)">#{monitorNum},</if>
+            <if test="isNotNull(accountName)">#{accountName},</if>
+            <if test="isNotNull(accountStatus)">#{accountStatus},</if>
+            <if test="isNotNull(balanceBank)">#{balanceBank},</if>
+            <if test="isNotNull(balanceSystem)">#{balanceSystem},</if>
+            <if test="isNotNull(balanceTime)">#{balanceTime},</if>
+            <if test="isNotNull(retcode)">#{retcode},</if>
+            <if test="isNotNull(retmsg)">#{retmsg},</if>
+            <if test="isNotNull(trandate)">#{trandate},</if>
+            <if test="isNotNull(reserve1)">#{reserve1},</if>
+            <if test="isNotNull(reserve2)">#{reserve2},</if>
+            <if test="isNotNull(reserve3)">#{reserve3},</if>
+        </trim>
+    </insert>
+
+    <sql id="base_column_list">
+        account_num, monitor_num, account_name, account_status, balance_bank, balance_system, balance_time, retcode,
+        retmsg, trandate,user_id, user_name, reserve1, reserve2, reserve3
+    </sql>
+
+    <sql id="where_condition">
+        <trim prefix="where" prefixOverrides="and">
+            <if test="isNotNull(accountNum)">account_num=#{accountNum},</if>
+            <if test="isNotNull(monitorNum)">monitor_num=#{monitorNum},</if>
+            <if test="isNotNull(accountName)">account_name=#{accountName},</if>
+            <if test="isNotNull(accountStatus)">account_status=#{accountStatus},</if>
+            <if test="isNotNull(balanceBank)">balance_bank=#{balanceBank},</if>
+            <if test="isNotNull(balanceSystem)">balance_system=#{balanceSystem},</if>
+            <if test="isNotNull(balanceTime)">balance_time=#{balanceTime},</if>
+            <if test="isNotNull(retcode)">retcode=#{retcode},</if>
+            <if test="isNotNull(retmsg)">retmsg=#{retmsg},</if>
+            <if test="isNotNull(trandate)">trandate=#{trandate},</if>
+            <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+            <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+            <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+        </trim>
+    </sql>
+</mapper>

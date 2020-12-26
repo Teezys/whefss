@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="gbk"?>
+<!DOCTYPE container PUBLIC "-//YUANGOU//DTD//MSC" "MSC.dtd">
+
+<container name="cntr.nodcon" trace="INFO">
+  <bean name = "connector" class = "com.yuangou.ecp.bp.channel.tcp.imp.YGTcpSynConnector" >
+<!--
+    <property name = "port" value = "${_PORT}"/>
+    <property name = "host" value = "${_IP}"/>
+-->
+    <property name = "preLen" value = "8"/>
+  </bean>
+
+  <bean name="consvr" class="com.yuangou.ecp.bp.comp.handler.YGCONSVRHandler">
+    <property name = "regionRouter" value = "app/base/etc/rgnrtr.xml"/>
+  </bean>
+
+  <process name="process1" msgtype="DEFAULT">
+    <interceptor name="consvr" method="doRequest"/>
+    <interceptor name="connector"/>
+    <interceptor name = "consvr" method="doResponse"/>
+  </process>
+</container>

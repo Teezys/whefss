@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root>
+    <format code="fundsUploadInfo" desc="查询退款数据">
+        <request necessary="yes">
+            <xmlWrite name="Root">
+                <quote name="request"/>
+                <xmlWrite name="body"  >
+                    <xmlWrite name="data" necessary="yes" data_name="data" desc=""/>
+                    <!--
+                    <xmlWrite name="balance" necessary="yes" data_name="balance" desc="账户实时核心余额"/>
+                    <xmlWrite name="time" necessary="yes" data_name="time" desc="余额截止时间"/>
+                    <xmlWrite name="account_num" necessary="yes" data_name="account_num" desc="监管账号"/>
+                    <xmlWrite name="detail_num" data_name="detail_num"
+                                  necessary="no" />
+                    <xmlWriteGroup name="detail" data_name="detail" repeat_name="detail_num" >
+                        <xmlWrite name="data_type" data_name="datatype" desc="交易类型" necessary="no" />
+                        <xmlWrite name="amount" data_name="amount" desc="金额" necessary="no"/>
+                        <xmlWrite name="commission" data_name="commission" desc="手续费" necessary="no"/>
+                        <xmlWrite name="notice_num" data_name="noticenum" desc="办件号" necessary="no"/>
+                        <xmlWrite name="sn" data_name="sn" desc="流水号" necessary="no"/>
+                        <xmlWrite name="time" data_name="time" desc="时间" necessary="no"/>
+                        <xmlWrite name="sender_name" data_name="sendername" desc="贷方账户名称" necessary="no"/>
+                        <xmlWrite name="sender_num" data_name="sendernum" desc="货方账号" necessary="no"/>
+                        <xmlWrite name="note" data_name="note" desc="备注（失败原因等）" necessary="no"/>
+                        <xmlWrite name="unknown_type" data_name="unknowntype" desc="不明入账类型(1贷款，2其 他)" necessary="no"/>
+                    </xmlWriteGroup>
+                --></xmlWrite>
+            </xmlWrite>
+        </request>
+        <response necessary="no">
+            <xmlRead name="Root">
+                <quote name="response"/>
+            </xmlRead>
+        </response>
+    </format>
+</root>

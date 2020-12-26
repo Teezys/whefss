@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- Created by xu_lw on 2020-10-29 18:03:10. -->
+<mapper namespace="com.murong.ecp.netpay.whefss.web.pub.dal.dao.WhefssInterestSndMapper">
+    <select id="selectByPrimaryKey" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssInterestSndDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_INTEREST_SND where sn = #{sn} 
+    </select>
+
+    <!-- 分页查询id后缀必须为Page -->
+    <select id="selectPage" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssInterestSndDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_INTEREST_SND where sn like '%%${sn}%%' or account_num like '%%${accountNum}%%' or bank_code like '%%${bankCode}%%' or time like '%%${time}%%' or type like '%%${type}%%' or send_status like '%%${sendStatus}%%' or batch_num like '%%${batchNum}%%' or user_id like '%%${userId}%%' or user_name like '%%${userName}%%' or sys_tranid like '%%${sysTranid}%%' or sys_time like '%%${sysTime}%%' or reserve1 like '%%${reserve1}%%' or reserve2 like '%%${reserve2}%%' or reserve3 like '%%${reserve3}%%'  order by sn
+    </select>
+
+    <update id="updateByBatchNum" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssInterestSndDO">
+        update WHEFSS_INTEREST_SND
+        set send_status=#{sendStatus}
+        where batch_num=#{batchNum}
+    </update>
+
+    <select id="tranRecordPage" resultType="com.murong.ecp.netpay.whefss.web.pub.model.TranRecordRspBO">
+        select time tran_time,sn,account_num,'' to_account,'' to_account_name,'' notice_num,send_status,interest tran_amt,'0' commission
+        from WHEFSS_INTEREST_SND
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="sn !=null and sn !=''">
+                sn = #{sn}
+            </if>
+            <if test="accountNum !=null and accountNum !=''">
+                AND account_num = #{accountNum}
+            </if>
+            <if test="startDate !=null and startDate !=''">
+                AND time = #{startDate}
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                AND time = #{endDate}
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectChk" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssInterestSndDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_INTEREST_SND
+        where ACCOUNT_NUM = #{accountNum}
+        and substr(TIME,1,8) = #{time}
+        and SEND_STATUS in('00','04')
+    </select>
+
+    <update id="updateSts" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssInterestSndDO">
+        update  WHEFSS_INTEREST_SND
+        set send_status = #{sendStatus}
+        where ACCOUNT_NUM = #{accountNum}
+        and send_status in('00','04')
+        and sn = #{sn}
+    </update>
+
+    <select id="selectByEntity" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssInterestSndDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_INTEREST_SND
+        where ACCOUNT_NUM = #{accountNum}
+        and sn = #{sn}
+    </select>
+
+    <!-- 游标后缀必须为Cursor -->
+    <select id="selectCursor" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssInterestSndDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_INTEREST_SND
+    </select>
+
+    <!-- 查询id后缀必须为ResultHandler -->
+    <select id="selectResultHandler" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssInterestSndDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_INTEREST_SND
+    </select>
+
+
+    <select id ="getcount"  parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssInterestSndDO">
+            select count(1) from WHEFSS_INTEREST_SND
+            where sn =#{sn} and account_num= #{account_num} and substr(sys_tranid,1,8)=#{times}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssInterestSndDO">
+        delete from  WHEFSS_INTEREST_SND where sn = #{sn} 
+    </delete>
+
+    <delete id="deleteByIds" parameterType="java.lang.String">
+        delete from  WHEFSS_INTEREST_SND where id in (${ids})
+    </delete>
+
+    <update id="updateByPrimaryKey" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssInterestSndDO">
+        update  WHEFSS_INTEREST_SND
+        <trim prefix="set" suffixOverrides = ",">
+                <if test="isNotNull(sn)">sn=#{sn},</if>
+                <if test="isNotNull(accountNum)">account_num=#{accountNum},</if>
+                <if test="isNotNull(bankCode)">bank_code=#{bankCode},</if>
+                <if test="isNotNull(interest)">interest=#{interest},</if>
+                <if test="isNotNull(time)">time=#{time},</if>
+                <if test="isNotNull(type)">type=#{type},</if>
+                <if test="isNotNull(sendStatus)">send_status=#{sendStatus},</if>
+                <if test="isNotNull(batchNum)">batch_num=#{batchNum},</if>
+                <if test="isNotNull(userId)">user_id=#{userId},</if>
+                <if test="isNotNull(userName)">user_name=#{userName},</if>
+                <if test="isNotNull(sysTranid)">sys_tranid=#{sysTranid},</if>
+                <if test="isNotNull(sysTime)">sys_time=#{sysTime},</if>
+                <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+                <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+                <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+        </trim>
+        where sn = #{sn} 
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssInterestSndDO">
+        update  WHEFSS_INTEREST_SND
+        <trim prefix="set" suffixOverrides = ",">
+            <if test="isNotNull(sn)">sn=#{sn},</if>
+            <if test="isNotNull(accountNum)">account_num=#{accountNum},</if>
+            <if test="isNotNull(bankCode)">bank_code=#{bankCode},</if>
+            <if test="isNotNull(interest)">interest=#{interest},</if>
+            <if test="isNotNull(time)">time=#{time},</if>
+            <if test="isNotNull(type)">type=#{type},</if>
+            <if test="isNotNull(sendStatus)">send_status=#{sendStatus},</if>
+            <if test="isNotNull(batchNum)">batch_num=#{batchNum},</if>
+            <if test="isNotNull(userId)">user_id=#{userId},</if>
+            <if test="isNotNull(userName)">user_name=#{userName},</if>
+            <if test="isNotNull(sysTranid)">sys_tranid=#{sysTranid},</if>
+            <if test="isNotNull(sysTime)">sys_time=#{sysTime},</if>
+            <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+            <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+            <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+        </trim>
+        where sn = #{sn} 
+    </update>
+
+    <insert id="insert" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssInterestSndDO">
+        insert  into WHEFSS_INTEREST_SND(sn, account_num, bank_code, interest, time, type, send_status, batch_num, user_id, user_name, sys_tranid, sys_time, reserve1, reserve2, reserve3)
+        values( #{sn}, #{accountNum}, #{bankCode}, #{interest}, #{time}, #{type}, #{sendStatus}, #{batchNum}, #{userId}, #{userName}, #{sysTranid}, #{sysTime}, #{reserve1}, #{reserve2}, #{reserve3})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssInterestSndDO">
+        insert  into WHEFSS_INTEREST_SND
+        <trim prefix="(" suffix=')' suffixOverrides=",">
+            <if test="isNotNull(sn)">sn,</if>
+            <if test="isNotNull(accountNum)">account_num,</if>
+            <if test="isNotNull(bankCode)">bank_code,</if>
+            <if test="isNotNull(interest)">interest,</if>
+            <if test="isNotNull(time)">time,</if>
+            <if test="isNotNull(type)">type,</if>
+            <if test="isNotNull(sendStatus)">send_status,</if>
+            <if test="isNotNull(batchNum)">batch_num,</if>
+            <if test="isNotNull(userId)">user_id,</if>
+            <if test="isNotNull(userName)">user_name,</if>
+            <if test="isNotNull(sysTranid)">sys_tranid,</if>
+            <if test="isNotNull(sysTime)">sys_time,</if>
+            <if test="isNotNull(reserve1)">reserve1,</if>
+            <if test="isNotNull(reserve2)">reserve2,</if>
+            <if test="isNotNull(reserve3)">reserve3,</if>
+        </trim>
+        <trim prefix="values(" suffix=')' suffixOverrides=",">
+            <if test="isNotNull(sn)">#{sn},</if>
+            <if test="isNotNull(accountNum)">#{accountNum},</if>
+            <if test="isNotNull(bankCode)">#{bankCode},</if>
+            <if test="isNotNull(interest)">#{interest},</if>
+            <if test="isNotNull(time)">#{time},</if>
+            <if test="isNotNull(type)">#{type},</if>
+            <if test="isNotNull(sendStatus)">#{sendStatus},</if>
+            <if test="isNotNull(batchNum)">#{batchNum},</if>
+            <if test="isNotNull(userId)">#{userId},</if>
+            <if test="isNotNull(userName)">#{userName},</if>
+            <if test="isNotNull(sysTranid)">#{sysTranid},</if>
+            <if test="isNotNull(sysTime)">#{sysTime},</if>
+            <if test="isNotNull(reserve1)">#{reserve1},</if>
+            <if test="isNotNull(reserve2)">#{reserve2},</if>
+            <if test="isNotNull(reserve3)">#{reserve3},</if>
+        </trim>
+    </insert>
+
+    <sql id="base_column_list">
+    sn, account_num, bank_code, interest, time, type, send_status, batch_num, user_id, user_name, sys_tranid, sys_time, reserve1, reserve2, reserve3
+    </sql>
+
+    <sql id="where_condition">
+        <trim prefix="where" prefixOverrides="and">
+            <if test="isNotNull(sn)">sn=#{sn},</if>
+            <if test="isNotNull(accountNum)">account_num=#{accountNum},</if>
+            <if test="isNotNull(bankCode)">bank_code=#{bankCode},</if>
+            <if test="isNotNull(interest)">interest=#{interest},</if>
+            <if test="isNotNull(time)">time=#{time},</if>
+            <if test="isNotNull(type)">type=#{type},</if>
+            <if test="isNotNull(sendStatus)">send_status=#{sendStatus},</if>
+            <if test="isNotNull(batchNum)">batch_num=#{batchNum},</if>
+            <if test="isNotNull(userId)">user_id=#{userId},</if>
+            <if test="isNotNull(userName)">user_name=#{userName},</if>
+            <if test="isNotNull(sysTranid)">sys_tranid=#{sysTranid},</if>
+            <if test="isNotNull(sysTime)">sys_time=#{sysTime},</if>
+            <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+            <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+            <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+        </trim>
+    </sql>
+</mapper>

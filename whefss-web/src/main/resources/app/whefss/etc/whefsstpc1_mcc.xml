@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE container PUBLIC "-//YUANGOU//DTD//MSC" "">
+<container name="whefsstpc1" trace="INFO">
+    <bean name="connector" class="com.murong.ecp.netpay.whefss.web.hander.YGWHEFSSAcpConnector">
+        <property name="url" value="http://192.168.234.128:12306"/>
+        <property name="timeOut" value="30" /><!-- 超时时间，默认30S -->
+        <property name="apikey" value="whefss" />
+        <property name="encoding" value="utf-8"/><!--默认utf-8-->
+        <property name="contentType" value="application/json; charset=utf-8"/>
+    </bean>
+
+    <bean name="itfengine" class="com.yuangou.ecp.bp.biz.engine.YGEngine">
+        <property name="ITF" value="app/whefss/etc/whefsstpc1_tif.xml"/>
+    </bean>
+
+    <!--<bean name="jsonxmlfmtconvert" class="com.murong.ecp.netpay.whefss.web.common.utils.YGJsonXmlUtils">
+    </bean>-->
+
+    <process name="proc" msgtype="PLTOUT">
+        <interceptor name="itfengine"/>
+        <!--<interceptor name="jsonxmlfmtconvert" method="xml2json"/>-->
+        <interceptor name="connector"/>
+        <!--<interceptor name="jsonxmlfmtconvert" method="json2xml"/>-->
+        <interceptor name="itfengine"/>
+    </process>
+
+</container>

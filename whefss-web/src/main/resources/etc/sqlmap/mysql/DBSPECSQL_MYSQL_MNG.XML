@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="GB2312"?>
+<MYSQL>
+    <dynSentence name="QrythreadpoolInf">
+			<sentence>
+				SELECT LOG_NO,MNT_ID
+				,TIME_COST,region,NOD_NM,MON_TYP,MON_DAT,REMARK,MNT_DT,MNT_TM
+				FROM
+				montdumpjnl A ,(select region as reg,NOD_NM as
+				nod,NVL(MAX(CAST(CONCAT(MNT_DT,MNT_TM) as integer)), 0) as max_tim from
+				montdumpjnl where MON_TYP='THREADPOOL' and (REGION='%s' or '%s '='
+				') and (NOD_NM='%s' or '%s '=' ')
+				GROUP BY REGION , NOD_NM) B
+				where
+				A.MON_TYP='THREADPOOL' AND A.region=B.reg
+				AND A.NOD_NM=B.nod AND
+				CONCAT(A.MNT_DT,MNT_TM) =B.max_tim 
+         </sentence>
+			<fields>REGION|REGION|NOD_NM|NOD_NM|</fields>
+	</dynSentence>
+	
+	<dynSentence name="QryComExecInf">
+			<sentence>
+				SELECT
+				LOG_NO,MNT_ID
+				,TIME_COST,region,NOD_NM,MON_TYP,MON_DAT,REMARK,MNT_DT,MNT_TM
+				FROM
+				montdumpjnl A ,(select region as reg,NOD_NM as
+				nod,NVL(MAX(CAST(CONCAT(MNT_DT,MNT_TM) as integer)), 0) as max_tim from
+				montdumpjnl where MON_TYP in('EXEC','FUNC') and (REGION='%s' or '%s
+				'=' ') and (NOD_NM='%s' or '%s '=' ')
+				GROUP BY REGION , NOD_NM) B
+				where A.MON_TYP in ('EXEC','FUNC') AND A.region=B.reg
+				AND A.NOD_NM=B.nod AND CONCAT(A.MNT_DT,MNT_TM) =B.max_tim
+         </sentence>
+			<fields>REGION|REGION|NOD_NM|NOD_NM|</fields>
+		</dynSentence>
+		<dynSentence name="Qry_ALM_RUL2">
+			<sentence>
+				Select
+				CONCAT(ltrim(rtrim(b.RES_TYP)),'.',ltrim(rtrim(b.ATTR_NM))) ALM_RUL from
+				MNGTMNTATTR b where b.MNT_ID='%s' and TRH_ID !=' ' order by ALM_RUL
+			</sentence>
+			<fields>MNT_ID|</fields>
+		</dynSentence>
+</MYSQL>

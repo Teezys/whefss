@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="GB2312"?>
+<MYSQL>
+    <include file="etc/sqlmap/mysql/DBSPECSQL_MYSQL_ACM.XML"/>
+    <include file="etc/sqlmap/mysql/DBSPECSQL_MYSQL_BFC.XML"/>
+    <include file="etc/sqlmap/mysql/DBSPECSQL_MYSQL_BUI.XML"/>
+    <include file="etc/sqlmap/mysql/DBSPECSQL_MYSQL_CAP.XML"/>
+    <include file="etc/sqlmap/mysql/DBSPECSQL_MYSQL_CMM.XML"/>
+    <include file="etc/sqlmap/mysql/DBSPECSQL_MYSQL_EGW.XML"/>
+    <include file="etc/sqlmap/mysql/DBSPECSQL_MYSQL_MKM.XML"/>
+    <include file="etc/sqlmap/mysql/DBSPECSQL_MYSQL_PTM.XML"/>
+    <include file="etc/sqlmap/mysql/DBSPECSQL_MYSQL_SMS.XML"/>
+    <include file="etc/sqlmap/mysql/DBSPECSQL_MYSQL_PTS.XML"/>
+    <include file="etc/sqlmap/mysql/DBSPECSQL_MYSQL_TAM.XML"/>
+    <include file="etc/sqlmap/mysql/DBSPECSQL_MYSQL_URM.XML"/>
+    <include file="etc/sqlmap/mysql/DBSPECSQL_MYSQL_RPM.XML"/>
+    <include file="etc/sqlmap/mysql/DBSPECSQL_MYSQL_PWM.XML"/>
+</MYSQL>

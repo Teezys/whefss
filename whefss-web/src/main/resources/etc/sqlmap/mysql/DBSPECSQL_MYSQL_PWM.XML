@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="GB2312"?>
+<MYSQL>
+   <dynSentence name="QRY_PWMTCKCT_LAST">
+			<sentence>
+				SELECT
+				CHK_FIL_STS LAST_CHK_FIL_STS
+				FROM PWMTCKCT
+				WHERE
+				RUT_CORG=? AND
+				COP_BUS_TYP=? AND
+				CHK_FIL_DT=? LIMIT 0,1
+			</sentence>
+			<fields>RUT_CORG|COP_BUS_TYP|LAST_CHK_FIL_DT|</fields>
+		</dynSentence>
+   
+   <dynSentence name="QRY_WDCTORDR_ACNO">
+			<sentence>
+				SELECT WC_ORD_NO,(select count(*) from WDCTORDR
+				where
+				CAP_CRD_NO=? and WC_ACT_AMT=? and WC_SND_DT= ? and ORD_STS in('W3','W4','S1')) COUNT FROM WDCTORDR 
+				where CAP_CRD_NO=? and
+				WC_ACT_AMT=? and WC_SND_DT= ? and
+				ORD_STS in('W3','W4','S1') 
+				LIMIT 0,1	
+			</sentence>
+			<fields>CAP_CRD_NO|TX_AMT|WC_SND_DT|CAP_CRD_NO|TX_AMT|WC_SND_DT|</fields>
+		</dynSentence>
+    
+    
+    <dynSentence name="QRY_WDCTORDR_BY_CRDNO_CRCK">
+            <sentence>
+                SELECT * FROM WDCTORDR
+                WHERE RUT_CORG=? AND CAP_CRD_NO = ?
+                AND
+                CAP_CRD_NM=? AND WC_ACT_AMT=? AND ORD_STS = 'S2' AND WC_SND_DT = (SELECT MAX(WC_SND_DT) FROM WDCTORDR
+                WHERE RUT_CORG=? AND CAP_CRD_NO = ? AND CAP_CRD_NM=? AND WC_ACT_AMT=? AND ORD_STS = 'S2') AND WC_SND_DT BETWEEN ? AND ?
+                LIMIT 0,1
+            </sentence>
+            <fields>RUT_CORG|CAP_CRD_NO|CAP_CRD_NM|CR_AMT|RUT_CORG|CAP_CRD_NO|CAP_CRD_NM|CR_AMT|SND_BEG_DT|SND_END_DT</fields>
+        </dynSentence>
+    
+    <dynSentence name="QRY_WDCTORDR_BY_CRDNO_DRCK">
+            <sentence>
+                SELECT CAP_FLG,CAP_LOG_NO,WC_ACT_AMT, WC_ORD_NO, ORD_DT, PSN_CRP_FLG,LBNK_NO,LBNK_NM,CAP_CRD_NO,CAP_CRD_NM,
+                USR_ID, RUT_CORG, ORD_STS, WC_SND_DT, WC_TYP, USR_NO, USR_NM, RUT_CORG_DT, RUT_CORG_TM FROM WDCTORDR
+                WHERE RUT_CORG=? AND CAP_CRD_NO = ?
+                AND CAP_CRD_NM=? AND WC_ACT_AMT=? AND ORD_STS IN ('W4','S1')
+                AND WC_WF_STS = 'E1' AND PS_WFF_STS = '2' AND WC_BAT_SND_STS ='2'
+                AND WC_TYP &lt;&gt; '32' AND WC_SND_DT = (SELECT MIN(WC_SND_DT) FROM WDCTORDR
+                WHERE RUT_CORG=? AND CAP_CRD_NO = ? AND CAP_CRD_NM=? AND WC_ACT_AMT=? AND ORD_STS IN ('W4','S1')
+                AND WC_WF_STS = 'E1' AND PS_WFF_STS = '2' AND WC_BAT_SND_STS ='2'
+                AND WC_TYP &lt;&gt; '32' AND WC_SND_DT BETWEEN ? AND ?) 
+                LIMIT 0,1
+            </sentence>
+            <fields>RUT_CORG|CAP_CRD_NO|CAP_CRD_NM|DR_AMT|RUT_CORG|CAP_CRD_NO|CAP_CRD_NM|DR_AMT|SND_BEG_DT|SND_END_DT</fields>
+        </dynSentence>
+    
+    <dynSentence name="CHK_PWMTCKCT">
+            <sentence>
+                SELECT 'Y'
+                FROM PWMTCKCT
+                WHERE RUT_CORG='UPOP'
+                AND
+                COP_BUS_TYP IN ('06','22') AND CHK_FIL_DT=? LIMIT 0,1
+            </sentence>
+            <fields>CHK_FIL_DT|</fields>
+        </dynSentence>
+        
+    <dynSentence name="CHK_PWMTCKCT1">
+            <sentence>
+                SELECT 'Y'
+                FROM PWMTCKCT
+                WHERE RUT_CORG='CCB'
+                AND
+                COP_BUS_TYP IN ('07','22') AND CHK_FIL_DT=? LIMIT 0,1
+            </sentence>
+            <fields>CHK_FIL_DT|</fields>
+        </dynSentence>
+   
+   <dynSentence name="CHK_PWMTCKCT2">
+            <sentence>
+                SELECT 'Y' FROM PWMTCKCT WHERE RUT_CORG='BOC'  AND  COP_BUS_TYP IN ('07','22') AND CHK_FIL_DT=? LIMIT 0,1
+            </sentence>
+            <fields>CHK_FIL_DT|</fields>
+        </dynSentence>
+
+    <dynSentence name="INS_PWMTSTBN_BANKCARD">
+            <sentence>
+                INSERT INTO PWMTSTBN
+                (USR_NO,
+                CAP_CRD_NO,
+                CRD_BND_TYP,
+                MBL_NO,
+                CAP_CORG,
+                CAP_CORG_NM,
+                LBNK_NO,
+                LBNK_NM,
+                OPN_BNK_PROV,
+                OPN_BNK_PROV_NM,
+                OPN_BNK_CITY,
+                OPN_BNK_CITY_NM,
+                CAP_CRD_NM,
+                TM_SMP)
+                VALUES
+                (?,?,?,?,?,?,?,?,?,?,?,?,?,
+                DATE_FORMAT(sysdate, '%Y-%m-%d %H:%i:%S'))
+            </sentence>
+            <fields>USR_NO|CAP_CRD_NO|CRD_BND_TYP|MBL_NO|CAP_CORG|CAP_CORG_NM|LBNK_NO|LBNK_NM|OPN_BNK_PROV|OPN_BNK_PROV_NM|OPN_BNK_CITY|OPN_BNK_CITY_NM|CAP_CRD_NM|</fields>
+        </dynSentence>
+        
+    <dynSentence name="INS_PWMTCAD_BANKCARD">
+            <sentence>
+                INSERT INTO PWMTCAD
+                (USR_NO,
+                CAP_CRD_NO,
+                CRD_BND_TYP,
+                DFT_PPD_FLG,
+                DFT_WC_FLG,
+                CRD_EFF_FLG,
+                RMK,
+                CRD_AC_TYP,
+                MBL_NO,
+                CAP_CORG,
+                CAP_CORG_NM,
+                TM_SMP)
+                VALUES
+                (?,?,?,?,?,?,?,?,?,?,?,
+                DATE_FORMAT(sysdate, '%Y-%m-%d %H:%i:%S'))         
+          </sentence>
+            <fields>USR_NO|CAP_CRD_NO|CRD_BND_TYP|DFT_PPD_FLG|DFT_WC_FLG|CRD_EFF_FLG|RMK|CRD_AC_TYP|MBL_NO|CAP_CORG|CAP_CORG_NM|</fields>
+        </dynSentence>
+        
+         <dynSentence name="QRY_WDCTORDR_BY_BAT_NO">
+            <sentence>
+                SELECT
+                ROWNUM DETAIL_NUM,A.WC_ORD_NO,A.LBNK_NO,A.CAP_CRD_NO,A.CAP_CRD_NM,A.WC_BNK_PROV,A.WC_BNK_CITY,A.WC_APL_AMT,A.BNK_RMK,A.USR_ID,A.USR_NO,
+                A.WC_ACT_AMT,A.RUT_CORG,A.CAP_CORG,A.WC_BAT_NO,A.PSN_CRP_FLG,A.WC_TYP,A.WC_BAT_SEQ,A.WC_OUT_BAT
+                FROM 
+                WDCTORDR A
+                WHERE
+                A.RUT_CORG = ? AND A.WC_BAT_NO = ? AND A.ORD_STS = 'W3' AND A.WC_WF_STS = 'E1' AND
+                A.PS_WFF_STS = '2' AND A.WC_BAT_SND_STS ='1' FOR UPDATE
+            </sentence>
+            <fields>CORP_ORG|BAT_NO</fields>
+        </dynSentence>
+        
+        <dynSentence name="QRY_WDCTORDR_BY_BAT_NO1">
+            <sentence>
+                SELECT
+                ROWNUM AS NO,WC_ORD_NO,WC_BAT_SEQ,CAP_CRD_NO,CAP_CRD_NM,LBNK_NO,LBNK_NM,WC_BNK_CITY,WC_APL_AMT,USR_ID,USR_NO,
+                WC_ACT_AMT*100 AS WC_ACT_AMT ,RUT_CORG,CAP_CORG,WC_RMK,RUT_CORG_JRN,RUT_CORG_DT,PAY_URG_FLG,WC_BAT_NO,
+                WFF_BAT_NO,RSK_BAT_NO,PSN_CRP_FLG,WC_TYP,NTC_MBL
+                FROM
+                WDCTORDR
+                WHERE
+                RUT_CORG = ? AND WC_BAT_NO = ? AND ORD_STS = 'W3' AND WC_WF_STS = 'E1' AND
+                PS_WFF_STS = '2' AND WC_BAT_SND_STS ='1'
+                FOR UPDATE
+            </sentence>
+            <fields>CORP_ORG|BAT_NO</fields>
+        </dynSentence>
+        
+        <dynSentence name="QRY_WDCTORDR_BY_BAT_NO1">
+            <sentence>
+                SELECT
+                ROWNUM DETAIL_NUM,A.WC_ORD_NO,A.LBNK_NO,A.CAP_CRD_NO,A.CAP_CRD_NM,A.WC_BNK_PROV,A.WC_BNK_CITY,A.WC_APL_AMT,A.BNK_RMK,A.USR_ID,A.USR_NO,
+                A.WC_ACT_AMT,A.RUT_CORG,A.CAP_CORG,A.WC_BAT_NO,A.PSN_CRP_FLG,A.WC_TYP,A.WC_BAT_SEQ,A.CAP_TYP
+                FROM
+                WDCTORDR A
+                WHERE
+                A.RUT_CORG = ? AND A.WC_BAT_NO = ? AND A.ORD_STS = 'W3' AND A.WC_WF_STS = 'E1' AND
+                A.PS_WFF_STS = '2' AND A.WC_BAT_SND_STS ='1' FOR UPDATE
+            </sentence>
+            <fields>CORP_ORG|WC_BAT_NO</fields>
+        </dynSentence>
+        
+         <dynSentence name="QRY_WDCTORDR_BY_BAT_NO2">
+            <sentence>
+                SELECT
+                ROWNUM DETAIL_NUM,A.WC_ORD_NO,A.LBNK_NO,A.CAP_CRD_NO,A.CAP_CRD_NM,A.WC_BNK_PROV,A.WC_BNK_CITY,A.WC_APL_AMT,A.BNK_RMK,A.USR_ID,A.USR_NO,
+                A.WC_ACT_AMT,A.RUT_CORG,A.CAP_CORG,A.WC_BAT_NO,A.PSN_CRP_FLG,A.WC_TYP,A.WC_BAT_SEQ,A.CAP_TYP
+                FROM
+                WDCTORDR A
+                WHERE
+                A.RUT_CORG = ? AND A.WC_BAT_NO = ? AND A.ORD_STS = 'W3' AND A.WC_WF_STS = 'E1' AND
+                A.PS_WFF_STS = '2' AND A.WC_BAT_SND_STS ='1' FOR UPDATE
+            </sentence>
+            <fields>CORP_ORG|WC_BAT_NO</fields>
+        </dynSentence>
+        
+        <dynSentence name="QRY_WDCTORDR_BY_BAT_NO3">
+            <sentence>
+                SELECT
+                ROWNUM DETAIL_NUM,A.WC_ORD_NO,A.LBNK_NO,A.LBNK_NM,A.CAP_CRD_NO,A.CAP_CRD_NM,A.WC_BNK_PROV,A.WC_BNK_CITY,A.WC_APL_AMT,A.BNK_RMK,A.USR_ID,A.USR_NO,
+                A.WC_ACT_AMT,A.RUT_CORG,A.CAP_CORG,A.WC_BAT_NO,A.PSN_CRP_FLG,A.WC_TYP,A.WC_BAT_SEQ
+                FROM WDCTORDR A
+                WHERE A.RUT_CORG = ? AND A.WC_BAT_NO = ? AND A.ORD_STS = 'W3' AND A.WC_WF_STS = 'E1'
+                AND A.PS_WFF_STS = '2' AND A.WC_BAT_SND_STS ='1' FOR UPDATE
+            </sentence>
+            <fields>CORP_ORG|WC_BAT_NO</fields>
+        </dynSentence>
+        
+        <dynSentence name="QRY_WDCTORDR_BY_BAT_NO4">
+            <sentence>
+                SELECT
+                ROWNUM DETAIL_NUM,A.WC_ORD_NO,A.LBNK_NO,A.CAP_CRD_NO,A.CAP_CRD_NM,A.WC_BNK_PROV,A.WC_BNK_CITY,A.WC_APL_AMT,A.BNK_RMK,A.USR_ID,A.USR_NO,
+                A.WC_ACT_AMT,A.RUT_CORG,A.CAP_CORG,A.WC_BAT_NO,A.PSN_CRP_FLG,A.WC_TYP,A.WC_BAT_SEQ
+                FROM 
+                WDCTORDR A
+                WHERE
+                A.RUT_CORG = ? AND A.WC_BAT_NO = ? AND A.ORD_STS = 'W3' AND A.WC_WF_STS = 'E1' AND
+                A.PS_WFF_STS = '2' AND A.WC_BAT_SND_STS ='1' FOR UPDATE
+            </sentence>
+            <fields>CORP_ORG|WC_BAT_NO</fields>
+        </dynSentence>
+        
+        <dynSentence name="QRY_WDCTORDR_BY_BAT_NO5">
+            <sentence>
+                SELECT
+                ROWNUM DETAIL_NUM,A.WC_ORD_NO,A.LBNK_NO,A.CAP_CRD_NO,A.CAP_CRD_NM,A.WC_BNK_PROV,A.WC_BNK_CITY,A.WC_APL_AMT,A.BNK_RMK,A.USR_ID,A.USR_NO,
+                A.WC_ACT_AMT,A.RUT_CORG,A.CAP_CORG,A.WC_BAT_NO,A.PSN_CRP_FLG,A.WC_TYP,A.WC_BAT_SEQ,A.WC_OUT_BAT,A.LBNK_NM
+                FROM 
+                WDCTORDR A
+                WHERE
+                A.RUT_CORG = ? AND A.WC_BAT_NO = ? AND A.ORD_STS = 'W3' AND A.WC_WF_STS = 'E1' AND
+                A.PS_WFF_STS = '2' AND A.WC_BAT_SND_STS ='1'  FOR UPDATE
+            </sentence>
+            <fields>CORP_ORG|BAT_NO</fields>
+        </dynSentence>
+        <dynSentence name="QRY_PPDTORDR">
+            <sentence>
+                SELECT PPD_ORD_NO,CONCAT(ORD_DT,ORD_TM) AS ORD_DTTM,
+                       PPD_TX_CD,PPD_APL_AMT,'901' AS ORD_CAP_TYP,RUT_CORG_JRN,
+                       AGT_CD,AGT_OPR_ID,'0' AS ACC_TYP
+                FROM PPDTORDR
+                WHERE USR_ID=?
+                AND (CONCAT(ORD_DT,ORD_TM) BETWEEN ? AND ?) 
+                AND RUT_CORG='BOSS'
+                AND ORD_CAP_TYP='1'
+            </sentence>
+            <fields>MBL_NO|BEG_TM|END_TM</fields>
+        </dynSentence>
+         <dynSentence name="QRY_URMTMFEE_STL_CTL">
+            <sentence>
+                SELECT STL_CTL FROM URMTMFEE WHERE MERC_ID=? AND FEE_TYP='07'
+				AND (CONCAT(EFF_DT,EFF_TM) &lt;= ? AND CONCAT(EXP_DT,EXP_TM) > ?) AND RATE_TYP='01'
+            </sentence>
+            <fields>MERC_ID|CUR_TM|</fields>
+        </dynSentence>
+        
+</MYSQL>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- Created by xu_lw on 2019-08-24 13:11:32. -->
+<mapper namespace="com.murong.ecp.netpay.whefss.web.pub.dal.dao.BuiOperMapper">
+
+    <sql id="base_column_list">
+        oper_id, oper_no, oper_nm, oper_pwd, oper_email, oper_typ, auth_lvl, mbl_no, tel_no, pwd_exp_period, pwd_upd_dt,
+        val_dt, exp_dt, sts, login_tm, last_log_tm, login_tms, log_mod, usb_key_id, psw_fail_cnt, img_path, pwd_salt,
+        org_id, nod_id, tm_smp, UPD_OPR, req_id
+    </sql>
+
+
+
+    <select id="selectByOperNo" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.BuiOperDO">
+        select
+        <include refid="base_column_list"/>
+        from T_BUI_OPER where oper_no = #{operNo} and org_id = #{orgId}
+    </select>
+
+</mapper>

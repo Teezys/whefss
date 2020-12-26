@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- Created by xu_lw on 2020-10-29 17:58:53. -->
+<mapper namespace="com.murong.ecp.netpay.whefss.web.pub.dal.dao.WhefssDayEndAccountLogMapper">
+    <select id="selectByPrimaryKey" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssDayEndAccountLogDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_DAY_END_ACCOUNT_LOG where 
+    </select>
+
+    <!-- 分页查询id后缀必须为Page -->
+    <select id="selectPage" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssDayEndAccountLogDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_DAY_END_ACCOUNT_LOG where trandate like '%%${trandate}%%' or accountnum like '%%${accountnum}%%' or citycode like '%%${citycode}%%' or accstatus like '%%${accstatus}%%' or msg like '%%${msg}%%' or reserve1 like '%%${reserve1}%%' or reserve2 like '%%${reserve2}%%' or reserve3 like '%%${reserve3}%%'  order by 
+    </select>
+
+    <!-- 游标后缀必须为Cursor -->
+    <select id="selectCursor" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssDayEndAccountLogDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_DAY_END_ACCOUNT_LOG
+    </select>
+
+    <!-- 查询id后缀必须为ResultHandler -->
+    <select id="selectResultHandler" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssDayEndAccountLogDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_DAY_END_ACCOUNT_LOG
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssDayEndAccountLogDO">
+        delete from  WHEFSS_DAY_END_ACCOUNT_LOG where 
+    </delete>
+
+    <delete id="deleteByIds" parameterType="java.lang.String">
+        delete from  WHEFSS_DAY_END_ACCOUNT_LOG where id in (${ids})
+    </delete>
+
+    <update id="updateByPrimaryKey" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssDayEndAccountLogDO">
+        update  WHEFSS_DAY_END_ACCOUNT_LOG
+        <trim prefix="set" suffixOverrides = ",">
+                <if test="isNotNull(trandate)">trandate=#{trandate},</if>
+                <if test="isNotNull(accountnum)">accountnum=#{accountnum},</if>
+                <if test="isNotNull(citycode)">citycode=#{citycode},</if>
+                <if test="isNotNull(accstatus)">accstatus=#{accstatus},</if>
+                <if test="isNotNull(msg)">msg=#{msg},</if>
+                <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+                <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+                <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+        </trim>
+        where 
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssDayEndAccountLogDO">
+        update  WHEFSS_DAY_END_ACCOUNT_LOG
+        <trim prefix="set" suffixOverrides = ",">
+            <if test="isNotNull(trandate)">trandate=#{trandate},</if>
+            <if test="isNotNull(accountnum)">accountnum=#{accountnum},</if>
+            <if test="isNotNull(citycode)">citycode=#{citycode},</if>
+            <if test="isNotNull(accstatus)">accstatus=#{accstatus},</if>
+            <if test="isNotNull(msg)">msg=#{msg},</if>
+            <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+            <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+            <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+        </trim>
+        where 
+    </update>
+
+    <insert id="insert" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssDayEndAccountLogDO">
+        insert  into WHEFSS_DAY_END_ACCOUNT_LOG(trandate, accountnum, citycode, accstatus, msg, reserve1, reserve2, reserve3)
+        values( #{trandate}, #{accountnum}, #{citycode}, #{accstatus}, #{msg}, #{reserve1}, #{reserve2}, #{reserve3})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssDayEndAccountLogDO">
+        insert  into WHEFSS_DAY_END_ACCOUNT_LOG
+        <trim prefix="(" suffix=')' suffixOverrides=",">
+            <if test="isNotNull(trandate)">trandate,</if>
+            <if test="isNotNull(accountnum)">accountnum,</if>
+            <if test="isNotNull(citycode)">citycode,</if>
+            <if test="isNotNull(accstatus)">accstatus,</if>
+            <if test="isNotNull(msg)">msg,</if>
+            <if test="isNotNull(reserve1)">reserve1,</if>
+            <if test="isNotNull(reserve2)">reserve2,</if>
+            <if test="isNotNull(reserve3)">reserve3,</if>
+        </trim>
+        <trim prefix="values(" suffix=')' suffixOverrides=",">
+            <if test="isNotNull(trandate)">#{trandate},</if>
+            <if test="isNotNull(accountnum)">#{accountnum},</if>
+            <if test="isNotNull(citycode)">#{citycode},</if>
+            <if test="isNotNull(accstatus)">#{accstatus},</if>
+            <if test="isNotNull(msg)">#{msg},</if>
+            <if test="isNotNull(reserve1)">#{reserve1},</if>
+            <if test="isNotNull(reserve2)">#{reserve2},</if>
+            <if test="isNotNull(reserve3)">#{reserve3},</if>
+        </trim>
+    </insert>
+
+    <sql id="base_column_list">
+    trandate, accountnum, citycode, accstatus, msg, reserve1, reserve2, reserve3
+    </sql>
+
+    <sql id="where_condition">
+        <trim prefix="where" prefixOverrides="and">
+            <if test="isNotNull(trandate)">trandate=#{trandate},</if>
+            <if test="isNotNull(accountnum)">accountnum=#{accountnum},</if>
+            <if test="isNotNull(citycode)">citycode=#{citycode},</if>
+            <if test="isNotNull(accstatus)">accstatus=#{accstatus},</if>
+            <if test="isNotNull(msg)">msg=#{msg},</if>
+            <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+            <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+            <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+        </trim>
+    </sql>
+</mapper>

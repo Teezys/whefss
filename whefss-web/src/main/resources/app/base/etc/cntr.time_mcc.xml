@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE container PUBLIC "-//YUANGOU//DTD//MSC" "">
+
+<container name="cntr.time" trace = "INFO">
+    <bean name = "trigger" class = "com.yuangou.ecp.bp.comp.handler.cycle.YGCycleHandler">
+        <property name = "filename" value = "app/base/etc/bplttime1_biz.xml"/>
+        <!--property name = "type" value = "DB"/-->
+        <!--property name = "haCheck" value = "Y"/-->
+    </bean>
+
+    <bean name = "transLog" class = "com.yuangou.ecp.bp.comp.handler.YGLogTransInfo">
+        <property name = "fmtFile" value = "app/base/etc/timetrc_fmt.xml"/>
+        <property name = "logFile" value = "timetrc.lst"/>
+    </bean>
+
+    <process name = "process1" msgtype = "PLTIN0">
+        <interceptor name="transLog"/>
+        <systemInterceptor name = "callService"/>
+        <interceptor name="transLog"/>
+    </process>
+</container>

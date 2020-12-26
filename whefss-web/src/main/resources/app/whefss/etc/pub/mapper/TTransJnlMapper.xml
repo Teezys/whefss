@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- Created by xu_lw on 2020-09-03 15:20:33. -->
+<mapper namespace="com.murong.ecp.netpay.whefss.web.pub.dal.dao.TTransJnlMapper">
+    <select id="selectByPrimaryKey" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.TTransJnlDO">
+        select <include refid="base_column_list"/>
+        from T_TRANS_JNL where pk_id = #{pkId} 
+    </select>
+
+    <select id="selectSelective" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.TTransJnlDO">
+        select <include refid="base_column_list"/>
+        from T_TRANS_JNL where bnk_number=#{bnkNumber} and fss_flg=#{fssFlg} and svs_ac_no =#{svsAcNo}
+    </select>
+
+    <select id="selectSelectByBnkNumber" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.TTransJnlDO">
+        select <include refid="base_column_list"/>
+        from T_TRANS_JNL where bnk_number=#{bnkNumber} and fss_flg='whef'
+    </select>
+
+    <select id="selectSelectBySn" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.TTransJnlDO">
+        select <include refid="base_column_list"/>
+        from T_TRANS_JNL where  and seq_no=#{seq_no}
+    </select>
+
+    <select id="selectBalance" resultType="java.lang.String">
+        select actual_bal_amt from T_TRANS_JNL
+        where
+        bnk_number = (select max(bnk_number) bnk_number from T_TRANS_JNL where svs_ac_no =#{svsAcNo} and tran_date=#{tranDate} and fss_flg='whef')
+        and svs_ac_no =#{svsAcNo} and tran_date=#{tranDate} and fss_flg='whef'
+    </select>
+
+    <select id="selectChkAjdk" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.TTransJnlDO">
+        select <include refid="base_column_list"/>
+        from T_TRANS_JNL
+        where svs_ac_no =#{svsAcNo}
+        and tran_date=#{tranDate}
+        and fss_flg='whef'
+        and DC_FLG = 'C'
+        and (NARRATIVE like '%%HTBH%%')
+    </select>
+
+    <select id="selectChkInterest" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.TTransJnlDO">
+        select <include refid="base_column_list"/>
+        from T_TRANS_JNL
+        where svs_ac_no =#{svsAcNo}
+        and tran_date=#{tranDate}
+        and fss_flg='whef'
+        and tran_type = 'D2T2'
+    </select>
+
+
+    <select id="selectChkOtherIn" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.TTransJnlDO">
+        select <include refid="base_column_list"/>
+        from T_TRANS_JNL t
+        where t.svs_ac_no = #{svsAcNo}
+        and t.tran_date = #{tranDate}
+        and t.dc_flg = 'C'
+        and fss_flg='whef'
+        and t.tran_type &lt;&gt; 'D2T2'
+        and bnk_number not in(
+        select substr(sn,9) from WHEFSS_CHK_DETAIL_JNL c where c.fk_detail_id = #{rsv1} and c.fk_total_id = #{rsv2} and c.data_type &lt;&gt; '2'
+        union
+        select substr(sn,9,(length(sn)-14)) from WHEFSS_CHK_DETAIL_JNL d where d.fk_detail_id = #{rsv1} and d.fk_total_id = #{rsv2} and d.data_type = '2'
+        )
+    </select>
+
+
+
+    <!--and a.tran_date between #{startDate} and #{endDate}-->
+    <!-- 分页查询id后缀必须为Page -->
+    <select id="selectPage" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.TTransJnlDO">
+        select <include refid="base_column_list"/>
+        from T_TRANS_JNL
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="svsAcNo !=null and svsAcNo!='' ">
+                AND svs_ac_no = #{svsAcNo}
+            </if>
+            <if test="tranDate !=null and tranDate!='' ">
+                AND tran_date = #{tranDate}
+            </if>
+            <if test="fssFlg !=null and fssFlg!='' ">
+                AND fss_flg = #{fssFlg}
+            </if>
+        </trim>
+        order by pk_id
+    </select>
+
+
+    <!-- 游标后缀必须为Cursor -->
+    <select id="selectCursor" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.TTransJnlDO">
+        select <include refid="base_column_list"/>
+        from T_TRANS_JNL
+    </select>
+
+    <!-- 查询id后缀必须为ResultHandler -->
+    <select id="selectResultHandler" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.TTransJnlDO">
+        select <include refid="base_column_list"/>
+        from T_TRANS_JNL
+    </select>
+
+    <sql id="base_column_list">
+        pk_id, svs_ac_no, fss_flg, dc_flg, tran_date, tran_amt, ccy, tran_desc, previous_bal_amt, officer_id, reference_bank, reference_branch, narrative, session_id, oth_bank_code, bt_officer_id, tfr_acct_name, oop_acct_no, oop_opn_acct_bnk_nm, actual_bal_amt, actual_bal_amt_cr_dr_int, bal_type, ava_amt, tran_type, reverse, frz_amt, bnk_number, summary, exec_time, fix_flag, hist_num, effect_date, reversal_tran_type, equiv_amt, reference, post_date, float_days, branch, source_type, trace_id, primary_seq_no, tfr_acct_type, acct_pre_flag, acct_flag, cross_rate, cr_dr_previous, status, field, rmk, rsv1, rsv2, rsv3, rsv4, rsv5
+    </sql>
+
+    <sql id="where_condition">
+        <trim prefix="where" prefixOverrides="and">
+            <if test="isNotNull(pkId)">pk_id=#{pkId},</if>
+            <if test="isNotNull(svsAcNo)">svs_ac_no=#{svsAcNo},</if>
+            <if test="isNotNull(fssFlg)">fss_flg=#{fssFlg},</if>
+            <if test="isNotNull(dcFlg)">dc_flg=#{dcFlg},</if>
+            <if test="isNotNull(tranDate)">tran_date=#{tranDate},</if>
+            <if test="isNotNull(tranAmt)">tran_amt=#{tranAmt},</if>
+            <if test="isNotNull(ccy)">ccy=#{ccy},</if>
+            <if test="isNotNull(tranDesc)">tran_desc=#{tranDesc},</if>
+            <if test="isNotNull(previousBalAmt)">previous_bal_amt=#{previousBalAmt},</if>
+            <if test="isNotNull(officerId)">officer_id=#{officerId},</if>
+            <if test="isNotNull(referenceBank)">reference_bank=#{referenceBank},</if>
+            <if test="isNotNull(referenceBranch)">reference_branch=#{referenceBranch},</if>
+            <if test="isNotNull(narrative)">narrative=#{narrative},</if>
+            <if test="isNotNull(sessionId)">session_id=#{sessionId},</if>
+            <if test="isNotNull(othBankCode)">oth_bank_code=#{othBankCode},</if>
+            <if test="isNotNull(btOfficerId)">bt_officer_id=#{btOfficerId},</if>
+            <if test="isNotNull(tfrAcctName)">tfr_acct_name=#{tfrAcctName},</if>
+            <if test="isNotNull(oopAcctNo)">oop_acct_no=#{oopAcctNo},</if>
+            <if test="isNotNull(oopOpnAcctBnkNm)">oop_opn_acct_bnk_nm=#{oopOpnAcctBnkNm},</if>
+            <if test="isNotNull(actualBalAmt)">actual_bal_amt=#{actualBalAmt},</if>
+            <if test="isNotNull(actualBalAmtCrDrInt)">actual_bal_amt_cr_dr_int=#{actualBalAmtCrDrInt},</if>
+            <if test="isNotNull(balType)">bal_type=#{balType},</if>
+            <if test="isNotNull(avaAmt)">ava_amt=#{avaAmt},</if>
+            <if test="isNotNull(tranType)">tran_type=#{tranType},</if>
+            <if test="isNotNull(reverse)">reverse=#{reverse},</if>
+            <if test="isNotNull(frzAmt)">frz_amt=#{frzAmt},</if>
+            <if test="isNotNull(bnkNumber)">bnk_number=#{bnkNumber},</if>
+            <if test="isNotNull(summary)">summary=#{summary},</if>
+            <if test="isNotNull(execTime)">exec_time=#{execTime},</if>
+            <if test="isNotNull(rmk)">rmk=#{rmk},</if>
+            <if test="isNotNull(rsv1)">rsv1=#{rsv1},</if>
+            <if test="isNotNull(rsv2)">rsv2=#{rsv2},</if>
+            <if test="isNotNull(rsv3)">rsv3=#{rsv3},</if>
+            <if test="isNotNull(rsv4)">rsv4=#{rsv4},</if>
+            <if test="isNotNull(rsv5)">rsv5=#{rsv5},</if>
+        </trim>
+    </sql>
+</mapper>

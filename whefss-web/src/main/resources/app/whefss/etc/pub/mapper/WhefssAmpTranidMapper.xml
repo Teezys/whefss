@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- Created by xu_lw on 2020-10-29 17:54:12. -->
+<mapper namespace="com.murong.ecp.netpay.whefss.web.pub.dal.dao.WhefssAmpTranidMapper">
+    <select id="selectByPrimaryKey" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAmpTranidDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_AMP_TRANID where amp_tranid = #{ampTranid} 
+    </select>
+
+    <!-- 分页查询id后缀必须为Page -->
+    <select id="selectPage" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAmpTranidDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_AMP_TRANID where amp_tranid like '%%${ampTranid}%%' or amp_time like '%%${ampTime}%%' or trancode like '%%${trancode}%%' or bustype like '%%${bustype}%%' or transtype like '%%${transtype}%%' or method like '%%${method}%%' or apikey like '%%${apikey}%%' or account_num like '%%${accountNum}%%' or time like '%%${time}%%' or reason like '%%${reason}%%' or fg_type like '%%${fgType}%%' or notice_num like '%%${noticeNum}%%' or freeze_month like '%%${freezeMonth}%%' or sn like '%%${sn}%%' or send_status like '%%${sendStatus}%%' or user_name like '%%${userName}%%' or user_id like '%%${userId}%%' or batch_num like '%%${batchNum}%%' or license_num like '%%${licenseNum}%%' or license_name like '%%${licenseName}%%' or resp_msg like '%%${respMsg}%%' or reserve1 like '%%${reserve1}%%' or reserve2 like '%%${reserve2}%%' or reserve3 like '%%${reserve3}%%'  order by amp_tranid
+    </select>
+
+    <!-- 游标后缀必须为Cursor -->
+    <select id="selectCursor" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAmpTranidDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_AMP_TRANID
+    </select>
+
+    <update id="updateByBatchNum" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAmpTranidDO">
+        update WHEFSS_AMP_TRANID
+        set send_status=#{sendStatus}
+        where batch_num=#{batchNum}
+    </update>
+
+    <select id="selectChk" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAmpTranidDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_AMP_TRANID
+        where ACCOUNT_NUM = #{accountNum}
+        and substr(TIME,1,8) = #{time}
+        and SEND_STATUS in('00','04')
+    </select>
+
+    <!-- 查询id后缀必须为ResultHandler -->
+    <select id="selectResultHandler" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAmpTranidDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_AMP_TRANID
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAmpTranidDO">
+        delete from  WHEFSS_AMP_TRANID where amp_tranid = #{ampTranid} 
+    </delete>
+
+    <delete id="deleteByIds" parameterType="java.lang.String">
+        delete from  WHEFSS_AMP_TRANID where id in (${ids})
+    </delete>
+
+    <update id="updateByPrimaryKey" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAmpTranidDO">
+        update  WHEFSS_AMP_TRANID
+        <trim prefix="set" suffixOverrides = ",">
+                <if test="isNotNull(ampTranid)">amp_tranid=#{ampTranid},</if>
+                <if test="isNotNull(ampTime)">amp_time=#{ampTime},</if>
+                <if test="isNotNull(trancode)">trancode=#{trancode},</if>
+                <if test="isNotNull(bustype)">bustype=#{bustype},</if>
+                <if test="isNotNull(transtype)">transtype=#{transtype},</if>
+                <if test="isNotNull(method)">method=#{method},</if>
+                <if test="isNotNull(apikey)">apikey=#{apikey},</if>
+                <if test="isNotNull(accountNum)">account_num=#{accountNum},</if>
+                <if test="isNotNull(time)">time=#{time},</if>
+                <if test="isNotNull(amount)">amount=#{amount},</if>
+                <if test="isNotNull(reason)">reason=#{reason},</if>
+                <if test="isNotNull(fgType)">fg_type=#{fgType},</if>
+                <if test="isNotNull(noticeNum)">notice_num=#{noticeNum},</if>
+                <if test="isNotNull(freezeMonth)">freeze_month=#{freezeMonth},</if>
+                <if test="isNotNull(sn)">sn=#{sn},</if>
+                <if test="isNotNull(sendStatus)">send_status=#{sendStatus},</if>
+                <if test="isNotNull(userName)">user_name=#{userName},</if>
+                <if test="isNotNull(userId)">user_id=#{userId},</if>
+                <if test="isNotNull(batchNum)">batch_num=#{batchNum},</if>
+                <if test="isNotNull(licenseNum)">license_num=#{licenseNum},</if>
+                <if test="isNotNull(licenseName)">license_name=#{licenseName},</if>
+                <if test="isNotNull(respMsg)">resp_msg=#{respMsg},</if>
+                <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+                <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+                <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+        </trim>
+        where amp_tranid = #{ampTranid} 
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAmpTranidDO">
+        update  WHEFSS_AMP_TRANID
+        <trim prefix="set" suffixOverrides = ",">
+            <if test="isNotNull(ampTranid)">amp_tranid=#{ampTranid},</if>
+            <if test="isNotNull(ampTime)">amp_time=#{ampTime},</if>
+            <if test="isNotNull(trancode)">trancode=#{trancode},</if>
+            <if test="isNotNull(bustype)">bustype=#{bustype},</if>
+            <if test="isNotNull(transtype)">transtype=#{transtype},</if>
+            <if test="isNotNull(method)">method=#{method},</if>
+            <if test="isNotNull(apikey)">apikey=#{apikey},</if>
+            <if test="isNotNull(accountNum)">account_num=#{accountNum},</if>
+            <if test="isNotNull(time)">time=#{time},</if>
+            <if test="isNotNull(amount)">amount=#{amount},</if>
+            <if test="isNotNull(reason)">reason=#{reason},</if>
+            <if test="isNotNull(fgType)">fg_type=#{fgType},</if>
+            <if test="isNotNull(noticeNum)">notice_num=#{noticeNum},</if>
+            <if test="isNotNull(freezeMonth)">freeze_month=#{freezeMonth},</if>
+            <if test="isNotNull(sn)">sn=#{sn},</if>
+            <if test="isNotNull(sendStatus)">send_status=#{sendStatus},</if>
+            <if test="isNotNull(userName)">user_name=#{userName},</if>
+            <if test="isNotNull(userId)">user_id=#{userId},</if>
+            <if test="isNotNull(batchNum)">batch_num=#{batchNum},</if>
+            <if test="isNotNull(licenseNum)">license_num=#{licenseNum},</if>
+            <if test="isNotNull(licenseName)">license_name=#{licenseName},</if>
+            <if test="isNotNull(respMsg)">resp_msg=#{respMsg},</if>
+            <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+            <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+            <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+        </trim>
+        where amp_tranid = #{ampTranid} 
+    </update>
+
+    <insert id="insert" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAmpTranidDO">
+        insert  into WHEFSS_AMP_TRANID(amp_tranid, amp_time, trancode, bustype, transtype, method, apikey, account_num, time, amount, reason, fg_type, notice_num, freeze_month, sn, send_status, user_name, user_id, batch_num, license_num, license_name, resp_msg, reserve1, reserve2, reserve3)
+        values( #{ampTranid}, #{ampTime}, #{trancode}, #{bustype}, #{transtype}, #{method}, #{apikey}, #{accountNum}, #{time}, #{amount}, #{reason}, #{fgType}, #{noticeNum}, #{freezeMonth}, #{sn}, #{sendStatus}, #{userName}, #{userId}, #{batchNum}, #{licenseNum}, #{licenseName}, #{respMsg}, #{reserve1}, #{reserve2}, #{reserve3})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAmpTranidDO">
+        insert  into WHEFSS_AMP_TRANID
+        <trim prefix="(" suffix=')' suffixOverrides=",">
+            <if test="isNotNull(ampTranid)">amp_tranid,</if>
+            <if test="isNotNull(ampTime)">amp_time,</if>
+            <if test="isNotNull(trancode)">trancode,</if>
+            <if test="isNotNull(bustype)">bustype,</if>
+            <if test="isNotNull(transtype)">transtype,</if>
+            <if test="isNotNull(method)">method,</if>
+            <if test="isNotNull(apikey)">apikey,</if>
+            <if test="isNotNull(accountNum)">account_num,</if>
+            <if test="isNotNull(time)">time,</if>
+            <if test="isNotNull(amount)">amount,</if>
+            <if test="isNotNull(reason)">reason,</if>
+            <if test="isNotNull(fgType)">fg_type,</if>
+            <if test="isNotNull(noticeNum)">notice_num,</if>
+            <if test="isNotNull(freezeMonth)">freeze_month,</if>
+            <if test="isNotNull(sn)">sn,</if>
+            <if test="isNotNull(sendStatus)">send_status,</if>
+            <if test="isNotNull(userName)">user_name,</if>
+            <if test="isNotNull(userId)">user_id,</if>
+            <if test="isNotNull(batchNum)">batch_num,</if>
+            <if test="isNotNull(licenseNum)">license_num,</if>
+            <if test="isNotNull(licenseName)">license_name,</if>
+            <if test="isNotNull(respMsg)">resp_msg,</if>
+            <if test="isNotNull(reserve1)">reserve1,</if>
+            <if test="isNotNull(reserve2)">reserve2,</if>
+            <if test="isNotNull(reserve3)">reserve3,</if>
+        </trim>
+        <trim prefix="values(" suffix=')' suffixOverrides=",">
+            <if test="isNotNull(ampTranid)">#{ampTranid},</if>
+            <if test="isNotNull(ampTime)">#{ampTime},</if>
+            <if test="isNotNull(trancode)">#{trancode},</if>
+            <if test="isNotNull(bustype)">#{bustype},</if>
+            <if test="isNotNull(transtype)">#{transtype},</if>
+            <if test="isNotNull(method)">#{method},</if>
+            <if test="isNotNull(apikey)">#{apikey},</if>
+            <if test="isNotNull(accountNum)">#{accountNum},</if>
+            <if test="isNotNull(time)">#{time},</if>
+            <if test="isNotNull(amount)">#{amount},</if>
+            <if test="isNotNull(reason)">#{reason},</if>
+            <if test="isNotNull(fgType)">#{fgType},</if>
+            <if test="isNotNull(noticeNum)">#{noticeNum},</if>
+            <if test="isNotNull(freezeMonth)">#{freezeMonth},</if>
+            <if test="isNotNull(sn)">#{sn},</if>
+            <if test="isNotNull(sendStatus)">#{sendStatus},</if>
+            <if test="isNotNull(userName)">#{userName},</if>
+            <if test="isNotNull(userId)">#{userId},</if>
+            <if test="isNotNull(batchNum)">#{batchNum},</if>
+            <if test="isNotNull(licenseNum)">#{licenseNum},</if>
+            <if test="isNotNull(licenseName)">#{licenseName},</if>
+            <if test="isNotNull(respMsg)">#{respMsg},</if>
+            <if test="isNotNull(reserve1)">#{reserve1},</if>
+            <if test="isNotNull(reserve2)">#{reserve2},</if>
+            <if test="isNotNull(reserve3)">#{reserve3},</if>
+        </trim>
+    </insert>
+
+    <!-- 分页查询id后缀必须为Page 查询司法冻结数据-->
+    <select id="selectInfoPage" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAmpTranidDO" >
+        select <include refid="base_column_list"/>
+        from WHEFSS_AMP_TRANID  where 1=1
+        <if test="startDate != null and startDate != ''">
+            AND amp_time &gt;= #{startDate}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND amp_time &lt;= #{endDate}
+        </if>
+        <if test="bustype != null and bustype != ''">
+            AND bustype = #{bustype}
+        </if>
+        <if test="fgType != null and fgType != ''">
+            AND fg_type = #{fgType}
+        </if>
+        <if test="sendStatus != null and sendStatus != ''">
+            AND send_status = #{sendStatus}
+        </if>
+    </select>
+
+
+    <sql id="base_column_list">
+    amp_tranid, amp_time, trancode, bustype, transtype, method, apikey, account_num, time, amount, reason, fg_type, notice_num, freeze_month, sn, send_status, user_name, user_id, batch_num, license_num, license_name, resp_msg, reserve1, reserve2, reserve3
+    </sql>
+
+    <sql id="where_condition">
+        <trim prefix="where" prefixOverrides="and">
+            <if test="isNotNull(ampTranid)">amp_tranid=#{ampTranid},</if>
+            <if test="isNotNull(ampTime)">amp_time=#{ampTime},</if>
+            <if test="isNotNull(trancode)">trancode=#{trancode},</if>
+            <if test="isNotNull(bustype)">bustype=#{bustype},</if>
+            <if test="isNotNull(transtype)">transtype=#{transtype},</if>
+            <if test="isNotNull(method)">method=#{method},</if>
+            <if test="isNotNull(apikey)">apikey=#{apikey},</if>
+            <if test="isNotNull(accountNum)">account_num=#{accountNum},</if>
+            <if test="isNotNull(time)">time=#{time},</if>
+            <if test="isNotNull(amount)">amount=#{amount},</if>
+            <if test="isNotNull(reason)">reason=#{reason},</if>
+            <if test="isNotNull(fgType)">fg_type=#{fgType},</if>
+            <if test="isNotNull(noticeNum)">notice_num=#{noticeNum},</if>
+            <if test="isNotNull(freezeMonth)">freeze_month=#{freezeMonth},</if>
+            <if test="isNotNull(sn)">sn=#{sn},</if>
+            <if test="isNotNull(sendStatus)">send_status=#{sendStatus},</if>
+            <if test="isNotNull(userName)">user_name=#{userName},</if>
+            <if test="isNotNull(userId)">user_id=#{userId},</if>
+            <if test="isNotNull(batchNum)">batch_num=#{batchNum},</if>
+            <if test="isNotNull(licenseNum)">license_num=#{licenseNum},</if>
+            <if test="isNotNull(licenseName)">license_name=#{licenseName},</if>
+            <if test="isNotNull(respMsg)">resp_msg=#{respMsg},</if>
+            <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+            <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+            <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+        </trim>
+
+    </sql>
+</mapper>

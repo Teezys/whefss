@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="GB2312"?>
+<MYSQL>
+    <dynSentence name="QRY_SMSTBUFF_BYDATE">   
+         <!-- 限制WWW渠道短信下发次数 --> 
+         <sentence>
+            SELECT A.* FROM 
+               (SELECT CMD_SEQ AS ORG_CMD_SEQ,CMD_RSP_MSG AS ORG_CMD_RSP_MSG,CMD_TM AS ORG_CMD_TM,EXP_TM AS ORG_EXP_TM 
+                FROM SMSTBUFF 
+                WHERE TXN_CD=? AND MBL_NO=? AND CMD_STS='1' AND SUBSTR(CMD_TM,1,8)=? ORDER BY EXP_TM DESC)A 
+            LIMIT 0,1
+         </sentence>
+         <fields>TXN_CD|MBL_NO|TX_DT|</fields>
+      </dynSentence>
+      
+      <dynSentence name="QRY_PWMTCAD">
+         <sentence>
+           SELECT * FROM PWMTCAD WHERE USR_NO=? AND  CRD_EFF_FLG='0' LIMIT 0,1
+         </sentence>
+         <fields>USR_NO|</fields>
+      </dynSentence>
+      <dynSentence name="QRY_URMTBKIF">
+         <sentence>
+            SELECT USR_BNK_ID FROM URMTBKIF
+             WHERE USR_NO=? ORDER BY USR_BNK_ID DESC LIMIT 0,1
+         </sentence>
+         <fields>USR_NO|</fields>
+      </dynSentence>
+      <dynSentence name="QRY_PSMTRMDR_TOT_FEE_AMT">
+            <sentence>
+                SELECT T2.MON DT,T2.CNT - NVL(T1.CNT, 0) TOT_FEE_AMT
+                FROM (SELECT DATE_FORMAT(ADD_MONTHS(STR_TO_DATE(SUBSTR(AC_DT, 0, 6), '%Y%m'), 1),
+                       '%Y%m%d') MONUP,
+                TOT_FEE_AMT CNT
+                FROM PSMTRMDR
+                WHERE TXN_STS &lt;&gt; 'S' AND MERC_ID=?
+                AND SUBSTR(DATE_FORMAT((STR_TO_DATE(AC_DT,'%Y%m%d')+1),'%Y%m%d'),7,2)  = '01'
+                AND AC_DT > (SELECT NVL(MAX(AC_DT),'00000000') FROM PSMTRMDR WHERE TXN_STS = 'S' AND  MERC_ID =?)) T1,
+                (SELECT SUBSTR(AC_DT, 0, 6) MON, TOT_FEE_AMT CNT
+                FROM PSMTRMDR
+                WHERE TXN_STS &lt;&gt; 'S' AND MERC_ID= ?
+                AND SUBSTR(DATE_FORMAT((STR_TO_DATE(AC_DT,'%Y%m%d')+1),'%Y%m%d'),7,2)  = '01'
+                AND AC_DT > (SELECT NVL(MAX(AC_DT),'00000000') FROM PSMTRMDR WHERE TXN_STS = 'S' AND  MERC_ID = ?)) T2
+                WHERE T1.MONUP(+) = T2.MON 
+                AND (T2.CNT - NVL(T1.CNT, 0))>0
+                ORDER BY T2.MON ASC
+            </sentence>
+            <fields>MERC_ID|MERC_ID|MERC_ID|MERC_ID|</fields>
+        </dynSentence>
+         <dynSentence name="QRY_PSMTRMDR_TOT_FEE_SUMAMT">
+            <sentence>
+                SELECT SUM(TOT_FEE_AMT) SUM_TOT_FEE_AMT FROM(
+                SELECT T2.MON DT,T2.CNT - NVL(T1.CNT, 0) TOT_FEE_AMT
+                FROM (SELECT DATE_FORMAT(ADD_MONTHS(STR_TO_DATE(SUBSTR(AC_DT, 0, 6), '%Y%m'), 1),
+                       'YYYYMM') MONUP,
+                TOT_FEE_AMT CNT
+                FROM PSMTRMDR
+                WHERE TXN_STS &lt;&gt; 'S' AND MERC_ID=?
+                AND SUBSTR(DATE_FORMAT((STR_TO_DATE(AC_DT,'%Y%m%d')+1),'%Y%m%d'),7,2)  = '01'
+                AND AC_DT > (SELECT NVL(MAX(AC_DT),'00000000') FROM PSMTRMDR WHERE TXN_STS = 'S' AND  MERC_ID =?)) T1,
+                (SELECT SUBSTR(AC_DT, 0, 6) MON, TOT_FEE_AMT CNT
+                FROM PSMTRMDR
+                WHERE TXN_STS &lt;&gt; 'S' AND MERC_ID= ?
+                AND SUBSTR(DATE_FORMAT((STR_TO_DATE(AC_DT,'%Y%m%d')+1),'%Y%m%d'),7,2)  = '01'
+                AND AC_DT > (SELECT NVL(MAX(AC_DT),'00000000') FROM PSMTRMDR WHERE TXN_STS = 'S' AND  MERC_ID = ?)) T2
+                WHERE T1.MONUP(+) = T2.MON 
+                AND (T2.CNT - NVL(T1.CNT, 0))>0
+                ORDER BY T2.MON ASC)
+            </sentence>
+            <fields>MERC_ID|MERC_ID|MERC_ID|MERC_ID|</fields>
+        </dynSentence>
+         <dynSentence name="QRY_URMTSMS_INF">
+            <sentence>
+                SELECT * FROM(
+                SELECT CHK_NO VER_CHK_NO,TM_SMP VER_DATE FROM URMTSMS
+                WHERE MBL_NO=?
+                ORDER BY TM_SMP DESC)
+                LIMIT 0,1
+            </sentence>
+            <fields>PSWD_PTC_MBL|</fields>
+        </dynSentence>
+        <dynSentence name="QRY_URMTPRZTG">
+            <sentence>
+                SELECT ID_NM FROM URMTPRZTG WHERE ID_NO IN (?,?) limit 0,1
+            </sentence>
+            <fields>ID_NO|LOW_ID_NO| </fields>
+        </dynSentence>
+        <dynSentence name="QRY_URMTPINF_BOSSSTSW">
+            <sentence>
+                SELECT MBL_NO FROM URMTPINF WHERE SUBSTR(BOSS_STSW,2,1)='1' AND USR_STS='0' LIMIT 0,100000
+           </sentence>
+        </dynSentence>
+        
+        <dynSentence name="QRY_URMTPCLO">
+            <sentence>
+                SELECT MBL_NO FROM URMTPCLO WHERE UPD_FLG='0' LIMIT 0,1000
+         </sentence>
+        </dynSentence>
+        
+         <dynSentence name="QRY_URMTTEMP">
+            <sentence>
+                SELECT MBL_NO FROM URMTTEMP WHERE UPD_FLG='0' AND OPR_TYP='BD' 
+                LIMIT 0,50000
+            </sentence>
+        </dynSentence>
+        
+       <dynSentence name="QRY_URMTBP10">
+            <sentence>
+                SELECT MBL_NO,TRAN_NO FROM URMTBP10 WHERE UPD_FLG='0' LIMIT 0,1000
+            </sentence>
+        </dynSentence>
+        
+         <dynSentence name="QRY_URMTCIF">
+            <sentence>
+                SELECT CI_NO FROM URMTCIF WHERE ID_TYP=? AND ID_NO IN (?,?) LIMIT 0,1
+          </sentence>
+            <fields>ID_TYP|NEW_ID_NO|LOW_ID_NO</fields>
+        </dynSentence>
+		 <!-- 根据内部用户号查询主账户资金收支明细表  (上次资金变动时间)-->
+      <dynSentence name="QRY_ACMTCDDT_BY_USRNO1">
+         <sentence>
+         SELECT MAX(CONCAT(SYS_DT ,SYS_TM)) AS MAX_CHARGE_DT 
+         FROM ACMTCDDT WHERE USR_NO=? 
+         </sentence>
+         <fields>CHK_USER_STS.USR_NO|</fields>
+      </dynSentence>
+		  <!-- 查询不可用明细 -->
+      <dynSentence name="QRY_ACMTHOLD">
+         <sentence>
+            SELECT SYS_DT,SYS_TM,HLD_CD,HLD_BAL
+            FROM ACMTHOLD 
+            WHERE AC_NO=?  
+            AND  HLD_STS='0' 
+            AND  CAP_TYP=?
+            AND SYS_DT &gt;= ? AND SYS_DT &lt;= ?
+            ORDER BY CONCAT(SYS_DT,SYS_TM) DESC
+         </sentence>
+         <fields>AC_NO|CAP_TYP|STRT_DT|END_DT</fields>
+      </dynSentence>
+      <dynSentence name="UPD_URMTPINF_USR_STSW">
+         <sentence>
+         UPDATE URMTPINF
+         SET USR_STSW= CONCAT(substr(USR_STSW,1,5),0,substr(USR_STSW,7))
+         </sentence>
+         <fields></fields>
+      </dynSentence>
+</MYSQL>

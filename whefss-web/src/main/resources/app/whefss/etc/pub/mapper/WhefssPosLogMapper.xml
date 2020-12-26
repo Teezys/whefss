@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- Created by xu_lw on 2020-10-29 18:01:55. -->
+<mapper namespace="com.murong.ecp.netpay.whefss.web.pub.dal.dao.WhefssPosLogMapper">
+    <select id="selectByPrimaryKey" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssPosLogDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_POS_LOG where 
+    </select>
+
+    <!-- 分页查询id后缀必须为Page -->
+    <select id="selectPage" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssPosLogDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_POS_LOG where notice_num like '%%${noticeNum}%%' or zdh_num like '%%${zdhNum}%%' or tran_date like '%%${tranDate}%%' or tran_time like '%%${tranTime}%%' or pay_acc like '%%${payAcc}%%' or jksbh like '%%${jksbh}%%' or account_num like '%%${accountNum}%%' or pay_num like '%%${payNum}%%' or jksje like '%%${jksje}%%' or sn like '%%${sn}%%' or set_date like '%%${setDate}%%' or reserve1 like '%%${reserve1}%%' or reserve2 like '%%${reserve2}%%' or reserve3 like '%%${reserve3}%%' or user_id like '%%${userId}%%' or user_name like '%%${userName}%%' or batch_num like '%%${batchNum}%%'  order by
+    </select>
+
+    <select id="selectTotalPage" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssPosLogDO">
+        select TRAN_DATE,ACCOUNT_NUM,sn,sum(TRAN_AMT)-sum(POS_AMT) TRAN_AMT from WHEFSS_POS_LOG
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="tranDate !=null and tranDate!='' ">
+                AND TRAN_DATE = #{tranDate}
+            </if>
+            <if test="accountNum !=null and accountNum!='' ">
+                AND ACCOUNT_NUM = #{accountNum}
+            </if>
+        </trim>
+        group by TRAN_DATE,ACCOUNT_NUM,sn
+    </select>
+
+    <!-- 游标后缀必须为Cursor -->
+    <select id="selectCursor" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssPosLogDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_POS_LOG
+    </select>
+
+
+    <select id="selectByEntity" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssPosLogDO">
+        select JKSBH,sum(TRAN_AMT)-sum(POS_AMT) TRAN_AMT,sum(POS_AMT) POS_AMT
+        from WHEFSS_POS_LOG where tran_date=#{tranDate} and account_num=#{accountNum} group by JKSBH
+    </select>
+
+    <!-- 查询id后缀必须为ResultHandler -->
+    <select id="selectResultHandler" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssPosLogDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_POS_LOG
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssPosLogDO">
+        delete from  WHEFSS_POS_LOG
+    </delete>
+
+    <update id="updateAcoma" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssPosLogDO">
+        update  WHEFSS_POS_LOG
+        set pos_amt=#{posAmt},tran_amt=#{tranAmt}
+        where tran_date=#{tranDate} and notice_num=#{noticeNum} and zdh_num=#{zdhNum} and pay_acc=#{payAcc}
+    </update>
+
+    <update id="updateSn" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssPosLogDO">
+        update  WHEFSS_POS_LOG
+        set sn=#{sn}
+        where tran_date=#{tranDate} and account_num=#{accountNum}
+    </update>
+
+    <delete id="deleteByEntity" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssPosLogDO">
+        delete from  WHEFSS_POS_LOG where tran_date =${tranDate} and notice_num = #{noticeNum} and account_num = #{accountNum}
+    </delete>
+
+    <delete id="deleteByIds" parameterType="java.lang.String">
+        delete from  WHEFSS_POS_LOG where id in (${ids})
+    </delete>
+
+    <delete id="deleteByTranDate" parameterType="java.lang.String">
+        delete from  WHEFSS_POS_LOG where TRAN_DATE =${tranDate}
+    </delete>
+
+    <delete id="deleteByTranAmt" parameterType="java.lang.String">
+        delete from  WHEFSS_POS_LOG where TRAN_DATE =${tranDate} and tran_amt is null
+    </delete>
+
+    <update id="updateByPrimaryKey" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssPosLogDO">
+        update  WHEFSS_POS_LOG
+        <trim prefix="set" suffixOverrides = ",">
+                <if test="isNotNull(noticeNum)">notice_num=#{noticeNum},</if>
+                <if test="isNotNull(zdhNum)">zdh_num=#{zdhNum},</if>
+                <if test="isNotNull(tranDate)">tran_date=#{tranDate},</if>
+                <if test="isNotNull(tranTime)">tran_time=#{tranTime},</if>
+                <if test="isNotNull(payAcc)">pay_acc=#{payAcc},</if>
+                <if test="isNotNull(jksbh)">jksbh=#{jksbh},</if>
+                <if test="isNotNull(accountNum)">account_num=#{accountNum},</if>
+                <if test="isNotNull(payNum)">pay_num=#{payNum},</if>
+                <if test="isNotNull(jksje)">jksje=#{jksje},</if>
+                <if test="isNotNull(posAmt)">pos_amt=#{posAmt},</if>
+                <if test="isNotNull(tranAmt)">tran_amt=#{tranAmt},</if>
+                <if test="isNotNull(sn)">sn=#{sn},</if>
+                <if test="isNotNull(setDate)">set_date=#{setDate},</if>
+                <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+                <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+                <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+                <if test="isNotNull(userId)">user_id=#{userId},</if>
+                <if test="isNotNull(userName)">user_name=#{userName},</if>
+                <if test="isNotNull(batchNum)">batch_num=#{batchNum},</if>
+        </trim>
+        where 
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssPosLogDO">
+        update  WHEFSS_POS_LOG
+        <trim prefix="set" suffixOverrides = ",">
+            <if test="isNotNull(noticeNum)">notice_num=#{noticeNum},</if>
+            <if test="isNotNull(zdhNum)">zdh_num=#{zdhNum},</if>
+            <if test="isNotNull(tranDate)">tran_date=#{tranDate},</if>
+            <if test="isNotNull(tranTime)">tran_time=#{tranTime},</if>
+            <if test="isNotNull(payAcc)">pay_acc=#{payAcc},</if>
+            <if test="isNotNull(jksbh)">jksbh=#{jksbh},</if>
+            <if test="isNotNull(accountNum)">account_num=#{accountNum},</if>
+            <if test="isNotNull(payNum)">pay_num=#{payNum},</if>
+            <if test="isNotNull(jksje)">jksje=#{jksje},</if>
+            <if test="isNotNull(posAmt)">pos_amt=#{posAmt},</if>
+            <if test="isNotNull(tranAmt)">tran_amt=#{tranAmt},</if>
+            <if test="isNotNull(sn)">sn=#{sn},</if>
+            <if test="isNotNull(setDate)">set_date=#{setDate},</if>
+            <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+            <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+            <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+            <if test="isNotNull(userId)">user_id=#{userId},</if>
+            <if test="isNotNull(userName)">user_name=#{userName},</if>
+            <if test="isNotNull(batchNum)">batch_num=#{batchNum},</if>
+        </trim>
+        where 
+    </update>
+
+    <insert id="insert" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssPosLogDO">
+        insert  into WHEFSS_POS_LOG(notice_num, zdh_num, tran_date, tran_time, pay_acc, jksbh, account_num, pay_num, jksje, pos_amt, tran_amt, sn, set_date, reserve1, reserve2, reserve3, user_id, user_name, batch_num)
+        values( #{noticeNum}, #{zdhNum}, #{tranDate}, #{tranTime}, #{payAcc}, #{jksbh}, #{accountNum}, #{payNum}, #{jksje}, #{posAmt}, #{tranAmt}, #{sn}, #{setDate}, #{reserve1}, #{reserve2}, #{reserve3}, #{userId}, #{userName}, #{batchNum})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssPosLogDO">
+        insert  into WHEFSS_POS_LOG
+        <trim prefix="(" suffix=')' suffixOverrides=",">
+            <if test="isNotNull(noticeNum)">notice_num,</if>
+            <if test="isNotNull(zdhNum)">zdh_num,</if>
+            <if test="isNotNull(tranDate)">tran_date,</if>
+            <if test="isNotNull(tranTime)">tran_time,</if>
+            <if test="isNotNull(payAcc)">pay_acc,</if>
+            <if test="isNotNull(jksbh)">jksbh,</if>
+            <if test="isNotNull(accountNum)">account_num,</if>
+            <if test="isNotNull(payNum)">pay_num,</if>
+            <if test="isNotNull(jksje)">jksje,</if>
+            <if test="isNotNull(posAmt)">pos_amt,</if>
+            <if test="isNotNull(tranAmt)">tran_amt,</if>
+            <if test="isNotNull(sn)">sn,</if>
+            <if test="isNotNull(setDate)">set_date,</if>
+            <if test="isNotNull(reserve1)">reserve1,</if>
+            <if test="isNotNull(reserve2)">reserve2,</if>
+            <if test="isNotNull(reserve3)">reserve3,</if>
+            <if test="isNotNull(userId)">user_id,</if>
+            <if test="isNotNull(userName)">user_name,</if>
+            <if test="isNotNull(batchNum)">batch_num,</if>
+        </trim>
+        <trim prefix="values(" suffix=')' suffixOverrides=",">
+            <if test="isNotNull(noticeNum)">#{noticeNum},</if>
+            <if test="isNotNull(zdhNum)">#{zdhNum},</if>
+            <if test="isNotNull(tranDate)">#{tranDate},</if>
+            <if test="isNotNull(tranTime)">#{tranTime},</if>
+            <if test="isNotNull(payAcc)">#{payAcc},</if>
+            <if test="isNotNull(jksbh)">#{jksbh},</if>
+            <if test="isNotNull(accountNum)">#{accountNum},</if>
+            <if test="isNotNull(payNum)">#{payNum},</if>
+            <if test="isNotNull(jksje)">#{jksje},</if>
+            <if test="isNotNull(posAmt)">#{posAmt},</if>
+            <if test="isNotNull(tranAmt)">#{tranAmt},</if>
+            <if test="isNotNull(sn)">#{sn},</if>
+            <if test="isNotNull(setDate)">#{setDate},</if>
+            <if test="isNotNull(reserve1)">#{reserve1},</if>
+            <if test="isNotNull(reserve2)">#{reserve2},</if>
+            <if test="isNotNull(reserve3)">#{reserve3},</if>
+            <if test="isNotNull(userId)">#{userId},</if>
+            <if test="isNotNull(userName)">#{userName},</if>
+            <if test="isNotNull(batchNum)">#{batchNum},</if>
+        </trim>
+    </insert>
+
+    <sql id="base_column_list">
+    notice_num, zdh_num, tran_date, tran_time, pay_acc, jksbh, account_num, pay_num, jksje, pos_amt, tran_amt, sn, set_date, reserve1, reserve2, reserve3, user_id, user_name, batch_num
+    </sql>
+
+    <sql id="where_condition">
+        <trim prefix="where" prefixOverrides="and">
+            <if test="isNotNull(noticeNum)">notice_num=#{noticeNum},</if>
+            <if test="isNotNull(zdhNum)">zdh_num=#{zdhNum},</if>
+            <if test="isNotNull(tranDate)">tran_date=#{tranDate},</if>
+            <if test="isNotNull(tranTime)">tran_time=#{tranTime},</if>
+            <if test="isNotNull(payAcc)">pay_acc=#{payAcc},</if>
+            <if test="isNotNull(jksbh)">jksbh=#{jksbh},</if>
+            <if test="isNotNull(accountNum)">account_num=#{accountNum},</if>
+            <if test="isNotNull(payNum)">pay_num=#{payNum},</if>
+            <if test="isNotNull(jksje)">jksje=#{jksje},</if>
+            <if test="isNotNull(posAmt)">pos_amt=#{posAmt},</if>
+            <if test="isNotNull(tranAmt)">tran_amt=#{tranAmt},</if>
+            <if test="isNotNull(sn)">sn=#{sn},</if>
+            <if test="isNotNull(setDate)">set_date=#{setDate},</if>
+            <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+            <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+            <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+            <if test="isNotNull(userId)">user_id=#{userId},</if>
+            <if test="isNotNull(userName)">user_name=#{userName},</if>
+            <if test="isNotNull(batchNum)">batch_num=#{batchNum},</if>
+        </trim>
+    </sql>
+</mapper>

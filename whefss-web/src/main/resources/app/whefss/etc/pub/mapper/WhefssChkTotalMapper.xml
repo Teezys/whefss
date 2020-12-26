@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- Created by xu_lw on 2020-12-11 18:24:00. -->
+<mapper namespace="com.murong.ecp.netpay.whefss.web.pub.dal.dao.WhefssChkTotalMapper">
+    <select id="selectByPrimaryKey" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkTotalDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_CHK_TOTAL where pk_id = #{pkId} 
+    </select>
+
+    <select id="selectByChkDt" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkTotalDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_CHK_TOTAL where chk_dt = #{chkDt}
+    </select>
+
+    <!-- 分页查询id后缀必须为Page -->
+    <select id="selectPage" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkTotalDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_CHK_TOTAL where pk_id like '%%${pkId}%%' or chk_dt like '%%${chkDt}%%' or chk_sts like '%%${chkSts}%%' or chk_tm like '%%${chkTm}%%' or chk_num like '%%${chkNum}%%' or suc_chk_num like '%%${sucChkNum}%%' or user_id like '%%${userId}%%' or user_name like '%%${userName}%%' or reserve1 like '%%${reserve1}%%' or reserve2 like '%%${reserve2}%%' or reserve3 like '%%${reserve3}%%'  order by pk_id
+    </select>
+
+    <!-- 游标后缀必须为Cursor -->
+    <select id="selectCursor" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkTotalDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_CHK_TOTAL
+    </select>
+
+    <!-- 查询id后缀必须为ResultHandler -->
+    <select id="selectResultHandler" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkTotalDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_CHK_TOTAL
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkTotalDO">
+        delete from  WHEFSS_CHK_TOTAL where pk_id = #{pkId} 
+    </delete>
+
+    <delete id="deleteByIds" parameterType="java.lang.String">
+        delete from  WHEFSS_CHK_TOTAL where id in (${ids})
+    </delete>
+
+    <update id="updateByPrimaryKey" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkTotalDO">
+        update  WHEFSS_CHK_TOTAL
+        <trim prefix="set" suffixOverrides = ",">
+                <if test="isNotNull(pkId)">pk_id=#{pkId},</if>
+                <if test="isNotNull(chkDt)">chk_dt=#{chkDt},</if>
+                <if test="isNotNull(chkSts)">chk_sts=#{chkSts},</if>
+                <if test="isNotNull(chkTm)">chk_tm=#{chkTm},</if>
+                <if test="isNotNull(chkNum)">chk_num=#{chkNum},</if>
+                <if test="isNotNull(chkAmt)">chk_amt=#{chkAmt},</if>
+                <if test="isNotNull(sucChkNum)">suc_chk_num=#{sucChkNum},</if>
+                <if test="isNotNull(sucChkAmt)">suc_chk_amt=#{sucChkAmt},</if>
+                <if test="isNotNull(userId)">user_id=#{userId},</if>
+                <if test="isNotNull(userName)">user_name=#{userName},</if>
+                <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+                <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+                <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+        </trim>
+        where pk_id = #{pkId} 
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkTotalDO">
+        update  WHEFSS_CHK_TOTAL
+        <trim prefix="set" suffixOverrides = ",">
+            <if test="isNotNull(pkId)">pk_id=#{pkId},</if>
+            <if test="isNotNull(chkDt)">chk_dt=#{chkDt},</if>
+            <if test="isNotNull(chkSts)">chk_sts=#{chkSts},</if>
+            <if test="isNotNull(chkTm)">chk_tm=#{chkTm},</if>
+            <if test="isNotNull(chkNum)">chk_num=#{chkNum},</if>
+            <if test="isNotNull(chkAmt)">chk_amt=#{chkAmt},</if>
+            <if test="isNotNull(sucChkNum)">suc_chk_num=#{sucChkNum},</if>
+            <if test="isNotNull(sucChkAmt)">suc_chk_amt=#{sucChkAmt},</if>
+            <if test="isNotNull(userId)">user_id=#{userId},</if>
+            <if test="isNotNull(userName)">user_name=#{userName},</if>
+            <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+            <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+            <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+        </trim>
+        where pk_id = #{pkId} 
+    </update>
+
+    <insert id="insert" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkTotalDO">
+        insert  into WHEFSS_CHK_TOTAL(pk_id, chk_dt, chk_sts, chk_tm, chk_num, chk_amt, suc_chk_num, suc_chk_amt, user_id, user_name, reserve1, reserve2, reserve3)
+        values( #{pkId}, #{chkDt}, #{chkSts}, #{chkTm}, #{chkNum}, #{chkAmt}, #{sucChkNum}, #{sucChkAmt}, #{userId}, #{userName}, #{reserve1}, #{reserve2}, #{reserve3})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssChkTotalDO">
+        insert  into WHEFSS_CHK_TOTAL
+        <trim prefix="(" suffix=')' suffixOverrides=",">
+            <if test="isNotNull(pkId)">pk_id,</if>
+            <if test="isNotNull(chkDt)">chk_dt,</if>
+            <if test="isNotNull(chkSts)">chk_sts,</if>
+            <if test="isNotNull(chkTm)">chk_tm,</if>
+            <if test="isNotNull(chkNum)">chk_num,</if>
+            <if test="isNotNull(chkAmt)">chk_amt,</if>
+            <if test="isNotNull(sucChkNum)">suc_chk_num,</if>
+            <if test="isNotNull(sucChkAmt)">suc_chk_amt,</if>
+            <if test="isNotNull(userId)">user_id,</if>
+            <if test="isNotNull(userName)">user_name,</if>
+            <if test="isNotNull(reserve1)">reserve1,</if>
+            <if test="isNotNull(reserve2)">reserve2,</if>
+            <if test="isNotNull(reserve3)">reserve3,</if>
+        </trim>
+        <trim prefix="values(" suffix=')' suffixOverrides=",">
+            <if test="isNotNull(pkId)">#{pkId},</if>
+            <if test="isNotNull(chkDt)">#{chkDt},</if>
+            <if test="isNotNull(chkSts)">#{chkSts},</if>
+            <if test="isNotNull(chkTm)">#{chkTm},</if>
+            <if test="isNotNull(chkNum)">#{chkNum},</if>
+            <if test="isNotNull(chkAmt)">#{chkAmt},</if>
+            <if test="isNotNull(sucChkNum)">#{sucChkNum},</if>
+            <if test="isNotNull(sucChkAmt)">#{sucChkAmt},</if>
+            <if test="isNotNull(userId)">#{userId},</if>
+            <if test="isNotNull(userName)">#{userName},</if>
+            <if test="isNotNull(reserve1)">#{reserve1},</if>
+            <if test="isNotNull(reserve2)">#{reserve2},</if>
+            <if test="isNotNull(reserve3)">#{reserve3},</if>
+        </trim>
+    </insert>
+
+    <sql id="base_column_list">
+    pk_id, chk_dt, chk_sts, chk_tm, chk_num, chk_amt, suc_chk_num, suc_chk_amt, user_id, user_name, reserve1, reserve2, reserve3
+    </sql>
+
+    <sql id="where_condition">
+        <trim prefix="where" prefixOverrides="and">
+            <if test="isNotNull(pkId)">pk_id=#{pkId},</if>
+            <if test="isNotNull(chkDt)">chk_dt=#{chkDt},</if>
+            <if test="isNotNull(chkSts)">chk_sts=#{chkSts},</if>
+            <if test="isNotNull(chkTm)">chk_tm=#{chkTm},</if>
+            <if test="isNotNull(chkNum)">chk_num=#{chkNum},</if>
+            <if test="isNotNull(chkAmt)">chk_amt=#{chkAmt},</if>
+            <if test="isNotNull(sucChkNum)">suc_chk_num=#{sucChkNum},</if>
+            <if test="isNotNull(sucChkAmt)">suc_chk_amt=#{sucChkAmt},</if>
+            <if test="isNotNull(userId)">user_id=#{userId},</if>
+            <if test="isNotNull(userName)">user_name=#{userName},</if>
+            <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+            <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+            <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+        </trim>
+    </sql>
+</mapper>

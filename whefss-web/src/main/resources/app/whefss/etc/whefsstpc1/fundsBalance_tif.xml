@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root>
+    <format code="fundsBalance" desc="监管系统账户余额查询">
+        <request necessary="yes">
+            <xmlWrite name="Root">
+                <quote name="request"/>
+            </xmlWrite>
+        </request>
+        <response necessary="no">
+            <xmlRead name="Root">
+                <quote name="response"/>
+                <xmlRead name="data">
+                    <xmlRead name="monitor_num" data_name="monitor_num" desc="监管编号" necessary="no"/>
+                    <xmlRead name="account_name" data_name="account_name" desc="账户名称" necessary="no"/>
+                    <xmlRead name="account_num" data_name="account_num" desc="监管账号" necessary="no"/>
+                    <xmlRead name="balance_bank" data_name="balance_bank" desc="最近银行余额" necessary="no"/>
+                    <xmlRead name="balance_system" data_name="balance_system" desc="最近系统余额" necessary="no"/>
+                    <xmlRead name="balance_time" data_name="balance_time" desc="最近对账日期" necessary="no"/>
+                    <xmlRead name="account_state" data_name="account_state" desc="账户状态" necessary="no"/>
+                </xmlRead>
+            </xmlRead>
+        </response>
+    </format>
+</root>

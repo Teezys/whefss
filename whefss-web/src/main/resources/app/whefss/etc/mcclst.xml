@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <group name="whefss" desc="武汉房管服务">
+        <container name="whefsstpc1" file="app/whefss/etc/whefsstpc1_mcc.xml" desc="武汉房管的接出服务"/>
+    </group>
+</root>

@@ -1,0 +1,879 @@
+<?xml version="1.0" encoding="GB2312"?>
+<MYSQL>
+		<dynSentence name="UNLOG_QRY_USER_OPER_LOG">
+			<sentence>
+				select count(*) COUNT from USER_OPER_LOG log where
+				log.USER_ID='%s' and log.USER_ID_TYPE='%s' and
+				log.OPER_CODE='%s' and log.RESULT='000000' and
+				DATE_FORMAT(log.CREATE_DATE,'%Y%m%d')='%s'
+			</sentence>
+			<fields>MBL_NO|USER_ID_TYPE|OPER_CODE|~CUR_DT</fields>
+		</dynSentence>
+		
+		<dynSentence name="UNLOG_INS_USER_OPER_LOG">
+			<sentence>
+				insert into user_oper_log (ID, USER_ID, USER_ID_TYPE,
+				IP, OPER_CODE, RESULT, CREATE_DATE, FINISH_DATE,
+				TIME_DIFF) values ('%s', '%s',
+				'%s', '', '%s', '%s', str_to_date('%s', '%Y%m%d%H%i%S'),
+				str_to_date('%s', '%Y%m%d%H%i%S'), '%s')
+			</sentence>
+			<fields> SEQ_USER_OPER_LOG_ID|MBL_NO|USER_ID_TYPE|OPER_CODE|RET_CD|~CUR_STRAT_TIME|~CUR_END_TIME|~TIME_DIFF</fields>
+		</dynSentence>
+		
+		<dynSentence name="SENDSMS_QRY_USER_OPER_LOG">
+			<sentence>
+				select count(*) COUNT from USER_OPER_LOG log where
+				log.USER_ID='%s' and log.USER_ID_TYPE='%s' and
+				log.OPER_CODE='%s' and log.RESULT='000000' and
+				DATE_FORMAT(log.CREATE_DATE,'%Y%m%d')='%s'
+			</sentence>
+			<fields>MBL_NO|USER_ID_TYPE|OPER_CODE|~CUR_DT</fields>
+		</dynSentence>
+		
+		<dynSentence name="SENDSMS_INS_USER_OPER_LOG">
+			<sentence>
+				insert into user_oper_log (ID, USER_ID, USER_ID_TYPE,
+				IP, OPER_CODE, RESULT, CREATE_DATE, FINISH_DATE,
+				TIME_DIFF) values (?, '%s',
+				'%s', '', '%s', '%s', str_to_date('%s', '%Y%m%d%H%i%S'),
+				str_to_date('%s', '%Y%m%d%H%i%S'), '%s')
+			</sentence>
+			<fields>SEQ_USER_OPER_LOG_ID|MBL_NO|USER_ID_TYPE|OPER_CODE|RET_CD|~CUR_STRAT_TIME|~CUR_END_TIME|~TIME_DIFF</fields>
+		</dynSentence>
+		
+		<dynSentence name="RECORD_USER_OPER"> 
+         <sentence>
+            insert into USER_OPER_LOG (ID, OPER_CODE, RESULT, CREATE_DATE, FINISH_DATE,IP,USER_ID,USER_ID_TYPE,COMP_ID,LOG_DESC)
+            values ('%s', '%s', '%s', str_to_date('%s', '%Y-%m-%d %H%i%S'), str_to_date('%s', '%Y-%m-%d %H%i%S'),'%s','%s','%s','%s','%s' )
+         </sentence>
+         <fields>$SEQ_USER_OPER_LOG_ID|$OPER_CODE|$RESULT|$CREATE_DATE|$FINISH_DATE|$IP|$USER_ID|$USER_ID_TYPE|$COMP_ID|$OPER_NAME|</fields>
+      </dynSentence>
+      
+      <dynSentence name="QRY_SYS_ERROR_INFO"> 
+         <sentence>
+            select CODE, MSG  from sys_error_info  where CODE=?  and LIMIT 0,1
+         </sentence>
+         <fields>RSP_CD|</fields>
+      </dynSentence> 
+		
+		<dynSentence name="QRY_ACMTCDDT_INFO_DESC">
+        <sentence>
+             SELECT JRN_NO,SYS_DT,SYS_TM,TX_TYP,BUS_CNL,CR_AMT,DR_AMT,BAL,HOLD_AMT,UAVA_BAL,RMK,ORD_TYP,ORD_NO,USR_NO,AC_DT
+              FROM ACMTCDDT
+                WHERE USR_NO = ?
+                    AND(DATE_FORMAT(SYS_DT,%Y%m%d) &gt;= ?)
+                    AND (DATE_FORMAT(SYS_DT,%Y%m%d) &lt;= ?)
+                    ORDER BY SYS_DT DESC
+        </sentence>
+        <fields>USR_NO|STR_DT|END_DT|</fields>
+      </dynSentence>
+      
+    <dynSentence name="QRY_PTSTOPLG">
+			<sentence>
+				SELECT COUNT(*) COUNT
+				FROM PTSTOPLG LOG
+				WHERE LOG.USER_ID=?
+				AND LOG.OPER_CODE=? AND LOG.RESULT=? AND
+				DATE_FORMAT(LOG.CREATE_DATE,'%Y%m%d')=?
+			</sentence>
+			<fields>MBL_NO|OPER_CODE|RESULT|CUR_DT</fields>
+		</dynSentence>
+		
+		<dynSentence name="INS_PTSTOPLG">
+			<sentence>
+				INSERT INTO PTSTOPLG (ID, USER_ID, USER_ID_TYPE, IP,
+				OPER_CODE, RESULT,
+				CREATE_DATE, FINISH_DATE, TIME_DIFF)
+				VALUES
+				(?,?, ?, '', ?, ?, str_to_date(?,
+				'%Y%m%d%H%i%S'), str_to_date(?, '%Y%m%d%H%i%S'), ?)
+			</sentence>
+			<fields>SEQ_USER_OPER_LOG_ID|MBL_NO|USER_ID_TYPE|OPER_CODE|RESULT|CUR_STRAT_TIME|CUR_END_TIME|TIME_DIFF</fields>
+		</dynSentence>
+        
+    <dynSentence name="QRY_DATE_IP">
+			<sentence>
+				SELECT DATE_FORMAT(LATEST_LOGIN_DATE,'%Y%m%d%H%i%S') LATEST_LOGIN_DATE,LATEST_LOGIN_IP 
+				FROM PTSTUINF 
+				WHERE USER_ID=? 
+				LIMIT 0,1
+			</sentence>
+			<fields>USR_ID|</fields>
+		</dynSentence>
+		
+		<dynSentence name="UPD_DATE_IP">
+			<sentence>
+				UPDATE PTSTUINF SET LATEST_LOGIN_DATE=str_to_date(?,'%Y%m%d%H%i%S'),LATEST_LOGIN_IP=? WHERE USER_ID=?
+ 			</sentence>
+			<fields>LOGIN_DATE|LOGIN_IP|USR_ID</fields>
+		</dynSentence>
+		
+		<dynSentence name="INS_INFO">
+			<sentence>
+				INSERT INTO PTSTUINF(ID,USER_ID,USER_TYPE,LATEST_LOGIN_IP,LATEST_LOGIN_DATE) VALUES('%s',?,?,?,str_to_date(?,'%Y%m%d%H%i%S'))
+			</sentence>
+			<fields>SEQ_USER_INFO|USR_ID|USR_TYP|LOGIN_IP|LOGIN_DATE</fields>
+		</dynSentence>
+		
+		<dynSentence name="QRY_PTSTOPLG0012213">
+         <sentence>
+            SELECT COUNT(*) COUNT
+            FROM PTSTOPLG LOG
+            WHERE LOG.USER_ID=? AND LOG.USER_ID_TYPE=? AND LOG.OPER_CODE=? AND LOG.RESULT=? AND DATE_FORMAT(LOG.CREATE_DATE,'%Y%m%d')=?
+         </sentence>
+         <fields>MBL_NO|USER_ID_TYPE|OPER_CODE|RESULT|CUR_DT</fields>
+      </dynSentence>
+      
+    <dynSentence name="INS_PTSTOPLG0012213">
+         <sentence>
+            INSERT INTO PTSTOPLG (ID, USER_ID, USER_ID_TYPE, IP, OPER_CODE, RESULT, CREATE_DATE, FINISH_DATE, TIME_DIFF)
+            VALUES ('%s',?, ?, '', ?, ?, str_to_date(?, '%Y%m%d%H%i%S'), str_to_date(?, '%Y%m%d%H%i%S'), ?)
+         </sentence>
+         <fields>SEQ_USER_OPER_LOG_ID|MBL_NO|USER_ID_TYPE|OPER_CODE|RESULT|CUR_STRAT_TIME|CUR_END_TIME|TIME_DIFF</fields>
+      </dynSentence>
+      
+    <dynSentence name="QRY_PTSTUINF">
+          <sentence>
+              SELECT DATE_FORMAT(LATEST_LOGIN_DATE,'%Y-%m-%d %H:%i:%S') LATEST_LOGIN_DATE,LATEST_LOGIN_IP
+              FROM PTSTUINF
+              WHERE USER_ID = ?
+              ORDER BY ID DESC LIMIT 0,1
+          </sentence>
+          <fields>AC|</fields>
+      </dynSentence>
+      
+    <dynSentence name="INS_PTSTUINF">
+          <sentence>
+              INSERT INTO PTSTUINF(ID,USER_ID,USER_TYPE,LATEST_LOGIN_IP,LATEST_LOGIN_DATE)
+              VALUES('%s',?,' ',?,str_to_date(?,'%Y%m%d%H%i%S'))
+          </sentence>
+          <fields>SEQ_USER_INFO|AC|SIP|LOGIN_DATE</fields>
+      </dynSentence>
+      
+    <dynSentence name="UPD_PTSTUINF">
+          <sentence>
+              UPDATE PTSTUINF
+              SET LATEST_LOGIN_IP=?,LATEST_LOGIN_DATE=str_to_date(?,'%Y%m%d%H%i%S')
+              WHERE USER_ID=?
+          </sentence>
+          <fields>SIP|LOGIN_DATE|AC</fields>
+      </dynSentence>
+      
+    <dynSentence name="QRY_BANK2020100"> 
+	     <sentence>
+	        select recharge_bank from user_info  where  user_id = '%s'  LIMIT 0,1
+	     </sentence>
+	     <fields>AC|</fields>
+	  </dynSentence> 
+	  
+	  <dynSentence name="QRY_BANK2021010">
+			<sentence>
+				SELECT RECHARGE_BANK FROM USER_INFO WHERE USER_ID = ? LIMIT 0,1
+			</sentence>
+			<fields>AC|</fields>
+		</dynSentence>
+		
+		<dynSentence name="QRY_BANK2028000">
+            <sentence>
+				SELECT RECHARGE_BANK FROM USER_INFO WHERE USER_ID =? LIMIT 0,1
+			</sentence>
+            <fields>AC|</fields>
+        </dynSentence>
+        
+		<dynSentence name="QRY_LOCAL_BUSINESS_NUM">
+			<sentence>
+				SELECT * FROM (SELECT DISTINCT A.ID,A.NAME,B.NAME AS
+				INDUSTRYNAME,ADDRESS,BUSINESS_SCOPE,SERVICE_PHONE,INTRODUCTION,PRIORITY,URL
+				FROM RPMTMERINF A,RPMTMERIND B WHERE
+				A.INDUSTRYID=b.indust_id AND
+				RGN_ID=? AND A.TYP_ID=1 AND B.TYP_ID=1
+				order by PRIORITY asc) TMP 
+				LIMIT 0,8
+       </sentence>
+			<fields>TMP_RGN_ID|</fields>
+		</dynSentence>
+		
+		<dynSentence name="QRY_REMOTE_BUSINESS_NUM">
+			<sentence>
+				SELECT A.* FROM (SELECT DISTINCT
+				ID,NAME,URL,ACTIVITIESTIP,PRIORITY,INTRODUCTION,prov_id FROM
+				RPMTMERINF where TYP_ID=2 and (prov_id=? or prov_id is null)
+				order by
+				prov_id,PRIORITY asc)A LIMIT 0,10
+			</sentence>
+			<fields>REM_PROV_ID|</fields>
+		</dynSentence>
+		
+		<dynSentence name="QRY_LOCAL_BUSINESS_NUM2017230">
+			<sentence>
+				SELECT * FROM (SELECT DISTINCT A.ID,A.NAME,B.NAME AS
+				INDUSTRYNAME,ADDRESS,BUSINESS_SCOPE,SERVICE_PHONE,INTRODUCTION,PRIORITY,URL
+				FROM RPMTMERINF A,RPMTMERIND B WHERE
+				A.INDUSTRYID=b.indust_id AND
+				RGN_ID=? AND A.TYP_ID=1 AND B.TYP_ID=1
+				ORDER BY PRIORITY ASC) TMP 
+				LIMIT 0,8
+            </sentence>
+			<fields>TMP_RGN_ID|</fields>
+		</dynSentence>
+		
+		<dynSentence name="QRY_REMOTE_BUSINESS_NUM2017230__map">
+			<sentence>
+				SELECT A.* FROM (SELECT DISTINCT
+				ID,NAME,URL,ACTIVITIESTIP,PRIORITY,INTRODUCTION,RECOMMEND_INDEX,PROV_ID
+				FROM
+				RPMTMERINF WHERE TYP_ID=2 and (PROV_ID=? OR PROV_ID IS NULL)
+				ORDER BY
+				PRIORITY,RECOMMEND_INDEX DESC)A LIMIT 0,10
+           </sentence>
+			<fields>REM_PROV_ID|</fields>
+		</dynSentence>
+		
+		
+		<dynSentence name="SEL_RFD2017103">
+         <sentence>
+            SELECT RFD_APL_DT,RFD_APL_TM,MERC_PROC_DESC FROM
+            (
+            SELECT 
+            RFD_APL_DT,RFD_APL_TM,MERC_PROC_DESC
+            from 
+            RPMTRTUL
+            where ORD_NO = ? AND CRE_DT = ? ORDER BY RFD_APL_DT DESC,RFD_APL_TM DESC) TMP LIMIT 0,1
+         </sentence>
+         <fields>ORD_NO|CRE_DT|</fields>
+      </dynSentence>
+	  
+	  <dynSentence name="QRY_RPMTORD_LISTA">  <!-- 查询所有订单 -->
+			<sentence>
+				SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE (?
+				IS NULL OR ORD_DT >= ?)
+				AND (? IS
+				NULL OR ORD_DT &lt;= ?)
+				AND MBL_NO=
+				?
+				AND ORD_STS NOT IN(%s) ORDER BY
+				ORD_DT DESC,CRE_TM DESC
+			</sentence>
+			<fields>BEG_DT|BEG_DT|END_DT|END_DT|MBL_NO|NOT_STS|</fields>
+		</dynSentence>
+		<dynSentence name="QRY_RPMTORD_LISTO">  <!-- 查询进行中 -->
+			<sentence>
+				SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE
+				(ORD_STS=?  
+				OR ORD_STS=? OR
+				ORD_STS=? OR ORD_STS=? OR ORD_STS=? OR
+				ORD_STS=? OR
+				ORD_STS=? OR (ORD_STS IN (%s) AND CONCAT(ORD_EXP_DT,ORD_EXP_TM) &gt;=
+				?) )
+				AND (? IS
+				NULL OR ORD_DT >= ?)
+				AND (? IS
+				NULL OR
+				ORD_DT &lt;= ?)
+				AND
+				MBL_NO= ? ORDER BY ORD_DT DESC,CRE_TM DESC
+			</sentence>
+			<fields>D_AMTREGING_STS|D_PAYING_STS|A_AMTREGING_STS|A_PAYING_STS|A_CLOSING_STS|A_EXTENDING_STS|A_HOLDING_STS|PAY_ORD_STS|NOW_TIME|BEG_DT|BEG_DT|END_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+		<dynSentence name="QRY_RPMTORD_LISTS">  <!-- 成功交易 -->
+			<sentence>
+				SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE
+				(ORD_STS= ? OR ORD_STS=?)
+				AND (? IS
+				NULL OR ORD_DT >=
+				?)
+				AND (HEMPTY(ORD_DT) OR ORD_DT &lt;= ?)
+				AND
+				MBL_NO= ?
+				ORDER BY ORD_DT
+				DESC,CRE_TM DESC
+			</sentence>
+			<fields>D_PAID_STS|A_PAID_STS|BEG_DT|BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+		<dynSentence name="QRY_RPMTORD_LISTF">  <!-- 失败交易 -->
+			<sentence>
+				SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE
+				(ORD_STS=? OR ORD_STS=? OR ORD_STS=? OR ORD_STS=? OR ORD_STS=? 
+				OR ORD_STS=? OR (ORD_STS IN (%s) AND CONCAT(ORD_EXP_DT,ORD_EXP_TM) &lt; ?))
+				AND
+				(? IS
+				NULL OR ORD_DT >=
+				?)
+				AND
+				(HEMPTY(ORD_DT) OR ORD_DT &lt;= ?)
+				AND
+				MBL_NO= ? ORDER BY ORD_DT
+				DESC,CRE_TM DESC
+			</sentence>
+			<fields>D_CLOSED_STS|D_CLOSING_STS|D_EXTENDING_STS|D_EXTEND_STS|A_CLOSED_STS|A_EXTEND_STS|PAY_ORD_STS|NOW_TIME|BEG_DT|BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+		<dynSentence name="QRY_RPMTORD_LISTR">  <!-- 退款的交易 -->
+			<sentence>
+				SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE
+				(ORD_STS=? OR ORD_STS=? OR ORD_STS=?
+				OR ORD_STS=? )
+				AND (? IS
+				NULL OR ORD_DT >= ?)
+				AND (HEMPTY(ORD_DT) OR ORD_DT
+				&lt;= ?)
+				AND MBL_NO= ? ORDER BY ORD_DT
+				DESC,CRE_TM DESC
+			</sentence>
+			<fields>RefundPend_STS|RefundRecord_STS|PartRefund_STS|FullRefund_STS|BEG_DT|BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+
+		<dynSentence name="QRY_RPMTORD_LISTE">  <!-- 交易逾期 -->
+			<sentence>
+				SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE
+				ORD_STS=''
+				AND (? IS
+				NULL OR ORD_DT >=
+				?)
+				AND (? IS
+				NULL OR ORD_DT &lt;= ?)
+				AND
+				MBL_NO= ? ORDER BY ORD_DT
+				DESC,CRE_TM
+				DESC
+			</sentence>
+			<fields>BEG_DT|BEG_DT|END_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+
+		<dynSentence name="QRY_RPMTORD_LISTB">  <!-- 交易作废 -->
+			<sentence>
+				SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE
+				(ORD_STS=? OR ORD_STS=? OR OR ORD_STS=? OR (ORD_STS IN
+				(%s) AND CONCAT(ORD_EXP_DT,ORD_EXP_TM) &lt; ?))
+				AND (? IS
+				NULL OR ORD_DT >=
+				?)
+				AND (HEMPTY(ORD_DT) OR ORD_DT &lt;=
+				?)
+				AND
+				MBL_NO= ? ORDER BY ORD_DT
+				DESC,CRE_TM DESC
+         </sentence>
+			<fields>D_EXTEND_STS|D_EXTENDING_STS|A_EXTEND_STS|PAY_ORD_STS|NOW_TIME|BEG_DT|BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+		<dynSentence name="QRY_RPMTORD_LISTC">  <!-- 交易关闭 -->
+			<sentence>
+				SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE
+				(ORD_STS=? OR ORD_STS=? OR ORD_STS=?)
+				AND (HEMPTY(ORD_DT)
+				OR ORD_DT >= ?)
+				AND (HEMPTY(ORD_DT) OR ORD_DT &lt;=?)
+				AND MBL_NO= ? ORDER
+				BY ORD_DT DESC,CRE_TM DESC
+         </sentence>
+			<fields>D_CLOSED_STS|D_CLOSING_STS|A_CLOSED_STS|BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+		<dynSentence name="QRY_RPMTORD_LISTW1">  <!-- 等待确认付款 -->
+			<sentence>
+				SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE
+				( ORD_STS=? 
+				OR ORD_STS=?) OR (ORD_STS=? OR ORD_STS =? AND CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				&gt;= ?)
+				AND (HEMPTY(ORD_DT) OR ORD_DT >= ?)
+				AND (HEMPTY(ORD_DT)
+				OR ORD_DT &lt;=
+				?)
+				AND
+				MBL_NO= ? ORDER BY ORD_DT DESC,CRE_TM DESC
+			</sentence>
+			<fields>D_AMTREGING_STS|D_PAYING_STS|D_USRREG_STS|D_AMTREG_STS|NOW_TIME|BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+
+		<dynSentence name="QRY_RPMTORD_LISTW2">  <!-- 预授权待冻结 -->
+			<sentence>
+				SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE
+				ORD_STS=? OR (ORD_STS =? AND
+				CONCAT(ORD_EXP_DT,ORD_EXP_TM) &gt;= ?)
+				AND (HEMPTY(ORD_DT) OR
+				ORD_DT >= ?)
+				AND (HEMPTY(ORD_DT) OR ORD_DT &lt;= ?)
+				AND
+				MBL_NO= ? ORDER BY
+				ORD_DT DESC,CRE_TM
+				DESC
+         </sentence>
+			<fields>A_HOLDING_STS|A_USRREG_STS|NOW_TIME|BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+
+		<dynSentence name="QRY_RPMTORD_LISTW3">  <!-- 预授权待支付 -->
+			<sentence>
+				SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE
+				(ORD_STS=? OR ORD_STS=? AND
+				CONCAT(ORD_EXP_DT,ORD_EXP_TM) &gt;= ?) OR (ORD_STS=? OR ORD_STS=? OR
+				ORD_STS=? OR ORD_STS=?)
+				AND (HEMPTY(ORD_DT) OR ORD_DT >= ?)
+				AND (HEMPTY(ORD_DT)
+				OR ORD_DT &lt;= ?)
+				AND MBL_NO= ? ORDER BY ORD_DT
+				DESC,CRE_TM DESC
+			</sentence>
+			<fields>A_AMTREG_STS|A_HOLDED_STS|NOW_TIME|A_AMTREGING_STS|A_PAYING_STS|A_CLOSING_STS|A_EXTENDING_STS|BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+
+		<dynSentence name="QRY_RPMTORD_LISTRI">  <!-- 退款中 -->
+			<sentence>
+				SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE
+				(ORD_STS=? OR ORD_STS=?)
+				AND (HEMPTY(ORD_DT)
+				OR ORD_DT >= ?)
+				AND (HEMPTY(ORD_DT) OR ORD_DT &lt;= ?)
+				AND MBL_NO= ? ORDER
+				BY ORD_DT
+				DESC,CRE_TM DESC
+         </sentence>
+			<fields>RefundPend_STS|RefundRecord_STS|BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+
+		<dynSentence name="QRY_RPMTORD_LISTRD">  <!-- 退款成功 -->
+			<sentence>
+				SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE
+				(ORD_STS=? OR ORD_STS=?)
+				AND (HEMPTY(ORD_DT)
+				OR ORD_DT >= ?)
+				AND (HEMPTY(ORD_DT) OR ORD_DT &lt;= ?)
+				AND MBL_NO= ? ORDER
+				BY ORD_DT
+				DESC,CRE_TM DESC
+         </sentence>
+			<fields>PartRefund_STS|FullRefund_STS|BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+		
+		<dynSentence name="QRY_RPMTORD_LISTA1">  <!-- 查询所有订单 -->
+			<sentence>
+			SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,MBL_NO
+				FROM RPMTORD
+				WHERE ORD_DT >= ? AND ORD_DT &lt;= ? 
+				AND MBL_NO=?  AND ORD_STS NOT IN %s 
+			 ORDER BY ORD_DT DESC,CRE_TM DESC
+			</sentence>
+			<fields>BEG_DT|END_DT|MBL_NO|NOT_STS|</fields>
+		</dynSentence>
+		<dynSentence name="QRY_RPMTORD_LISTO1">  <!-- 查询进行中 -->
+			<sentence>
+				SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,MBL_NO
+				FROM RPMTORD
+				WHERE
+				(ORD_STS=? OR ORD_STS=? OR ORD_STS=? OR ORD_STS=? OR ORD_STS=? OR ORD_STS=? 
+				 OR ORD_STS=? OR (ORD_STS IN %s AND CONCAT(ORD_EXP_DT,ORD_EXP_TM) &gt;= ?) )
+				AND ORD_DT >= ? AND ORD_DT &lt;= ? 
+				AND MBL_NO= ? ORDER BY ORD_DT DESC,CRE_TM DESC
+			</sentence>
+			<fields>D_AMTREGING_STS|D_PAYING_STS|A_AMTREGING_STS|A_PAYING_STS|A_CLOSING_STS|A_EXTENDING_STS|A_HOLDING_STS|PAY_ORD_STS|NOW_TIME|BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+		<dynSentence name="QRY_RPMTORD_LISTS1">  <!-- 成功交易 -->
+			<sentence>
+				SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,MBL_NO
+				FROM RPMTORD
+				WHERE
+				(ORD_STS= ? OR ORD_STS=?) AND ORD_DT >= ? AND ORD_DT &lt;= ? 
+				AND MBL_NO= ? ORDER BY ORD_DT DESC,CRE_TM DESC
+			</sentence>
+			<fields>D_PAID_STS|A_PAID_STS|BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+		<dynSentence name="QRY_RPMTORD_LISTF1">  <!-- 失败交易 -->
+			<sentence>
+				SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE
+				(ORD_STS=? OR ORD_STS=? OR ORD_STS=? OR ORD_STS=? OR ORD_STS=? 
+				OR ORD_STS=? OR (ORD_STS IN %s AND CONCAT(ORD_EXP_DT,ORD_EXP_TM) &lt; ?))
+				AND ORD_DT >= ? AND ORD_DT &lt;= ? 
+				AND MBL_NO= ? ORDER BY ORD_DT DESC,CRE_TM DESC
+			</sentence>
+			<fields>D_CLOSED_STS|D_CLOSING_STS|D_EXTENDING_STS|D_EXTEND_STS|A_CLOSED_STS|A_EXTEND_STS|PAY_ORD_STS|NOW_TIME|BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+		<dynSentence name="QRY_RPMTORD_LISTR1">  <!-- 退款的交易 -->
+			<sentence>
+			SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE
+				(ORD_STS=? OR ORD_STS=? OR ORD_STS=? OR ORD_STS=? )
+				AND ORD_DT >= ? AND ORD_DT &lt;= ? 
+				AND MBL_NO= ? ORDER BY ORD_DT DESC,CRE_TM DESC
+			</sentence>
+			<fields>RefundPend_STS|RefundRecord_STS|PartRefund_STS|FullRefund_STS|BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+
+		<dynSentence name="QRY_RPMTORD_LISTE1">  <!-- 交易逾期 -->
+			<sentence>
+			SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE
+				ORD_STS='' AND ORD_DT >= ? AND ORD_DT &lt;= ? 
+				AND MBL_NO= ? ORDER BY ORD_DT DESC,CRE_TM DESC
+			</sentence>
+			<fields>BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+
+		<dynSentence name="QRY_RPMTORD_LISTB1">  <!-- 交易作废 -->
+			<sentence>
+			SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE
+				(ORD_STS=? OR ORD_STS=? OR ORD_STS=? 
+				OR (ORD_STS IN %s AND CONCAT(ORD_EXP_DT,ORD_EXP_TM) &lt; ?))
+				AND ORD_DT >= ? AND ORD_DT &lt;= ? 
+				AND MBL_NO= ? ORDER BY ORD_DT DESC,CRE_TM DESC
+         </sentence>
+			<fields>D_EXTEND_STS|D_EXTENDING_STS|A_EXTEND_STS|PAY_ORD_STS|NOW_TIME|BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+		<dynSentence name="QRY_RPMTORD_LISTC1">  <!-- 交易关闭 -->
+			<sentence>
+			SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE (ORD_STS=? OR ORD_STS=? OR ORD_STS=?)
+				AND ORD_DT >= ? AND ORD_DT &lt;=? 
+				AND MBL_NO= ? ORDER BY ORD_DT DESC,CRE_TM DESC
+         </sentence>
+			<fields>D_CLOSED_STS|D_CLOSING_STS|A_CLOSED_STS|BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+		<dynSentence name="QRY_RPMTORD_LISTWA2">  <!-- 等待确认付款 -->
+			<sentence>
+				SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE
+				((ORD_STS=? OR ORD_STS=?) OR (ORD_STS=? OR ORD_STS =? AND CONCAT(ORD_EXP_DT,ORD_EXP_TM) &gt;= ?))
+				AND ORD_DT >= ? AND ORD_DT &lt;= ? 
+				AND MBL_NO= ? ORDER BY ORD_DT DESC,CRE_TM DESC
+			</sentence>
+			<fields>D_AMTREGING_STS|D_PAYING_STS|D_USRREG_STS|D_AMTREG_STS|NOW_TIME|BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+
+		<dynSentence name="QRY_RPMTORD_LISTWA3">  <!-- 预授权待冻结 -->
+			<sentence>
+			SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE
+				(ORD_STS=? OR (ORD_STS =? AND CONCAT(ORD_EXP_DT,ORD_EXP_TM) &gt;= ?))
+				AND ORD_DT >= ? AND ORD_DT &lt;= ? 
+				AND MBL_NO= ? ORDER BY ORD_DT DESC,CRE_TM DESC
+         </sentence>
+			<fields>A_HOLDING_STS|A_USRREG_STS|NOW_TIME|BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+
+		<dynSentence name="QRY_RPMTORD_LISTWAA3">  <!-- 预授权待支付 -->
+			<sentence>
+			SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE
+				((ORD_STS=? OR ORD_STS=? AND CONCAT(ORD_EXP_DT,ORD_EXP_TM) &gt;= ?)
+				 OR (ORD_STS=? OR ORD_STS=? OR ORD_STS=? OR ORD_STS=?))
+				AND ORD_DT >=? AND ORD_DT &lt;=? 
+				AND MBL_NO=? ORDER BY ORD_DT DESC,CRE_TM DESC
+			</sentence>
+			<fields>A_AMTREG_STS|A_HOLDED_STS|NOW_TIME|A_AMTREGING_STS|A_PAYING_STS|A_CLOSING_STS|A_EXTENDING_STS|BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+
+		<dynSentence name="QRY_RPMTORD_LISTRI1">  <!-- 退款中 -->
+			<sentence>
+			SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,MBL_NO
+				FROM RPMTORD
+				WHERE
+				(ORD_STS=? OR ORD_STS=?)
+				AND ORD_DT >= ? AND ORD_DT &lt;= ? 
+				AND MBL_NO= ? ORDER BY ORD_DT DESC,CRE_TM DESC
+         </sentence>
+			<fields>RefundPend_STS|RefundRecord_STS|BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+
+		<dynSentence name="QRY_RPMTORD_LISTRD1">  <!-- 退款成功 -->
+			<sentence>
+			SELECT CRE_DT,ORD_NO,ORD_AMT,ORD_STS,REAL_MERC_NM,BUS_TYP,
+				MERC_ID,MERC_ORD_NO,ORD_DT,PAY_TYP,CRE_TM,CONCAT(ORD_EXP_DT,ORD_EXP_TM)
+				EXP_TM,
+				MBL_NO
+				FROM RPMTORD
+				WHERE
+				(ORD_STS=? OR ORD_STS=?)
+				AND ORD_DT >= ? AND  ORD_DT &lt;= ? 
+				AND MBL_NO= ? ORDER BY ORD_DT DESC,CRE_TM DESC
+         </sentence>
+			<fields>PartRefund_STS|FullRefund_STS|BEG_DT|END_DT|MBL_NO|</fields>
+		</dynSentence>
+		
+		<dynSentence name="QRY_RPMTORD_SUC2017206__map">  
+			<sentence>
+         SELECT * FROM(SELECT ROWNUM RN,TA.* FROM(SELECT ORD_NO,CRE_DT,MERC_ORD_NO,MERC_NM,ORD_DT,CRE_TM,PAY_TYP,ORD_AMT FROM RPMTORD
+           WHERE MBL_NO=? AND (ORD_STS=? OR ORD_STS=? OR ORD_STS=?) AND ? &lt;= CONCAT(ORD_EXP_DT,ORD_EXP_TM）
+             ORDER BY ORD_DT DESC,CRE_TM DESC) TA WHERE ROWNUM &lt;= 4  )WHERE RN >= 1 
+			</sentence>
+			<fields>MBL_NO|D_USRREG_STS|D_AMTREG_STS|A_USRREG_STS|NOW_TIME|</fields>
+		</dynSentence>
+		<dynSentence name="QRY_ORD_CRE_ALL">
+         <sentence>
+            SELECT
+               R.CRE_DT,R.CRE_TM,R.USR_PAY_DT,R.USR_PAY_TM,R.ORD_NO,R.ORD_AMT,R.ORD_STS,R.BUS_TYP,R.GOODS_NM,
+               R.PAY_TYP,R.MERC_ORD_NO,R.MBL_NO,CONCAT(R.ORD_EXP_DT,R.ORD_EXP_TM) EXP_TM,R.ORD_DT,A.REC_STS 
+            FROM 
+               RPMTORD R
+            LEFT JOIN
+                RPMTLGJRN A 
+             ON
+                ( R.ORD_NO=A.ORD_NO AND R.MERC_ID=A.MERC_ID AND R.MERC_ID=A.F_MERC_ID)
+             WHERE 
+                R.ORD_TYP='30'
+             AND R.CRE_DT >=? AND R.CRE_DT &lt;=? AND R.MERC_ID = ? AND (HEMPTY(R.MERC_ORD_NO) OR R.MERC_ORD_NO=? ) AND (HEMPTY(R.PAY_TYP) OR R.PAY_TYP=? )
+                ORDER BY R.ORD_DT DESC,R.CRE_TM DESC
+          </sentence>
+          <fields>BEG_DT|END_DT|MERC_ID|MERC_ORD_NO|PAY_TYP|</fields>
+       </dynSentence>
+       <!-- 查询成功交易 -->
+       <dynSentence name="QRY_ORD_CRE_SUCC">
+         <sentence>
+            SELECT 
+               R.CRE_DT,R.CRE_TM,R.USR_PAY_DT,R.USR_PAY_TM,R.ORD_NO,R.ORD_AMT,R.ORD_STS,R.BUS_TYP,R.GOODS_NM,
+               R.PAY_TYP,R.MERC_ORD_NO,R.MBL_NO,CONCAT(R.ORD_EXP_DT,R.ORD_EXP_TM) EXP_TM,R.ORD_DT,A.REC_STS 
+            FROM 
+               RPMTORD R 
+            LEFT JOIN 
+               RPMTLGJRN A 
+            ON( R.ORD_NO=A.ORD_NO AND R.MERC_ID=A.MERC_ID AND R.MERC_ID=A.F_MERC_ID) 
+            WHERE 
+               R.ORD_TYP='30' 
+            AND 
+               R.CRE_DT >=? AND R.CRE_DT &lt;=? AND R.MERC_ID = ? AND (HEMPTY(R.MERC_ORD_NO) OR R.MERC_ORD_NO=? ) AND (HEMPTY(R.PAY_TYP) OR R.PAY_TYP=? )
+            AND R.ORD_STS IN (%s) 
+            ORDER BY USR_PAY_DT DESC,USR_PAY_TM DESC 
+         </sentence>
+         <fields>BEG_DT|END_DT|MERC_ID|MERC_ORD_NO|PAY_TYP|ORD_STS|</fields>
+      </dynSentence>
+      <!-- 按照CRE_DT查询进行中的交易 -->
+      <dynSentence name="QRY_ING_CRE">
+         <sentence>
+            SELECT
+               R.CRE_DT,R.CRE_TM,R.USR_PAY_DT,R.USR_PAY_TM,R.ORD_NO,R.ORD_AMT,R.ORD_STS,R.BUS_TYP,R.GOODS_NM,
+               R.PAY_TYP,R.MERC_ORD_NO,R.MBL_NO,CONCAT(R.ORD_EXP_DT,R.ORD_EXP_TM) EXP_TM,R.ORD_DT,A.REC_STS 
+            FROM 
+               RPMTORD R
+            LEFT JOIN 
+               RPMTLGJRN A 
+            ON
+               ( R.ORD_NO=A.ORD_NO AND R.MERC_ID=A.MERC_ID AND R.MERC_ID=A.F_MERC_ID)
+            WHERE 
+               R.ORD_TYP='30' 
+            AND 
+               R.CRE_DT >=? AND R.CRE_DT &lt;=? AND R.MERC_ID = ? AND (HEMPTY(R.MERC_ORD_NO) OR R.MERC_ORD_NO=? ) AND (HEMPTY(R.PAY_TYP) OR R.PAY_TYP=? )
+            AND 
+               R.ORD_STS IN (%s) AND CONCAT(ORD_EXP_DT,ORD_EXP_TM) &gt;= ?
+            ORDER BY R.CRE_DT DESC,R.CRE_TM DESC
+         </sentence>
+         <fields>BEG_DT|END_DT|MERC_ID|MERC_ORD_NO|PAY_TYP|PAY_ORD_STS|NOW_TIME|</fields>
+      </dynSentence>
+      
+      <!-- 按照POST_DT查询进行中的交易 -->
+      <dynSentence name="QRY_ING_POST">
+         <sentence>
+            SELECT
+               R.CRE_DT,R.CRE_TM,R.USR_PAY_DT,R.USR_PAY_TM,R.ORD_NO,R.ORD_AMT,R.ORD_STS,R.BUS_TYP,R.GOODS_NM,
+               R.PAY_TYP,R.MERC_ORD_NO,R.MBL_NO,CONCAT(R.ORD_EXP_DT,R.ORD_EXP_TM) EXP_TM,R.ORD_DT,A.REC_STS 
+            FROM 
+               RPMTORD R
+            LEFT JOIN 
+               RPMTLGJRN A 
+            ON
+               ( R.ORD_NO=A.ORD_NO AND R.MERC_ID=A.MERC_ID AND R.MERC_ID=A.F_MERC_ID)
+            WHERE 
+               R.ORD_TYP='30'
+            AND 
+               R.CRE_DT >=? AND R.CRE_DT &lt;=? AND R.MERC_ID = ? 
+            AND 
+               (HEMPTY(R.MERC_ORD_NO) OR R.MERC_ORD_NO=? ) AND (HEMPTY(R.PAY_TYP) OR R.PAY_TYP=? )
+            AND 
+               R.ORD_STS IN (%s) AND CONCAT(ORD_EXP_DT,ORD_EXP_TM) &gt;= ?
+            ORDER BY R.CRE_DT DESC,R.CRE_TM DESC
+         </sentence>
+         <fields>BEG_DT|END_DT|MERC_ID|MERC_ORD_NO|PAY_TYP|PAY_ORD_STS|NOW_TIME|</fields>
+      </dynSentence>
+      <!-- 按照CRE_DT查询失败的交易 -->
+      <dynSentence name="QRY_FAL_CRE">
+         <sentence>
+            SELECT
+               R.CRE_DT,R.CRE_TM,R.USR_PAY_DT,R.USR_PAY_TM,R.ORD_NO,R.ORD_AMT,R.ORD_STS,R.BUS_TYP,R.GOODS_NM,
+               R.PAY_TYP,R.MERC_ORD_NO,R.MBL_NO,CONCAT(R.ORD_EXP_DT,R.ORD_EXP_TM) EXP_TM,R.ORD_DT,A.REC_STS 
+            FROM 
+               RPMTORD R
+            LEFT JOIN 
+               RPMTLGJRN A 
+            ON
+               ( R.ORD_NO=A.ORD_NO AND R.MERC_ID=A.MERC_ID AND R.MERC_ID=A.F_MERC_ID)
+            WHERE 
+               R.ORD_TYP='30'
+            AND 
+               R.CRE_DT >=? AND R.CRE_DT &lt;=? AND R.MERC_ID = ? AND (HEMPTY(R.MERC_ORD_NO) OR R.MERC_ORD_NO=? ) AND (HEMPTY(R.PAY_TYP) OR R.PAY_TYP=? ) 
+            AND 
+               (R.ORD_STS IN (%s) OR (R.ORD_STS IN (%s) AND CONCAT(ORD_EXP_DT,ORD_EXP_TM) &lt; ?))
+            ORDER BY R.ORD_DT DESC,R.CRE_TM DESC
+         </sentence>
+         <fields>BEG_DT|END_DT|MERC_ID|MERC_ORD_NO|PAY_TYP|ORD_STS|PAY_ORD_STS|NOW_TIME|</fields>
+      </dynSentence>
+      <!-- 按照POST_DT查询失败的交易 -->
+      <dynSentence name="QRY_FAL_POST">
+         <sentence>
+            SELECT
+               R.CRE_DT,R.CRE_TM,R.USR_PAY_DT,R.USR_PAY_TM,R.ORD_NO,R.ORD_AMT,R.ORD_STS,R.BUS_TYP,R.GOODS_NM,
+               R.PAY_TYP,R.MERC_ORD_NO,R.MBL_NO,CONCAT(R.ORD_EXP_DT,R.ORD_EXP_TM) EXP_TM,R.ORD_DT,A.REC_STS 
+            FROM 
+               RPMTORD R
+            LEFT JOIN 
+               RPMTLGJRN A 
+            ON
+               ( R.ORD_NO=A.ORD_NO AND R.MERC_ID=A.MERC_ID AND R.MERC_ID=A.F_MERC_ID)
+            WHERE 
+               R.ORD_TYP='30' AND R.MERC_ID = ? AND (HEMPTY(R.MERC_ORD_NO) OR R.MERC_ORD_NO=? )
+               AND R.ORD_DT >= ? and ? >= R.ORD_DT and (HEMPTY(R.PAY_TYP) OR R.PAY_TYP=? ) 
+               AND (R.ORD_STS in (%s) OR (R.ORD_STS IN (%s) AND CONCAT(ORD_EXP_DT,ORD_EXP_TM) &lt; ?))
+            ORDER BY R.ORD_DT DESC,R.CRE_TM DESC
+         </sentence>
+         <fields>MERC_ID|MERC_ORD_NO|BEG_DT|END_DT|PAY_TYP|ORD_STS|PAY_ORD_STS|NOW_TIME|</fields>
+      </dynSentence>
+      <!-- 按照商户订单号/查询所有订单 -->
+      <dynSentence name="QRY_ORD_POST">
+         <sentence>
+            SELECT
+               R.CRE_DT,R.CRE_TM,R.USR_PAY_DT,R.USR_PAY_TM,R.ORD_NO,R.ORD_AMT,R.ORD_STS,R.BUS_TYP,R.GOODS_NM,
+               R.PAY_TYP,R.MERC_ORD_NO,R.MBL_NO,CONCAT(R.ORD_EXP_DT,R.ORD_EXP_TM) EXP_TM,R.ORD_DT,A.REC_STS 
+            FROM 
+               RPMTORD R
+            LEFT JOIN 
+               RPMTLGJRN A 
+            ON
+               ( R.ORD_NO=A.ORD_NO AND R.MERC_ID=A.MERC_ID AND R.MERC_ID=A.F_MERC_ID)
+            WHERE 
+               R.ORD_TYP='30' AND R.MERC_ID = ? AND (HEMPTY(R.MERC_ORD_NO) OR R.MERC_ORD_NO=? )
+               AND R.ORD_DT >= ? AND ? >= R.ORD_DT AND (HEMPTY(R.PAY_TYP) OR R.PAY_TYP=? ) 
+            ORDER BY R.ORD_DT DESC,R.CRE_TM DESC
+         </sentence>
+         <fields>MERC_ID|MERC_ORD_NO|BEG_DT|END_DT|PAY_TYP|</fields>
+      </dynSentence>
+      
+      <!-- 按订单日期条件查询成功交易 -->
+      <dynSentence name="QRY_ORD_SUCC">
+         <sentence>
+            SELECT
+               R.CRE_DT,R.CRE_TM,R.USR_PAY_DT,R.USR_PAY_TM,R.ORD_NO,R.ORD_AMT,R.ORD_STS,R.BUS_TYP,R.GOODS_NM,
+               R.PAY_TYP,R.MERC_ORD_NO,R.MBL_NO,CONCAT(R.ORD_EXP_DT,R.ORD_EXP_TM) EXP_TM,R.ORD_DT,A.REC_STS 
+            FROM 
+               RPMTORD R
+            LEFT JOIN 
+               RPMTLGJRN A 
+            ON
+               ( R.ORD_NO=A.ORD_NO AND R.MERC_ID=A.MERC_ID AND R.MERC_ID=A.F_MERC_ID)
+            WHERE 
+               R.ORD_TYP='30' AND R.MERC_ID = ? AND (HEMPTY(R.MERC_ORD_NO) OR R.MERC_ORD_NO=? )
+               AND R.ORD_DT >= ? AND ? >= R.ORD_DT AND (HEMPTY(R.PAY_TYP) OR R.PAY_TYP=? ) 
+               AND R.ORD_STS IN (%s)
+            ORDER BY R.USR_PAY_DT DESC,R.USR_PAY_TM DESC
+         </sentence>
+         <fields>MERC_ID|MERC_ORD_NO|BEG_DT|END_DT|PAY_TYP|ORD_STS|</fields>
+      </dynSentence>
+
+		<dynSentence name="QRY_TOT_UP_CNT">
+			<sentence>
+				SELECT COUNT(D.RFD_DT_TM) RFD_NUM
+				FROM (SELECT DISTINCT(CONCAT(R.RFD_APL_DT,'',R.RFD_APL_TM)) RFD_DT_TM FROM RPMTRTUL R,RPMTORD O WHERE R.ORD_NO=O.ORD_NO AND O.MERC_ORD_NO = ? AND R.MERC_ID = ?) D
+			</sentence>
+			<fields>MERC_ORD_NO|MAIN_MERC_ID|</fields>
+		</dynSentence>
+</MYSQL>

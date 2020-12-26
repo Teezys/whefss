@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cycles>
+
+    <!--&lt;!&ndash;  江门房管每日早上6点半定时到主机获取交易流水  &ndash;&gt;-->
+    <!--<cycleItem istxn="0"   objsvr="Qyefsspubbpc1" txncod="transJnlTimQry"-->
+               <!--txndatatype="text/edb" txndat="" funcname="" funcpath=""-->
+               <!--sndflag ="0"  minute="30" hour="06" monthday="*" weekday="*" monthweek="*" month="*" trace="1">-->
+        <!--<data><root><gda><sys_cnl>SYS</sys_cnl></gda><file>2222222222222</file></root></data>-->
+    <!--</cycleItem>-->
+    <!---->
+    <!--&lt;!&ndash; 江门房管每日早上6点25到主机获取账户余额信息 &ndash;&gt;-->
+    <!--<cycleItem istxn="0"  objsvr="Qyefsspubbpc1" txncod="accountAmtTimQry"-->
+               <!--txndatatype="text/edb" txndat="" funcname="" funcpath=""-->
+               <!--sndflag ="0"  minute="25" hour="06" monthday="*" weekday="*" monthweek="*" month="*" trace="1">-->
+        <!--<data><root><gda><sys_cnl>SYS</sys_cnl></gda><file>2222222222222</file></root></data>-->
+    <!--</cycleItem>-->
+
+    <!-- 长沙房管每日晚上23点00自动推送监管账户明细 -->
+    <!--<cycleItem istxn="0"  objsvr="blefsspubbpc1" txncod="acctDetailTimPush"
+               txndatatype="text/edb" txndat="" funcname="" funcpath=""
+               sndflag ="0"  minute="00" hour="23" monthday="*" weekday="*" monthweek="*" month="*" trace="1">
+        <data><root><gda><sys_cnl>SYS</sys_cnl></gda><file>2222222222222</file></root></data>
+    </cycleItem>-->
+    <cycleItem istxn="0"  objsvr="whefsspubbpcWeb" txncod="chkStart"
+               txndatatype="text/edb" txndat="" funcname="" funcpath=""
+               sndflag ="0"  minute="00" hour="06" monthday="*" weekday="*" monthweek="*" month="*" trace="1">
+        <data><root><gda><sys_cnl>SYS</sys_cnl></gda><file></file></root></data>
+    </cycleItem>
+
+
+</cycles>

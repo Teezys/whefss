@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root>
+    <format code="fundsAppropriate" desc="查询拨付数据">
+        <request necessary="yes">
+            <xmlWrite name="Root">
+                <quote name="request"/>
+            </xmlWrite>
+        </request>
+        <response necessary="no">
+            <xmlRead name="Root">
+                <quote name="response"></quote>
+                <xmlRead name="data">
+                    <xmlRead name="notice_num" data_name="notice_num" desc="拨付通知书编号" necessary="no"/>
+                    <xmlRead name="bank_name" data_name="bank_name" desc="监管账户开户总行" necessary="no"/>
+                    <xmlRead name="branch_name" data_name="branch_name" desc="监管账户开户支行" necessary="no"/>
+                    <xmlRead name="account_name" data_name="account_name" desc="监管账户名称" necessary="no"/>
+                    <xmlRead name="account_num" data_name="account_num" desc="监管账户账号" necessary="no"/>
+                    <xmlRead name="bank_to" data_name="bank_to" desc="收款方开户总行" necessary="no"/>
+                    <xmlRead name="name_to" data_name="name_to" desc="收款方账户名称" necessary="no"/>
+                    <xmlRead name="account_to" data_name="account_to" desc="收款方账户账号" necessary="no"/>
+                    <xmlRead name="branch_to" data_name="branch_to" desc="收款方支行行号" necessary="no"/>
+                    <xmlRead name="amount" data_name="amount" desc="拨付金额" necessary="no"/>
+                </xmlRead>
+            </xmlRead>
+        </response>
+    </format>
+</root>

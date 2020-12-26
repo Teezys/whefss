@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE container PUBLIC "-//YUANGOU//DTD//MSC" "">
+<container name="cntr.async" trace="INFO">
+
+    <bean name = "listener" class = "com.yuangou.ecp.bp.channel.Qys.handler.YGQySListener" >
+        <property name = "maxThreads"  value = "20"/>
+        <property name = "minThreads"  value = "5"/>
+        <property name="queueName" value="${_QUEUE}"/>
+    </bean>
+
+
+    <process name = "proc1" msgtype = "DEFAULT">
+        <systemInterceptor name = "callService"/>
+    </process>
+
+</container>

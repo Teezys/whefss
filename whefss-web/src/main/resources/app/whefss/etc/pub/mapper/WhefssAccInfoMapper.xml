@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- Created by xu_lw on 2020-10-29 18:05:50. -->
+<mapper namespace="com.murong.ecp.netpay.whefss.web.pub.dal.dao.WhefssAccInfoMapper">
+    <select id="selectByPrimaryKey" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAccInfoDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_ACC_INFO where account_num = #{accountNum} 
+    </select>
+
+    <!-- 分页查询id后缀必须为Page -->
+    <select id="selectPage" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAccInfoDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_ACC_INFO where account_num like '%%${accountNum}%%' or account_name like '%%${accountName}%%' or monitor_num like '%%${monitorNum}%%' or bank_name like '%%${bankName}%%' or branch_name like '%%${branchName}%%' or branch_num like '%%${branchNum}%%' or corp_name like '%%${corpName}%%' or project_name like '%%${projectName}%%' or monitor_range like '%%${monitorRange}%%' or monitor_time like '%%${monitorTime}%%' or clo_ntc_no like '%%${cloNtcNo}%%' or change_time like '%%${changeTime}%%' or reserve1 like '%%${reserve1}%%' or reserve2 like '%%${reserve2}%%' or reserve3 like '%%${reserve3}%%' or user_id like '%%${userId}%%' or user_name like '%%${userName}%%'  order by account_num
+    </select>
+
+    <!-- 游标后缀必须为Cursor -->
+    <select id="selectCursor" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAccInfoDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_ACC_INFO
+    </select>
+
+    <!-- 查询id后缀必须为ResultHandler -->
+    <select id="selectResultHandler" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAccInfoDO">
+        select <include refid="base_column_list"/>
+        from WHEFSS_ACC_INFO
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAccInfoDO">
+        delete from  WHEFSS_ACC_INFO where account_num = #{accountNum} 
+    </delete>
+
+    <delete id="deleteByIds" parameterType="java.lang.String">
+        delete from  WHEFSS_ACC_INFO where id in (${ids})
+    </delete>
+
+    <update id="updateByPrimaryKey" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAccInfoDO">
+        update  WHEFSS_ACC_INFO
+        <trim prefix="set" suffixOverrides = ",">
+                <if test="isNotNull(bankName)">bank_name=#{bankName},</if>
+                <if test="isNotNull(branchName)">branch_name=#{branchName},</if>
+                <if test="isNotNull(branchNum)">branch_num=#{branchNum},</if>
+                <if test="isNotNull(corpName)">corp_name=#{corpName},</if>
+                <if test="isNotNull(projectName)">project_name=#{projectName},</if>
+                <if test="isNotNull(monitorRange)">monitor_range=#{monitorRange},</if>
+                <if test="isNotNull(dayendAmt)">dayend_amt=#{dayendAmt},</if>
+                <if test="isNotNull(monitorTime)">monitor_time=#{monitorTime},</if>
+                <if test="isNotNull(cloNtcNo)">clo_ntc_no=#{cloNtcNo},</if>
+                <if test="isNotNull(changeTime)">change_time=#{changeTime},</if>
+                <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+                <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+                <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+                <if test="isNotNull(userId)">user_id=#{userId},</if>
+                <if test="isNotNull(userName)">user_name=#{userName},</if>
+        </trim>
+        where account_num = #{accountNum} 
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAccInfoDO">
+        update  WHEFSS_ACC_INFO
+        <trim prefix="set" suffixOverrides = ",">
+            <if test="isNotNull(accountNum)">account_num=#{accountNum},</if>
+            <if test="isNotNull(accountName)">account_name=#{accountName},</if>
+            <if test="isNotNull(monitorNum)">monitor_num=#{monitorNum},</if>
+            <if test="isNotNull(bankName)">bank_name=#{bankName},</if>
+            <if test="isNotNull(branchName)">branch_name=#{branchName},</if>
+            <if test="isNotNull(branchNum)">branch_num=#{branchNum},</if>
+            <if test="isNotNull(corpName)">corp_name=#{corpName},</if>
+            <if test="isNotNull(projectName)">project_name=#{projectName},</if>
+            <if test="isNotNull(monitorRange)">monitor_range=#{monitorRange},</if>
+            <if test="isNotNull(dayendAmt)">dayend_amt=#{dayendAmt},</if>
+            <if test="isNotNull(monitorTime)">monitor_time=#{monitorTime},</if>
+            <if test="isNotNull(cloNtcNo)">clo_ntc_no=#{cloNtcNo},</if>
+            <if test="isNotNull(changeTime)">change_time=#{changeTime},</if>
+            <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+            <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+            <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+            <if test="isNotNull(userId)">user_id=#{userId},</if>
+            <if test="isNotNull(userName)">user_name=#{userName},</if>
+        </trim>
+        where account_num = #{accountNum} 
+    </update>
+
+    <insert id="insert" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAccInfoDO">
+        insert  into WHEFSS_ACC_INFO(account_num, account_name, monitor_num, bank_name, branch_name, branch_num, corp_name, project_name, monitor_range, dayend_amt, monitor_time, clo_ntc_no, change_time, reserve1, reserve2, reserve3, user_id, user_name,notice_num,plan_acc_name)
+        values( #{accountNum}, #{accountName}, #{monitorNum}, #{bankName}, #{branchName}, #{branchNum}, #{corpName}, #{projectName}, #{monitorRange}, #{dayendAmt}, #{monitorTime}, #{cloNtcNo}, #{changeTime}, #{reserve1}, #{reserve2}, #{reserve3}, #{userId}, #{userName},#{noticeNum},#{planAccName})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.WhefssAccInfoDO">
+        insert  into WHEFSS_ACC_INFO
+        <trim prefix="(" suffix=')' suffixOverrides=",">
+            <if test="isNotNull(accountNum)">account_num,</if>
+            <if test="isNotNull(accountName)">account_name,</if>
+            <if test="isNotNull(monitorNum)">monitor_num,</if>
+            <if test="isNotNull(bankName)">bank_name,</if>
+            <if test="isNotNull(branchName)">branch_name,</if>
+            <if test="isNotNull(branchNum)">branch_num,</if>
+            <if test="isNotNull(corpName)">corp_name,</if>
+            <if test="isNotNull(projectName)">project_name,</if>
+            <if test="isNotNull(monitorRange)">monitor_range,</if>
+            <if test="isNotNull(dayendAmt)">dayend_amt,</if>
+            <if test="isNotNull(monitorTime)">monitor_time,</if>
+            <if test="isNotNull(cloNtcNo)">clo_ntc_no,</if>
+            <if test="isNotNull(changeTime)">change_time,</if>
+            <if test="isNotNull(reserve1)">reserve1,</if>
+            <if test="isNotNull(reserve2)">reserve2,</if>
+            <if test="isNotNull(reserve3)">reserve3,</if>
+            <if test="isNotNull(userId)">user_id,</if>
+            <if test="isNotNull(userName)">user_name,</if>
+            <if test="isNotNull(noticeNum)">notice_num,</if>
+            <if test="isNotNull(planAccName)">plan_acc_name,</if>
+        </trim>
+        <trim prefix="values(" suffix=')' suffixOverrides=",">
+            <if test="isNotNull(accountNum)">#{accountNum},</if>
+            <if test="isNotNull(accountName)">#{accountName},</if>
+            <if test="isNotNull(monitorNum)">#{monitorNum},</if>
+            <if test="isNotNull(bankName)">#{bankName},</if>
+            <if test="isNotNull(branchName)">#{branchName},</if>
+            <if test="isNotNull(branchNum)">#{branchNum},</if>
+            <if test="isNotNull(corpName)">#{corpName},</if>
+            <if test="isNotNull(projectName)">#{projectName},</if>
+            <if test="isNotNull(monitorRange)">#{monitorRange},</if>
+            <if test="isNotNull(dayendAmt)">#{dayendAmt},</if>
+            <if test="isNotNull(monitorTime)">#{monitorTime},</if>
+            <if test="isNotNull(cloNtcNo)">#{cloNtcNo},</if>
+            <if test="isNotNull(changeTime)">#{changeTime},</if>
+            <if test="isNotNull(reserve1)">#{reserve1},</if>
+            <if test="isNotNull(reserve2)">#{reserve2},</if>
+            <if test="isNotNull(reserve3)">#{reserve3},</if>
+            <if test="isNotNull(userId)">#{userId},</if>
+            <if test="isNotNull(userName)">#{userName},</if>
+            <if test="isNotNull(noticeNum)">#{noticeNum},</if>
+            <if test="isNotNull(planAccName)">#{planAccName},</if>
+
+        </trim>
+    </insert>
+
+    <sql id="base_column_list">
+    account_num, account_name, monitor_num, bank_name, branch_name, branch_num, corp_name, project_name, monitor_range, dayend_amt, monitor_time, clo_ntc_no, change_time, reserve1, reserve2, reserve3, user_id, user_name
+    </sql>
+
+    <sql id="where_condition">
+        <trim prefix="where" prefixOverrides="and">
+            <if test="isNotNull(accountNum)">account_num=#{accountNum},</if>
+            <if test="isNotNull(accountName)">account_name=#{accountName},</if>
+            <if test="isNotNull(monitorNum)">monitor_num=#{monitorNum},</if>
+            <if test="isNotNull(bankName)">bank_name=#{bankName},</if>
+            <if test="isNotNull(branchName)">branch_name=#{branchName},</if>
+            <if test="isNotNull(branchNum)">branch_num=#{branchNum},</if>
+            <if test="isNotNull(corpName)">corp_name=#{corpName},</if>
+            <if test="isNotNull(projectName)">project_name=#{projectName},</if>
+            <if test="isNotNull(monitorRange)">monitor_range=#{monitorRange},</if>
+            <if test="isNotNull(dayendAmt)">dayend_amt=#{dayendAmt},</if>
+            <if test="isNotNull(monitorTime)">monitor_time=#{monitorTime},</if>
+            <if test="isNotNull(cloNtcNo)">clo_ntc_no=#{cloNtcNo},</if>
+            <if test="isNotNull(changeTime)">change_time=#{changeTime},</if>
+            <if test="isNotNull(reserve1)">reserve1=#{reserve1},</if>
+            <if test="isNotNull(reserve2)">reserve2=#{reserve2},</if>
+            <if test="isNotNull(reserve3)">reserve3=#{reserve3},</if>
+            <if test="isNotNull(userId)">user_id=#{userId},</if>
+            <if test="isNotNull(userName)">user_name=#{userName},</if>
+        </trim>
+    </sql>
+</mapper>

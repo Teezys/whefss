@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- Created by xu_lw on 2020-09-06 16:49:51. -->
+<mapper namespace="com.murong.ecp.netpay.whefss.web.pub.dal.dao.AcctInfoMapper">
+    <select id="selectByPrimaryKey" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.AcctInfoDO">
+        select <include refid="base_column_list"/>
+        from T_ACCT_INFO where SVS_AC_NO = #{svsAcNo} and FSS_FLG = 'whef'
+    </select>
+
+    <!-- 分页查询id后缀必须为Page -->
+<!--    <select id="selectPage" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.AcctInfoDO">-->
+<!--        select <include refid="base_column_list"/>-->
+<!--        from T_ACCT_INFO where svs_ac_no like '%%${svsAcNo}%%' or svs_ac_nme like '%%${svsAcNme}%%' or fss_flg like '%%${fssFlg}%%' or opn_dte like '%%${opnDte}%%' or cal_dte like '%%${calDte}%%' or acc_sts like '%%${accSts}%%' or opr_br like '%%${oprBr}%%' or opr_bk like '%%${oprBk}%%' or opr_tlr like '%%${oprTlr}%%' or opr_flg like '%%${oprFlg}%%' or rmk like '%%${rmk}%%' or rsv1 like '%%${rsv1}%%' or rsv2 like '%%${rsv2}%%' or rsv3 like '%%${rsv3}%%' or rsv4 like '%%${rsv4}%%' or rsv5 like '%%${rsv5}%%'  order by-->
+<!--    </select>-->
+
+    <select id="selectListBySts" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.AcctInfoDO">
+        select <include refid="base_column_list"/>
+        from T_ACCT_INFO where ACC_STS = #{accSts} and fss_flg = 'whef'
+    </select>
+
+    <select id="selectPage" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.AcctInfoDO">
+        select <include refid="base_column_list"/>
+        from T_ACCT_INFO where 1=1
+        <if test="svsAcNo !=null and svsAcNo !=''">
+         and svs_ac_no = #{svsAcNo}
+        </if>
+         and fss_flg = 'whef'
+    </select>
+
+    <!-- 游标后缀必须为Cursor -->
+    <select id="selectCursor" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.AcctInfoDO">
+        select <include refid="base_column_list"/>
+        from T_ACCT_INFO
+    </select>
+
+    <!-- 查询id后缀必须为ResultHandler -->
+    <select id="selectResultHandler" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.AcctInfoDO">
+        select <include refid="base_column_list"/>
+        from T_ACCT_INFO
+    </select>
+
+    <update id="updateByPrimaryKey" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.AcctInfoDO">
+        update  T_ACCT_INFO
+        <trim prefix="set" suffixOverrides = ",">
+                <if test="isNotNull(svsAcNme)">svs_ac_nme=#{svsAcNme},</if>
+                <if test="isNotNull(opnDte)">opn_dte=#{opnDte},</if>
+                <if test="isNotNull(calDte)">cal_dte=#{calDte},</if>
+                <if test="isNotNull(accSts)">acc_sts=#{accSts},</if>
+                <if test="isNotNull(oprBr)">opr_br=#{oprBr},</if>
+                <if test="isNotNull(oprBk)">opr_bk=#{oprBk},</if>
+                <if test="isNotNull(oprTlr)">opr_tlr=#{oprTlr},</if>
+                <if test="isNotNull(oprFlg)">opr_flg=#{oprFlg},</if>
+                <if test="isNotNull(rmk)">rmk=#{rmk},</if>
+                <if test="isNotNull(rsv1)">rsv1=#{rsv1},</if>
+                <if test="isNotNull(rsv2)">rsv2=#{rsv2},</if>
+                <if test="isNotNull(rsv3)">rsv3=#{rsv3},</if>
+                <if test="isNotNull(rsv4)">rsv4=#{rsv4},</if>
+                <if test="isNotNull(rsv5)">rsv5=#{rsv5},</if>
+        </trim>
+        where svs_ac_no = #{svsAcNo} and FSS_FLG = 'whef'
+
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.AcctInfoDO">
+        update  T_ACCT_INFO
+        <trim prefix="set" suffixOverrides = ",">
+            <if test="isNotNull(svsAcNo)">svs_ac_no=#{svsAcNo},</if>
+            <if test="isNotNull(svsAcNme)">svs_ac_nme=#{svsAcNme},</if>
+            <if test="isNotNull(fssFlg)">fss_flg=#{fssFlg},</if>
+            <if test="isNotNull(opnDte)">opn_dte=#{opnDte},</if>
+            <if test="isNotNull(calDte)">cal_dte=#{calDte},</if>
+            <if test="isNotNull(accSts)">acc_sts=#{accSts},</if>
+            <if test="isNotNull(oprBr)">opr_br=#{oprBr},</if>
+            <if test="isNotNull(oprBk)">opr_bk=#{oprBk},</if>
+            <if test="isNotNull(oprTlr)">opr_tlr=#{oprTlr},</if>
+            <if test="isNotNull(oprFlg)">opr_flg=#{oprFlg},</if>
+            <if test="isNotNull(rmk)">rmk=#{rmk},</if>
+            <if test="isNotNull(rsv1)">rsv1=#{rsv1},</if>
+            <if test="isNotNull(rsv2)">rsv2=#{rsv2},</if>
+            <if test="isNotNull(rsv3)">rsv3=#{rsv3},</if>
+            <if test="isNotNull(rsv4)">rsv4=#{rsv4},</if>
+            <if test="isNotNull(rsv5)">rsv5=#{rsv5},</if>
+        </trim>
+        where 
+    </update>
+
+    <insert id="insert" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.AcctInfoDO">
+        insert  into T_ACCT_INFO(svs_ac_no, svs_ac_nme, fss_flg, opn_dte, cal_dte, acc_sts, opr_br, opr_bk, opr_tlr, opr_flg, rmk, rsv1, rsv2, rsv3, rsv4, rsv5)
+        values( #{svsAcNo}, #{svsAcNme}, #{fssFlg}, #{opnDte}, #{calDte}, #{accSts}, #{oprBr}, #{oprBk}, #{oprTlr}, #{oprFlg}, #{rmk}, #{rsv1}, #{rsv2}, #{rsv3}, #{rsv4}, #{rsv5})
+    </insert>
+
+    <!--查询账户是否被监管-->
+    <!--<select id="selectAccSts" resultType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.AcctInfoDO">
+        select acc_sts
+        from T_ACCT_INFO where svs_ac_no = #{svsAcNo} and fss_flg = #{fssFlg}
+    </select>-->
+      <select id="countAcc"  parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.AcctInfoDO">
+           select count(1)
+           from T_ACCT_INFO
+          where  1=1 and svs_ac_no = #{svsAcNo}
+          and fss_flg = 'whefss'
+      </select>
+
+    <!--更新状态-->
+    <update id = "updateStatus" parameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.AcctInfoDO">
+        update T_ACCT_INFO set
+        and OPN_DTE=#{opnDte} and  ACC_STS = #{accSts} and OPR_TLR = #{oprTlr}
+        where account_num = #{svsAcNo}
+    </update>
+
+
+    <select id="countName" arameterType="com.murong.ecp.netpay.whefss.web.pub.dal.entity.AcctInfoDO">
+        select count(1)
+        from T_ACCT_INFO
+        where  1=1 and svs_ac_no = #{svsAcNo}
+        and svs_ac_nme = #{svsAcNme}
+        and fss_flg = 'whefss'
+    </select>
+
+    <sql id="base_column_list">
+    svs_ac_no, svs_ac_nme, fss_flg, opn_dte, cal_dte, acc_sts, opr_br, opr_bk, opr_tlr, opr_flg, rmk, rsv1, rsv2, rsv3, rsv4, rsv5
+    </sql>
+
+    <sql id="where_condition">
+        <trim prefix="where" prefixOverrides="and">
+            <if test="isNotNull(svsAcNo)">svs_ac_no=#{svsAcNo},</if>
+            <if test="isNotNull(svsAcNme)">svs_ac_nme=#{svsAcNme},</if>
+            <if test="isNotNull(fssFlg)">fss_flg=#{fssFlg},</if>
+            <if test="isNotNull(opnDte)">opn_dte=#{opnDte},</if>
+            <if test="isNotNull(calDte)">cal_dte=#{calDte},</if>
+            <if test="isNotNull(accSts)">acc_sts=#{accSts},</if>
+            <if test="isNotNull(oprBr)">opr_br=#{oprBr},</if>
+            <if test="isNotNull(oprBk)">opr_bk=#{oprBk},</if>
+            <if test="isNotNull(oprTlr)">opr_tlr=#{oprTlr},</if>
+            <if test="isNotNull(oprFlg)">opr_flg=#{oprFlg},</if>
+            <if test="isNotNull(rmk)">rmk=#{rmk},</if>
+            <if test="isNotNull(rsv1)">rsv1=#{rsv1},</if>
+            <if test="isNotNull(rsv2)">rsv2=#{rsv2},</if>
+            <if test="isNotNull(rsv3)">rsv3=#{rsv3},</if>
+            <if test="isNotNull(rsv4)">rsv4=#{rsv4},</if>
+            <if test="isNotNull(rsv5)">rsv5=#{rsv5},</if>
+        </trim>
+    </sql>
+</mapper>

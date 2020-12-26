@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="GB2312"?>
+<MYSQL>
+    <dynSentence name="QRY_TAMCOLLT_COLINF2031510">
+         <sentence>
+            SELECT A.* FROM 
+               (SELECT COL_MBL_NO COL_MBL_NO_COM,SMS_LBL SMS_LBL_COM,COL_NM COL_NM_COM FROM TAMCOLLT 
+                  WHERE (USR_NO =? AND COL_MBL_NO =?)
+                     OR (? is not null AND USR_NO =? AND SMS_LBL =?)
+                        OR (? is not null AND USR_NO =? AND COL_NM =?)) A
+                           LIMIT 0,1
+         </sentence>
+         <fields>USR_NO|COL_MBL_NO|SMS_LBL|USR_NO|SMS_LBL|COL_NM|USR_NO|COL_NM|</fields>
+      </dynSentence>
+      
+      <dynSentence name="QRY_TAMCOLLT_NEW2031560"> 
+	     <sentence>
+	       SELECT A.* FROM 
+	        (SELECT COL_NM,COL_MBL_NO,SMS_LBL,COL_FLG FROM TAMCOLLT 
+	           WHERE (? is null OR COL_NM like ?)
+	              AND (? is null OR COL_MBL_NO like ?)
+	                 AND (trim(RCT_DTTM) &gt; '19700101000000')
+                        AND USR_NO =?
+	                       ORDER BY RCT_DTTM DESC,RCT_CNT DESC) A
+	                          LIMIT 0,10
+	     </sentence>
+	     <fields>COL_NM|COL_NM1|COL_MBL_NO|COL_MBL_NO1|USR_NO|</fields>
+	  </dynSentence> 
+	  
+	  <dynSentence name="QRY_TAMCOLLT_NEW2031561"> 
+	     <sentence>
+	       SELECT A.* FROM 
+	        (SELECT COL_NM,COL_MBL_NO,SMS_LBL,COL_FLG FROM TAMCOLLT 
+	           WHERE (? is null OR COL_NM like ?)
+	              AND (? is null OR COL_MBL_NO like ?)
+	                 AND (trim(RCT_DTTM) &gt; '19700101000000')
+                        AND USR_NO =?
+	                       ORDER BY RCT_DTTM DESC,RCT_CNT DESC) A
+	                          LIMIT 0,10
+	     </sentence>
+	     <fields>COL_NM|COL_NM1|COL_MBL_NO|COL_MBL_NO1|USR_NO|</fields>
+	  </dynSentence>
+	  
+	  <dynSentence name="QRY_TAMCOLLT_COLINF2031510_0">
+            <sentence>
+                SELECT COL_USR_NO COL_USR_NO_COM,SMS_LBL SMS_LBL_COM,COL_NM COL_NM_COM 
+                FROM TAMCOLLT WHERE (USR_NO =? AND COL_USR_NO =?) 
+                OR (? != '' AND USR_NO =? AND SMS_LBL =?) 
+                OR (? != '' AND USR_NO =? AND COL_NM =?) LIMIT 0,1
+            </sentence>
+            <fields>USR_NO|COL_USR_NO|SMS_LBL|USR_NO|SMS_LBL|COL_NM|USR_NO|COL_NM|</fields>
+        </dynSentence>
+	  
+	  <dynSentence name="QRY_TAMCOLLT_NEW2031560_0">
+			<sentence>
+				SELECT C.* FROM (SELECT
+				A.COL_NM,A.COL_MBL_NO,A.SMS_LBL,A.COL_FLG FROM
+				TAMCOLLT A LEFT JOIN
+				URMTPINF B ON A.COL_USR_NO = B.USR_NO
+				WHERE (HEMPTY(?) OR A.COL_NM
+				like ?) AND (HEMPTY(?) OR A.COL_MBL_NO
+				like ?) AND (trim(A.RCT_DTTM)
+				&gt; '19700101000000') AND B.USR_STS ='0'
+				AND A.USR_NO =?
+				ORDER BY
+				A.RCT_DTTM DESC,A.RCT_CNT DESC) C
+				LIMIT 0,10
+			</sentence>
+			<fields>COL_NM1|COL_NM1|COL_MBL_NO1|COL_MBL_NO1|USR_NO|</fields>
+		</dynSentence>
+		
+		 <dynSentence name="QRY_TAMCOLLT_NEW2031561_0">
+            <sentence> 
+                SELECT C.* FROM (SELECT A.COL_NM,A.COL_MBL_NO,A.SMS_LBL,A.COL_FLG FROM
+                TAMCOLLT A LEFT JOIN URMTPINF B ON A.COL_USR_NO = B.USR_NO
+                WHERE (? is null OR A.COL_NM like ?) AND (? is null OR A.COL_MBL_NO
+                like ?) AND (trim(A.RCT_DTTM) &gt; '19700101000000') AND B.USR_STS ='0'
+                AND A.USR_NO =?
+	            ORDER BY A.RCT_DTTM DESC,A.RCT_CNT DESC) C
+	            LIMIT 0,10
+	        </sentence>
+	     <fields>COL_NM|COL_NM1|COL_MBL_NO|COL_MBL_NO1|USR_NO|</fields>
+	  </dynSentence> 
+	  
+	  <dynSentence name="QRY_TBKCOLLT_ALL1">
+			<sentence>
+				SELECT
+				A.COL_NM ,
+				A.BAK_MBL_NO,A.BANK_CARD_NO,A.BANK_NO,B.USR_OPR_LOG_ID
+				FROM
+				TBKCOLLT
+				A,URMTOPER B
+				WHERE A.USR_NO=? AND B.USR_OPR_ID=CONVERT(A.MBL_NO,CHAR)
+				AND
+				(A.COL_NM like
+				CONCAT(CONCAT('%',?),'%') OR ? IS NULL)
+				AND (A.BAK_MBL_NO like
+				CONCAT(CONCAT('%',?),'%') OR ? IS
+				NULL)
+			</sentence>
+			<fields>USR_NO|COL_NM|COL_NM|BAK_MBL_NO|BAK_MBL_NO|</fields>
+		</dynSentence>
+		
+		<dynSentence name="QRY_TAMCOLLT_COLINF_AddContact">
+            <sentence>
+                SELECT A.* FROM (SELECT COL_USR_NO COL_USR_NO_COM,SMS_LBL
+                SMS_LBL_COM,COL_NM COL_NM_COM,RCT_CNT FROM TAMCOLLT WHERE USR_NO =? AND
+                COL_USR_NO =?) A LIMIT 0,1
+            </sentence>
+            <fields>USR_NO|COL_USR_NO</fields>
+        </dynSentence>
+		<dynSentence name="QRY_TAMCOLLT_ALL1">
+			<sentence>
+				SELECT
+				A.COL_NM ,
+				A.COL_MBL_NO,B.USR_OPR_LOG_ID
+				FROM
+				TAMCOLLT
+				A,URMTOPER B
+				WHERE A.USR_NO=? AND A.COL_MBL_NO=B.USR_OPR_ID AND
+				(A.COL_NM like
+				CONCAT(CONCAT('%',?),'%') OR HEMPTY(?))
+				AND (A.COL_MBL_NO like
+				CONCAT(CONCAT('%',?),'%') OR ? IS
+				NULL)
+			</sentence>
+			<fields>USR_NO|COL_NM|COL_NM|COL_MBL_NO|COL_MBL_NO|</fields>
+		</dynSentence>
+</MYSQL>

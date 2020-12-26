@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <format>
+        <item name="@etf.cyc_id" desc="cyc_id" length="10" deli="124" />
+        <item name="@etf.gwa.msg_cd" desc="交易返回码" length="8" deli="124" />
+        <item name="@etf.gwa.msg_inf" desc="交易返回信息" length="10" deli="124" />
+    </format>
+</root>

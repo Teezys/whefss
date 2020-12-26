@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <!--<param name="GenerateFieldHelp" interval="600" class="com.murong.ecp.netpay.mbu.web.handler.GenerateFieldHelpHandler">-->
+        <!--<property name="sqlCmd" value="select fld_nm,fld_val,fld_exp from t_bui_hlp order by fld_nm"/>-->
+        <!--<property name="dsNam" value="${_DB_NAME}"/>-->
+        <!--<property name="fileName" value="js/dict/dict.js"/>-->
+    <!--</param>-->
+</root>

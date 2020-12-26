@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root>
+    <format code="fundsRefund" desc="查询退款数据">
+        <request necessary="yes">
+            <xmlWrite name="Root">
+                <quote name="request"/>
+            </xmlWrite>
+        </request>
+        <response necessary="no">
+            <xmlRead name="Root">
+                <quote name="response"/>
+                <xmlRead name="data">
+                    <xmlRead name="notice_num" data_name="notice_num" desc="退款通知书编号" necessary="no"/>
+                    <xmlRead name="contract_num" data_name="contract_num" desc="缴款通知书编号" necessary="no"/>
+                    <xmlRead name="buyers" data_name="buyers" desc="买方" necessary="no"/>
+                    <xmlRead name="id_type" data_name="id_type" desc="证件类别" necessary="no"/>
+                    <xmlRead name="id_num" data_name="id_num" desc="证件号码" necessary="no"/>
+                    <xmlRead name="bank_name" data_name="bank_name" desc="监管账户开户总行" necessary="no"/>
+                    <xmlRead name="account_name" data_name="account_name" desc="监管账户名称" necessary="no"/>
+                    <xmlRead name="account_num" data_name="account_num" desc="监管账户账号" necessary="no"/>
+                    <xmlRead name="total_price" data_name="total_price" desc="总房价款金额" necessary="no"/>
+                    <xmlRead name="refund_price" data_name="refund_price" desc="退款金额" necessary="no"/>
+                    <xmlRead name="corp_account_name" data_name="corp_account_name" desc="收款方帐户名称" necessary="no"/>
+                    <xmlRead name="corp_account_num" data_name="corp_account_num" desc="收款方帐号" necessary="no"/>
+                    <xmlRead name="corp_account_bank" data_name="corp_account_bank" desc="收款方开户行" necessary="no"/>
+                    <xmlRead name="corp_account_branch_num" data_name="corp_account_branch_num" desc="收款方支行行号" necessary="no"/>
+                </xmlRead>
+            </xmlRead>
+        </response>
+    </format>
+</root>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="GB2312"?>
+<MYSQL>
+    <dynSentence name="QRY_MODULE1">
+			<sentence>
+				SELECT COUNT(*) COUNT
+				FROM PTSTOPLG LOG
+				WHERE LOG.USER_ID=? AND LOG.OPER_CODE=? AND LOG.RESULT=? AND
+				DATE_FORMAT(LOG.CREATE_DATE,'%Y%m%d')=?
+			</sentence>
+			<fields>MBL_NO|OPER_CODE|RESULT|CUR_DT</fields>
+		</dynSentence>
+		
+		<dynSentence name="INS_MODULE2">
+			<sentence>
+				INSERT INTO PTSTOPLG (ID, USER_ID, USER_ID_TYPE, IP, OPER_CODE, RESULT,
+				CREATE_DATE, FINISH_DATE, TIME_DIFF)
+				VALUES ('%s',?, ?, '', ?, ?, str_to_date(?,
+				'%Y%m%d%H%i%S'), str_to_date(?, '%Y%m%d%H%i%S'), ?)
+			</sentence>
+			<fields>SEQ_USER_OPER_LOG_ID|MBL_NO|USER_ID_TYPE|OPER_CODE|RESULT|CUR_STRAT_TIME|CUR_END_TIME|TIME_DIFF
+			</fields>
+		</dynSentence>
+		
+		<dynSentence name="QRY_URMTPINF_BY_IDNO">
+         <sentence>
+            SELECT * FROM URMTPINF WHERE ID_TYP='%s' AND ID_NO='%s' LIMIT 0,1
+         </sentence>
+         <fields>USR_ID_TYP|USR_ID_NO</fields>
+      </dynSentence>
+      
+    <dynSentence name="QRY_SMSTTMPS_SMTMP_0">  <!--查询短信模版及相关参数 -->
+			<sentence>
+				SELECT
+				A.SM_TYP,A.PRV_CD,A.SMS_CLS,A.SMS_MO,A.SMS_TMP,A.REP_FLD,A.ID_KEY,A.PSW_FLG,C.SRC_NO,B.*
+				FROM SMSTTMPS A,SMSTPARM B,SMSTNOIF C
+				WHERE A.SMS_CD=?
+				AND (A.PRV_CD=? )
+				AND (DATE_FORMAT(SYSDATE, '%Y%m%d%H%i%S') BETWEEN
+				concat(A.EFF_DT,A.EFF_TM) AND concat(A.EXP_DT,A.EXP_TM))
+				AND A.EFF_FLG='1'
+				AND A.ID_KEY=C.ID_KEY
+				AND A.SM_TYP=B.SM_TYP
+				AND A.EFF_FLG=C.EFF_FLG
+			</sentence>
+			<fields>SMS_CD|PRV_CD|</fields>
+		</dynSentence>
+		
+		<dynSentence name="QRY_SMSTTMPS_SMTMP_P">  <!--查询短信模版及相关参数（平安） -->
+			<sentence>
+				SELECT
+				A.SM_TYP,A.SMS_CLS,A.SMS_MO,A.SMS_TMP,A.REP_FLD,A.ID_KEY,A.PSW_FLG,B.*
+				FROM SMSTTMPS A,SMSTPARM B
+				WHERE A.SMS_CD=?
+				AND (A.PRV_CD='99')
+				AND (DATE_FORMAT(SYSDATE, '%Y%m%d%H%i%S') BETWEEN
+				concat(A.EFF_DT,A.EFF_TM) AND concat(A.EXP_DT,A.EXP_TM))
+				AND A.EFF_FLG='1'
+				AND A.SM_TYP=B.SM_TYP
+			</sentence>
+			<fields>SMS_CD|</fields>
+		</dynSentence>
+		
+		
+</MYSQL>
